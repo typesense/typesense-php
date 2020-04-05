@@ -19,6 +19,6 @@
     }
   },
   "require": {
-    "guzzlehttp/guzzle": "^7.0@dev"
+    "guzzlehttp/guzzle": "^7.0"
   }
 }
