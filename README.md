@@ -7,7 +7,7 @@ Follows the Typesense [API specification](https://github.com/typesense/typesense
 ## Installation
 
 ```
-$ composer install devloopsnet/typesense-php
+$ composer require devloopsnet/typesens-php
 ```
 
 You can also add `devloopsnet/typesense-php` to your project's `composer.json`.
