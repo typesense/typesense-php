@@ -1,0 +1,24 @@
+{
+  "name": "devloopsnet/typesens-php",
+  "description": "PHP client for Typesense https://github.com/typesense/typesense",
+  "type": "library",
+  "homepage": "https://www.devloops.net",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Abdullah Al-Faqeir",
+      "email": "abdullah@devloops.net",
+      "homepage": "https://www.devloops.net",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Devloops\\Typesence\\": "src/"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^7.0@dev"
+  }
+}
