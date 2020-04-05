@@ -4,6 +4,7 @@ namespace Devloops\Typesence;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Devloops\Typesence\Lib\Configuration;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Devloops\Typesence\Exceptions\ServerError;
 use Devloops\Typesence\Exceptions\ObjectNotFound;
@@ -95,23 +96,42 @@ class ApiCall
         foreach ($this->nodes() as $node) {
             $url = $node->url() . $endPoint;
             try {
-                $request = $this->client->get($url, [
-                  'headers'         => [
-                    self::API_KEY_HEADER_NAME => $node->getApiKey(),
-                  ],
-                  'query'           => http_build_query($params),
-                  'connect_timeout' => $this->config->getTimeoutSeconds(),
-                ]);
+                $request = $this->client->get(
+                  $url,
+                  [
+                    'headers'         => [
+                      self::API_KEY_HEADER_NAME => $node->getApiKey(),
+                    ],
+                    'query'           => http_build_query($params),
+                    'connect_timeout' => $this->config->getTimeoutSeconds(),
+                  ]
+                );
                 if ($request->getStatusCode() !== 200) {
-                    $errorMessage = \GuzzleHttp\json_decode($request->getBody(),
-                        true)['message'] ?? 'API error';
+                    $errorMessage = \GuzzleHttp\json_decode(
+                                      $request->getBody(),
+                                      true
+                                    )['message'] ?? 'API error';
                     throw $this->getException($request->getStatusCode())
                                ->setMessage($errorMessage);
                 }
-                return $asJson ? \GuzzleHttp\json_decode($request->getBody(),
-                  true) : $request->getBody()->getContents();
+                return $asJson ? \GuzzleHttp\json_decode(
+                  $request->getBody(),
+                  true
+                ) : $request->getBody()->getContents();
+            } catch (ClientException $exception) {
+                if ($exception->getResponse()->getStatusCode() === 408) {
+                    continue;
+                }
+                throw $this->getException(
+                  $exception->getResponse()->getStatusCode()
+                )->setMessage($exception->getMessage());
             } catch (RequestException $exception) {
-                continue;
+                if ($exception->getResponse()->getStatusCode() === 408) {
+                    continue;
+                }
+                throw $this->getException(
+                  $exception->getResponse()->getStatusCode()
+                )->setMessage($exception->getMessage());
             } catch (GuzzleException $e) {
                 continue;
             } catch (TypesenseClientError $exception) {
@@ -136,20 +156,30 @@ class ApiCall
     {
         $url    = $this->config->getMasterNode()->url() . $endPoint;
         $apiKey = $this->config->getMasterNode()->getApiKey();
-
-        $request = $this->client->post($url, [
-          'headers'         => [
-            self::API_KEY_HEADER_NAME => $apiKey,
-          ],
-          'json'            => $body,
-          'connect_timeout' => $this->config->getTimeoutSeconds(),
-        ]);
-        if ($request->getStatusCode() !== 201) {
-            $errorMessage =
-              \GuzzleHttp\json_decode($request->getBody(), true)['message'] ??
-              'API error';
-            throw $this->getException($request->getStatusCode())
-                       ->setMessage($errorMessage);
+        try {
+            $request = $this->client->post(
+              $url,
+              [
+                'headers'         => [
+                  self::API_KEY_HEADER_NAME => $apiKey,
+                ],
+                'json'            => $body,
+                'connect_timeout' => $this->config->getTimeoutSeconds(),
+              ]
+            );
+            if ($request->getStatusCode() !== 201) {
+                $errorMessage =
+                  \GuzzleHttp\json_decode($request->getBody(), true)['message']
+                  ?? 'API error';
+                throw $this->getException($request->getStatusCode())
+                           ->setMessage(
+                             $errorMessage
+                           );
+            }
+        } catch (ClientException $exception) {
+            throw $this->getException(
+              $exception->getResponse()->getStatusCode()
+            )->setMessage($exception->getMessage());
         }
 
         return \GuzzleHttp\json_decode($request->getBody(), true);
@@ -167,20 +197,30 @@ class ApiCall
     {
         $url    = $this->config->getMasterNode()->url() . $endPoint;
         $apiKey = $this->config->getMasterNode()->getApiKey();
-
-        $request = $this->client->put($url, [
-          'headers'         => [
-            self::API_KEY_HEADER_NAME => $apiKey,
-          ],
-          'json'            => $body,
-          'connect_timeout' => $this->config->getTimeoutSeconds(),
-        ]);
-        if ($request->getStatusCode() !== 200) {
-            $errorMessage =
-              \GuzzleHttp\json_decode($request->getBody(), true)['message'] ??
-              'API error';
-            throw $this->getException($request->getStatusCode())
-                       ->setMessage($errorMessage);
+        try {
+            $request = $this->client->put(
+              $url,
+              [
+                'headers'         => [
+                  self::API_KEY_HEADER_NAME => $apiKey,
+                ],
+                'json'            => $body,
+                'connect_timeout' => $this->config->getTimeoutSeconds(),
+              ]
+            );
+            if ($request->getStatusCode() !== 200) {
+                $errorMessage =
+                  \GuzzleHttp\json_decode($request->getBody(), true)['message']
+                  ?? 'API error';
+                throw $this->getException($request->getStatusCode())
+                           ->setMessage(
+                             $errorMessage
+                           );
+            }
+        } catch (ClientException $exception) {
+            throw $this->getException(
+              $exception->getResponse()->getStatusCode()
+            )->setMessage($exception->getMessage());
         }
 
         return \GuzzleHttp\json_decode($request->getBody(), true);
@@ -197,21 +237,30 @@ class ApiCall
     {
         $url    = $this->config->getMasterNode()->url() . $endPoint;
         $apiKey = $this->config->getMasterNode()->getApiKey();
-
-        $request = $this->client->delete($url, [
-          'headers'         => [
-            self::API_KEY_HEADER_NAME => $apiKey,
-          ],
-          'connect_timeout' => $this->config->getTimeoutSeconds(),
-        ]);
-        if ($request->getStatusCode() !== 200) {
-            $errorMessage =
-              \GuzzleHttp\json_decode($request->getBody(), true)['message'] ??
-              'API error';
-            throw $this->getException($request->getStatusCode())
-                       ->setMessage($errorMessage);
+        try {
+            $request = $this->client->delete(
+              $url,
+              [
+                'headers'         => [
+                  self::API_KEY_HEADER_NAME => $apiKey,
+                ],
+                'connect_timeout' => $this->config->getTimeoutSeconds(),
+              ]
+            );
+            if ($request->getStatusCode() !== 200) {
+                $errorMessage =
+                  \GuzzleHttp\json_decode($request->getBody(), true)['message']
+                  ?? 'API error';
+                throw $this->getException($request->getStatusCode())
+                           ->setMessage(
+                             $errorMessage
+                           );
+            }
+        } catch (ClientException $exception) {
+            throw $this->getException(
+              $exception->getResponse()->getStatusCode()
+            )->setMessage($exception->getMessage());
         }
-
         return \GuzzleHttp\json_decode($request->getBody(), true);
     }
 
