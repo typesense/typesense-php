@@ -57,8 +57,13 @@ class Document
      */
     private function endpoint_path(): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH,
-          $this->collectionName, Documents::RESOURCE_PATH, $this->documentId);
+        return sprintf(
+          '%s/%s/%s/%s',
+          Collections::RESOURCE_PATH,
+          $this->collectionName,
+          Documents::RESOURCE_PATH,
+          $this->documentId
+        );
     }
 
     /**

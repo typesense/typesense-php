@@ -29,9 +29,15 @@ class Collection
      */
     private $apiCall;
 
-    private $documents;
+    /**
+     * @var \Devloops\Typesence\Documents
+     */
+    public $documents;
 
-    private $overrides;
+    /**
+     * @var \Devloops\Typesence\Overrides
+     */
+    public $overrides;
 
     /**
      * Collection constructor.

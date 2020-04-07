@@ -22,12 +22,12 @@ class Client
     /**
      * @var \Devloops\Typesence\Collections
      */
-    private $collections;
+    public $collections;
 
     /**
      * @var \Devloops\Typesence\Aliases
      */
-    private $aliases;
+    public $aliases;
 
     /**
      * Client constructor.

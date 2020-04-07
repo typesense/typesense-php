@@ -12,7 +12,7 @@ use Devloops\Typesence\Lib\Configuration;
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
-class Aliases
+class Aliases implements \ArrayAccess
 {
 
     public const RESOURCE_PATH = '/aliases';
@@ -72,8 +72,10 @@ class Aliases
      */
     public function retrieve(): array
     {
-        return $this->apiCall->get($this->endPointPath(self::RESOURCE_PATH),
-          []);
+        return $this->apiCall->get(
+          $this->endPointPath(self::RESOURCE_PATH),
+          []
+        );
     }
 
     /**
@@ -94,5 +96,41 @@ class Aliases
         return $this->aliases[$name];
     }
 
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->aliases[$offset]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset)
+    {
+        if (!isset($this->aliases[$offset])) {
+            $this->aliases[$offset] = new Alias($this->config, $offset);
+        }
+
+        return $this->aliases[$offset];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value): void
+    {
+        $this->aliases[$offset] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($offset): void
+    {
+        unset($this->aliases[$offset]);
+    }
 
 }

@@ -56,8 +56,13 @@ class Documents implements \ArrayAccess
      */
     private function endPointPath(string $action = ''): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH,
-          $this->collectionName, self::RESOURCE_PATH, $action);
+        return sprintf(
+          '%s/%s/%s/%s',
+          Collections::RESOURCE_PATH,
+          $this->collectionName,
+          self::RESOURCE_PATH,
+          $action
+        );
     }
 
     /**
@@ -91,8 +96,10 @@ class Documents implements \ArrayAccess
      */
     public function search(array $searchParams): array
     {
-        return $this->apiCall->get($this->endPointPath('search'),
-          $searchParams);
+        return $this->apiCall->get(
+          $this->endPointPath('search'),
+          $searchParams
+        );
     }
 
     /**

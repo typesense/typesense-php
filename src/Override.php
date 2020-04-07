@@ -3,6 +3,8 @@
 
 namespace Devloops\Typesence;
 
+use Devloops\Typesence\Lib\Configuration;
+
 /**
  * Class Override
  *
@@ -13,20 +15,32 @@ namespace Devloops\Typesence;
 class Override
 {
 
+    /**
+     * @var \Devloops\Typesence\Lib\Configuration
+     */
     private $config;
 
+    /**
+     * @var string
+     */
     private $collectionName;
 
+    /**
+     * @var int
+     */
     private $overrideId;
 
+    /**
+     * @var \Devloops\Typesence\ApiCall
+     */
     private $apiCall;
 
     /**
      * Override constructor.
      *
-     * @param   \Devloops\Typesence\Configuration  $config
-     * @param   string                             $collectionName
-     * @param   int                                $overrideId
+     * @param   \Devloops\Typesence\Lib\Configuration  $config
+     * @param   string                                 $collectionName
+     * @param   int                                    $overrideId
      */
     public function __construct(
       Configuration $config,
@@ -44,8 +58,13 @@ class Override
      */
     private function endPointPath(): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH,
-          $this->collectionName, Overrides::RESOURCE_PATH, $this->overrideId);
+        return sprintf(
+          '%s/%s/%s/%s',
+          Collections::RESOURCE_PATH,
+          $this->collectionName,
+          Overrides::RESOURCE_PATH,
+          $this->overrideId
+        );
     }
 
     /**

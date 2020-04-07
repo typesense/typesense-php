@@ -57,8 +57,13 @@ class Overrides implements \ArrayAccess
      */
     public function endPointPath(string $overrideId = ''): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH,
-          $this->collectionName, self::RESOURCE_PATH, $overrideId);
+        return sprintf(
+          '%s/%s/%s/%s',
+          Collections::RESOURCE_PATH,
+          $this->collectionName,
+          self::RESOURCE_PATH,
+          $overrideId
+        );
     }
 
     /**

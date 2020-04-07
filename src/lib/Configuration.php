@@ -15,7 +15,7 @@ class Configuration
 {
 
     /**
-     * @var \Devloops\Typesence\Node
+     * @var \Devloops\Typesence\Lib\Node
      */
     private $masterNode;
 
@@ -43,15 +43,20 @@ class Configuration
         $masterNodeArray   = $config['master_node'] ?? [];
         $replicaNodeArrays = $config['read_replica_nodes'] ?? [];
 
-        $this->masterNode =
-          new Node($masterNodeArray['host'], $masterNodeArray['port'],
-            $masterNodeArray['protocol'], $masterNodeArray['api_key']);
+        $this->masterNode = new Node(
+          $masterNodeArray['host'],
+          $masterNodeArray['port'],
+          $masterNodeArray['protocol'],
+          $masterNodeArray['api_key']
+        );
 
         foreach ($replicaNodeArrays as $replica_node_array) {
-            $this->readReplicaNodes[] =
-              new Node($replica_node_array['host'], $replica_node_array['port'],
-                $replica_node_array['protocol'],
-                $replica_node_array['api_key']);
+            $this->readReplicaNodes[] = new Node(
+              $replica_node_array['host'],
+              $replica_node_array['port'],
+              $replica_node_array['protocol'],
+              $replica_node_array['api_key']
+            );
         }
 
         $this->timeoutSeconds = (float)($config['timeout_seconds'] ?? 1.0);
@@ -71,16 +76,19 @@ class Configuration
         }
 
         if (!$this->validateNodeFields($masterNode)) {
-            throw new ConfigError('`master_node` must be a dictionary with the following required keys: host, port, protocol, api_key');
+            throw new ConfigError(
+              '`master_node` must be a dictionary with the following required keys: host, port, protocol, api_key'
+            );
         }
 
         $replicaNodes = $config['read_replica_nodes'] ?? [];
         foreach ($replicaNodes as $replica_node) {
             if (!$this->validateNodeFields($replica_node)) {
-                throw new ConfigError('`read_replica_nodes` entry be a dictionary with the following required keys: host, port, protocol, api_key');
+                throw new ConfigError(
+                  '`read_replica_nodes` entry be a dictionary with the following required keys: host, port, protocol, api_key'
+                );
             }
         }
-
     }
 
     /**

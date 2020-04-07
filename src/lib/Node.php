@@ -13,12 +13,24 @@ namespace Devloops\Typesence\Lib;
 class Node
 {
 
+    /**
+     * @var string
+     */
     private $host;
 
+    /**
+     * @var string
+     */
     private $port;
 
+    /**
+     * @var string
+     */
     private $protocol;
 
+    /**
+     * @var string
+     */
     private $apiKey;
 
     /**
@@ -37,12 +49,17 @@ class Node
         $this->apiKey   = $apiKey;
     }
 
+    /**
+     * @return string
+     */
     public function url(): string
     {
         return sprintf('%s://%s:%s', $this->protocol, $this->host, $this->port);
     }
 
-
+    /**
+     * @return string
+     */
     public function getApiKey(): string
     {
         return $this->apiKey;
