@@ -90,7 +90,6 @@ class Collection
     /**
      * @return array
      * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

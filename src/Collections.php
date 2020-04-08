@@ -66,7 +66,6 @@ class Collections implements \ArrayAccess
      *
      * @return array
      * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {

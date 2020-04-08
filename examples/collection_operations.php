@@ -7,24 +7,19 @@ use Devloops\Typesence\Client;
 try {
     $client = new Client(
       [
-        'master_node'        => [
-          'host'     => 'host',
-          'port'     => '8108',
-          'protocol' => 'http',
-          'api_key'  => 'api_key',
-        ],
-        'read_replica_nodes' => [
+        'api_key'         => 'abcd',
+        'nodes'           => [
           [
-            'host'     => 'host',
+            'host'     => 'localhost',
             'port'     => '8108',
             'protocol' => 'http',
-            'api_key'  => 'api_key',
           ],
         ],
-        'timeout_seconds'    => 2,
+        'timeout_seconds' => 2,
       ]
     );
     echo '<pre>';
+    //print_r($client->collections['books']->delete());
     echo "--------Create Collection-------\n";
     print_r(
       $client->collections->create(
@@ -104,7 +99,8 @@ try {
     echo "--------Create Document-------\n";
     echo "\n";
     echo "--------Export Documents-------\n";
-    print_r($client->collections['books']->documents->export());
+    $exportedDocStrs = $client->collections['books']->documents->export();
+    print_r($exportedDocStrs);
     echo "--------Export Documents-------\n";
     echo "\n";
     echo "--------Fetch Single Document-------\n";
@@ -126,6 +122,16 @@ try {
     echo "--------Delete Document-------\n";
     print_r($client->collections['books']->documents['1']->delete());
     echo "--------Delete Document-------\n";
+    echo "\n";
+    echo "--------Import Documents-------\n";
+    $docsToImport = [];
+    foreach ($exportedDocStrs as $exportedDocStr) {
+        $docsToImport[] = json_decode($exportedDocStr, true);
+    }
+    $importRes =
+      $client->collections['books']->documents->create_many($docsToImport);
+    print_r($importRes);
+    echo "--------Import Documents-------\n";
     echo "\n";
     echo "--------Delete Collection-------\n";
     print_r($client->collections['books']->delete());

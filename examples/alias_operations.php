@@ -7,21 +7,15 @@ use Devloops\Typesence\Client;
 try {
     $client = new Client(
       [
-        'master_node'        => [
-          'host'     => 'HOST',
-          'port'     => '8108',
-          'protocol' => 'http',
-          'api_key'  => 'API_KEY',
-        ],
-        'read_replica_nodes' => [
+        'api_key'         => 'abcd',
+        'nodes'           => [
           [
-            'host'     => 'HOST',
+            'host'     => 'localhost',
             'port'     => '8108',
             'protocol' => 'http',
-            'api_key'  => 'API_KEY',
           ],
         ],
-        'timeout_seconds'    => 2,
+        'timeout_seconds' => 2,
       ]
     );
     echo '<pre>';

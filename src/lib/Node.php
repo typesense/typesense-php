@@ -26,27 +26,36 @@ class Node
     /**
      * @var string
      */
-    private $protocol;
+    private $path;
 
     /**
      * @var string
      */
-    private $apiKey;
+    private $protocol;
+
+    /**
+     * @var bool
+     */
+    private $healthy = false;
 
     /**
      * Node constructor.
      *
-     * @param $host
-     * @param $port
-     * @param $protocol
-     * @param $apiKey
+     * @param   string  $host
+     * @param   string  $port
+     * @param   string  $path
+     * @param   string  $protocol
      */
-    public function __construct($host, $port, $protocol, $apiKey)
-    {
+    public function __construct(
+      string $host,
+      string $port,
+      string $path,
+      string $protocol
+    ) {
         $this->host     = $host;
         $this->port     = $port;
+        $this->path     = $path;
         $this->protocol = $protocol;
-        $this->apiKey   = $apiKey;
     }
 
     /**
@@ -54,15 +63,29 @@ class Node
      */
     public function url(): string
     {
-        return sprintf('%s://%s:%s', $this->protocol, $this->host, $this->port);
+        return sprintf(
+          '%s://%s:%s%s',
+          $this->protocol,
+          $this->host,
+          $this->port,
+          $this->path
+        );
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getApiKey(): string
+    public function isHealthy(): bool
     {
-        return $this->apiKey;
+        return $this->healthy;
+    }
+
+    /**
+     * @param   bool  $healthy
+     */
+    public function setHealthy(bool $healthy): void
+    {
+        $this->healthy = $healthy;
     }
 
 }

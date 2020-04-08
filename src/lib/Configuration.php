@@ -15,19 +15,29 @@ class Configuration
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Node
+     * @var \Devloops\Typesence\Lib\Node[]
      */
-    private $masterNode;
-
-    /**
-     * @var array
-     */
-    private $readReplicaNodes = [];
+    private $nodes;
 
     /**
      * @var float
      */
     private $timeoutSeconds;
+
+    /**
+     * @var mixed|string
+     */
+    private $apiKey;
+
+    /**
+     * @var float
+     */
+    private $numRetries;
+
+    /**
+     * @var float
+     */
+    private $retryIntervalSeconds;
 
     /**
      * Configuration constructor.
@@ -40,28 +50,24 @@ class Configuration
     {
         $this->validateConfigArray($config);
 
-        $masterNodeArray   = $config['master_node'] ?? [];
-        $replicaNodeArrays = $config['read_replica_nodes'] ?? [];
+        $nodes = $config['nodes'] ?? [];
 
-        $this->masterNode = new Node(
-          $masterNodeArray['host'],
-          $masterNodeArray['port'],
-          $masterNodeArray['protocol'],
-          $masterNodeArray['api_key']
-        );
-
-        foreach ($replicaNodeArrays as $replica_node_array) {
-            $this->readReplicaNodes[] = new Node(
-              $replica_node_array['host'],
-              $replica_node_array['port'],
-              $replica_node_array['protocol'],
-              $replica_node_array['api_key']
+        foreach ($nodes as $node) {
+            $this->nodes[] = new Node(
+              $node['host'],
+              $node['port'],
+              $node['path'] ?? '',
+              $node['protocol']
             );
         }
 
-        $this->timeoutSeconds = (float)($config['timeout_seconds'] ?? 1.0);
+        $this->apiKey               = $config['api_key'] ?? '';
+        $this->timeoutSeconds       =
+          (float)($config['timeout_seconds'] ?? 1.0);
+        $this->numRetries           = (float)($config['num_retries'] ?? 3);
+        $this->retryIntervalSeconds =
+          (float)($config['retry_interval_seconds'] ?? 1.0);
     }
-
 
     /**
      * @param   array  $config
@@ -70,22 +76,20 @@ class Configuration
      */
     private function validateConfigArray(array $config): void
     {
-        $masterNode = $config['master_node'] ?? false;
-        if (!$masterNode) {
-            throw new ConfigError('`master_node` is not defined.');
+        $nodes = $config['nodes'] ?? false;
+        if (!$nodes) {
+            throw new ConfigError('`nodes` is not defined.');
         }
 
-        if (!$this->validateNodeFields($masterNode)) {
-            throw new ConfigError(
-              '`master_node` must be a dictionary with the following required keys: host, port, protocol, api_key'
-            );
+        $apiKey = $config['api_key'] ?? false;
+        if (!$apiKey) {
+            throw new ConfigError('`api_key` is not defined.');
         }
 
-        $replicaNodes = $config['read_replica_nodes'] ?? [];
-        foreach ($replicaNodes as $replica_node) {
-            if (!$this->validateNodeFields($replica_node)) {
+        foreach ($nodes as $node) {
+            if (!$this->validateNodeFields($node)) {
                 throw new ConfigError(
-                  '`read_replica_nodes` entry be a dictionary with the following required keys: host, port, protocol, api_key'
+                  '`node` entry be a dictionary with the following required keys: host, port, protocol, api_key'
                 );
             }
         }
@@ -98,24 +102,40 @@ class Configuration
      */
     public function validateNodeFields(array $node): bool
     {
-        $keys = ['host', 'port', 'protocol', 'api_key'];
+        $keys = ['host', 'port', 'protocol'];
         return !array_diff_key(array_flip($keys), $node);
     }
 
     /**
-     * @return \Devloops\Typesence\Node
+     * @return \Devloops\Typesence\Lib\Node[]
      */
-    public function getMasterNode(): Node
+    public function getNodes(): array
     {
-        return $this->masterNode;
+        return $this->nodes;
     }
 
     /**
-     * @return array
+     * @return mixed|string
      */
-    public function getReadReplicaNodes(): array
+    public function getApiKey()
     {
-        return $this->readReplicaNodes;
+        return $this->apiKey;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNumRetries(): float
+    {
+        return $this->numRetries;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRetryIntervalSeconds(): float
+    {
+        return $this->retryIntervalSeconds;
     }
 
     /**
