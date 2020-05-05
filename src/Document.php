@@ -39,12 +39,12 @@ class Document
      *
      * @param   \Devloops\Typesence\Lib\Configuration  $config
      * @param   string                                 $collectionName
-     * @param   int                                    $documentId
+     * @param   string                                 $documentId
      */
     public function __construct(
       Configuration $config,
       string $collectionName,
-      int $documentId
+      string $documentId
     ) {
         $this->config         = $config;
         $this->collectionName = $collectionName;
