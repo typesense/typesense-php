@@ -15,24 +15,39 @@ class Configuration
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Node
+     * @var \Devloops\Typesence\Lib\Node[]
      */
-    private $masterNode;
+    private $nodes;
 
     /**
-     * @var array
+     * @var \Devloops\Typesence\Lib\Node
      */
-    private $readReplicaNodes = [];
+    private $nearestNode;
 
     /**
      * @var float
      */
-    private $timeoutSeconds;
+    private $connectionTimeoutSeconds;
+
+    /**
+     * @var mixed|string
+     */
+    private $apiKey;
+
+    /**
+     * @var float
+     */
+    private $numRetries;
+
+    /**
+     * @var float
+     */
+    private $retryIntervalSeconds;
 
     /**
      * Configuration constructor.
      *
-     * @param   array  $config
+     * @param  array  $config
      *
      * @throws \Devloops\Typesence\Exceptions\ConfigError
      */
@@ -40,90 +55,114 @@ class Configuration
     {
         $this->validateConfigArray($config);
 
-        $masterNodeArray   = $config['master_node'] ?? [];
-        $replicaNodeArrays = $config['read_replica_nodes'] ?? [];
+        $nodes = $config['nodes'] ?? [];
 
-        $this->masterNode = new Node(
-          $masterNodeArray['host'],
-          $masterNodeArray['port'],
-          $masterNodeArray['protocol'],
-          $masterNodeArray['api_key']
-        );
-
-        foreach ($replicaNodeArrays as $replica_node_array) {
-            $this->readReplicaNodes[] = new Node(
-              $replica_node_array['host'],
-              $replica_node_array['port'],
-              $replica_node_array['protocol'],
-              $replica_node_array['api_key']
-            );
+        foreach ($nodes as $node) {
+            $this->nodes[] =
+              new Node($node['host'], $node['port'], $node['path'] ?? '',
+                $node['protocol']);
         }
 
-        $this->timeoutSeconds = (float)($config['timeout_seconds'] ?? 1.0);
+        $nearestNode = $config['nearest_node'] ?? [];
+        if (!empty($nearestNode)) {
+            $this->nearestNode =
+              new Node($nearestNode['host'], $nearestNode['post'],
+                $nearestNode['path'] ?? '', $nearestNode['protocol']);
+        }
+
+        $this->apiKey                   = $config['api_key'] ?? '';
+        $this->connectionTimeoutSeconds =
+          (float) ($config['connection_timeout_seconds'] ?? 1.0);
+        $this->numRetries               = (float) ($config['num_retries'] ?? 3);
+        $this->retryIntervalSeconds     =
+          (float) ($config['retry_interval_seconds'] ?? 1.0);
     }
 
-
     /**
-     * @param   array  $config
+     * @param  array  $config
      *
      * @throws \Devloops\Typesence\Exceptions\ConfigError
      */
     private function validateConfigArray(array $config): void
     {
-        $masterNode = $config['master_node'] ?? false;
-        if (!$masterNode) {
-            throw new ConfigError('`master_node` is not defined.');
+        $nodes = $config['nodes'] ?? false;
+        if (!$nodes) {
+            throw new ConfigError('`nodes` is not defined.');
         }
 
-        if (!$this->validateNodeFields($masterNode)) {
-            throw new ConfigError(
-              '`master_node` must be a dictionary with the following required keys: host, port, protocol, api_key'
-            );
+        $apiKey = $config['api_key'] ?? false;
+        if (!$apiKey) {
+            throw new ConfigError('`api_key` is not defined.');
         }
 
-        $replicaNodes = $config['read_replica_nodes'] ?? [];
-        foreach ($replicaNodes as $replica_node) {
-            if (!$this->validateNodeFields($replica_node)) {
-                throw new ConfigError(
-                  '`read_replica_nodes` entry be a dictionary with the following required keys: host, port, protocol, api_key'
-                );
+        foreach ($nodes as $node) {
+            if (!$this->validateNodeFields($node)) {
+                throw new ConfigError('`node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
             }
+        }
+        $nearestNode = $config['nearest_node'] ?? [];
+        if (!empty($nearestNode) && !$this->validateNodeFields($nearestNode)) {
+            throw new ConfigError('`nearest_node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
         }
     }
 
     /**
-     * @param   array  $node
+     * @param  array  $node
      *
      * @return bool
      */
     public function validateNodeFields(array $node): bool
     {
-        $keys = ['host', 'port', 'protocol', 'api_key'];
+        $keys = ['host', 'port', 'protocol'];
         return !array_diff_key(array_flip($keys), $node);
     }
 
     /**
-     * @return \Devloops\Typesence\Node
+     * @return \Devloops\Typesence\Lib\Node[]
      */
-    public function getMasterNode(): Node
+    public function getNodes(): array
     {
-        return $this->masterNode;
+        return $this->nodes;
     }
 
     /**
-     * @return array
+     * @return \Devloops\Typesence\Lib\Node
      */
-    public function getReadReplicaNodes(): array
+    public function getNearestNode(): Node
     {
-        return $this->readReplicaNodes;
+        return $this->nearestNode;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
     }
 
     /**
      * @return float
      */
-    public function getTimeoutSeconds(): float
+    public function getNumRetries(): float
     {
-        return $this->timeoutSeconds;
+        return $this->numRetries;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRetryIntervalSeconds(): float
+    {
+        return $this->retryIntervalSeconds;
+    }
+
+    /**
+     * @return float
+     */
+    public function getConnectionTimeoutSeconds(): float
+    {
+        return $this->connectionTimeoutSeconds;
     }
 
 }

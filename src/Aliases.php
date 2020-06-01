@@ -59,7 +59,6 @@ class Aliases implements \ArrayAccess
      *
      * @return array
      * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function upsert(string $name, array $mapping): array
     {
