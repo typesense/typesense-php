@@ -20,9 +20,14 @@ class Configuration
     private $nodes;
 
     /**
+     * @var \Devloops\Typesence\Lib\Node
+     */
+    private $nearestNode;
+
+    /**
      * @var float
      */
-    private $timeoutSeconds;
+    private $connectionTimeoutSeconds;
 
     /**
      * @var mixed|string
@@ -42,7 +47,7 @@ class Configuration
     /**
      * Configuration constructor.
      *
-     * @param   array  $config
+     * @param  array  $config
      *
      * @throws \Devloops\Typesence\Exceptions\ConfigError
      */
@@ -53,24 +58,28 @@ class Configuration
         $nodes = $config['nodes'] ?? [];
 
         foreach ($nodes as $node) {
-            $this->nodes[] = new Node(
-              $node['host'],
-              $node['port'],
-              $node['path'] ?? '',
-              $node['protocol']
-            );
+            $this->nodes[] =
+              new Node($node['host'], $node['port'], $node['path'] ?? '',
+                $node['protocol']);
         }
 
-        $this->apiKey               = $config['api_key'] ?? '';
-        $this->timeoutSeconds       =
-          (float)($config['timeout_seconds'] ?? 1.0);
-        $this->numRetries           = (float)($config['num_retries'] ?? 3);
-        $this->retryIntervalSeconds =
-          (float)($config['retry_interval_seconds'] ?? 1.0);
+        $nearestNode = $config['nearest_node'] ?? [];
+        if (!empty($nearestNode)) {
+            $this->nearestNode =
+              new Node($nearestNode['host'], $nearestNode['post'],
+                $nearestNode['path'] ?? '', $nearestNode['protocol']);
+        }
+
+        $this->apiKey                   = $config['api_key'] ?? '';
+        $this->connectionTimeoutSeconds =
+          (float) ($config['connection_timeout_seconds'] ?? 1.0);
+        $this->numRetries               = (float) ($config['num_retries'] ?? 3);
+        $this->retryIntervalSeconds     =
+          (float) ($config['retry_interval_seconds'] ?? 1.0);
     }
 
     /**
-     * @param   array  $config
+     * @param  array  $config
      *
      * @throws \Devloops\Typesence\Exceptions\ConfigError
      */
@@ -88,15 +97,17 @@ class Configuration
 
         foreach ($nodes as $node) {
             if (!$this->validateNodeFields($node)) {
-                throw new ConfigError(
-                  '`node` entry be a dictionary with the following required keys: host, port, protocol, api_key'
-                );
+                throw new ConfigError('`node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
             }
+        }
+        $nearestNode = $config['nearest_node'] ?? [];
+        if (!empty($nearestNode) && !$this->validateNodeFields($nearestNode)) {
+            throw new ConfigError('`nearest_node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
         }
     }
 
     /**
-     * @param   array  $node
+     * @param  array  $node
      *
      * @return bool
      */
@@ -112,6 +123,14 @@ class Configuration
     public function getNodes(): array
     {
         return $this->nodes;
+    }
+
+    /**
+     * @return \Devloops\Typesence\Lib\Node
+     */
+    public function getNearestNode(): Node
+    {
+        return $this->nearestNode;
     }
 
     /**
@@ -141,9 +160,9 @@ class Configuration
     /**
      * @return float
      */
-    public function getTimeoutSeconds(): float
+    public function getConnectionTimeoutSeconds(): float
     {
-        return $this->timeoutSeconds;
+        return $this->connectionTimeoutSeconds;
     }
 
 }
