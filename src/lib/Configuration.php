@@ -44,6 +44,8 @@ class Configuration
      */
     private $retryIntervalSeconds;
 
+    private $healthcheckIntervalSeconds;
+
     /**
      * Configuration constructor.
      *
@@ -58,24 +60,19 @@ class Configuration
         $nodes = $config['nodes'] ?? [];
 
         foreach ($nodes as $node) {
-            $this->nodes[] =
-              new Node($node['host'], $node['port'], $node['path'] ?? '',
-                $node['protocol']);
+            $this->nodes[] = new Node($node['host'], $node['port'], $node['path'] ?? '', $node['protocol']);
         }
 
         $nearestNode = $config['nearest_node'] ?? [];
         if (!empty($nearestNode)) {
-            $this->nearestNode =
-              new Node($nearestNode['host'], $nearestNode['post'],
-                $nearestNode['path'] ?? '', $nearestNode['protocol']);
+            $this->nearestNode = new Node($nearestNode['host'], $nearestNode['post'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
         }
 
-        $this->apiKey                   = $config['api_key'] ?? '';
-        $this->connectionTimeoutSeconds =
-          (float) ($config['connection_timeout_seconds'] ?? 1.0);
-        $this->numRetries               = (float) ($config['num_retries'] ?? 3);
-        $this->retryIntervalSeconds     =
-          (float) ($config['retry_interval_seconds'] ?? 1.0);
+        $this->apiKey                     = $config['api_key'] ?? '';
+        $this->connectionTimeoutSeconds   = (float) ($config['connection_timeout_seconds'] ?? 1.0);
+        $this->healthcheckIntervalSeconds = (int) ($config['healthcheck_interval_seconds'] ?? 60);
+        $this->numRetries                 = (float) ($config['num_retries'] ?? 3);
+        $this->retryIntervalSeconds       = (float) ($config['retry_interval_seconds'] ?? 1.0);
     }
 
     /**
@@ -113,7 +110,11 @@ class Configuration
      */
     public function validateNodeFields(array $node): bool
     {
-        $keys = ['host', 'port', 'protocol'];
+        $keys = [
+          'host',
+          'port',
+          'protocol',
+        ];
         return !array_diff_key(array_flip($keys), $node);
     }
 
@@ -128,7 +129,7 @@ class Configuration
     /**
      * @return \Devloops\Typesence\Lib\Node
      */
-    public function getNearestNode(): Node
+    public function getNearestNode(): ?Node
     {
         return $this->nearestNode;
     }
@@ -163,6 +164,14 @@ class Configuration
     public function getConnectionTimeoutSeconds(): float
     {
         return $this->connectionTimeoutSeconds;
+    }
+
+    /**
+     * @return float|mixed
+     */
+    public function getHealthcheckIntervalSeconds()
+    {
+        return $this->healthcheckIntervalSeconds;
     }
 
 }

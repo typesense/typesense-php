@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Devloops\Typesence\Exceptions;
 
 /**

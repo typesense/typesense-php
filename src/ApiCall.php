@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\RequestException;
 use Devloops\Typesence\Exceptions\ServerError;
 use Devloops\Typesence\Exceptions\ObjectNotFound;
 use Devloops\Typesence\Exceptions\RequestMalformed;
+use Devloops\Typesence\Exceptions\HTTPStatus0Error;
 use Devloops\Typesence\Exceptions\ServiceUnavailable;
 use Devloops\Typesence\Exceptions\RequestUnauthorized;
 use Devloops\Typesence\Exceptions\ObjectAlreadyExists;
@@ -27,8 +28,6 @@ class ApiCall
 {
 
     private const API_KEY_HEADER_NAME = 'X-TYPESENSE-API-KEY';
-
-    private const CHECK_FAILED_NODE_INTERVAL_S = 60;
 
     /**
      * @var \GuzzleHttp\Client
@@ -56,23 +55,17 @@ class ApiCall
     private $nodeIndex;
 
     /**
-     * @var int
-     */
-    private $lastHealthCheckTs;
-
-    /**
      * ApiCall constructor.
      *
      * @param  \Devloops\Typesence\Lib\Configuration  $config
      */
     public function __construct(Configuration $config)
     {
-        $this->config            = $config;
-        $this->client            = new \GuzzleHttp\Client();
-        self::$nodes             = $this->config->getNodes();
-        self::$nearestNode       = $this->config->getNearestNode();
-        $this->nodeIndex         = 0;
-        $this->lastHealthCheckTs = time();
+        $this->config      = $config;
+        $this->client      = new \GuzzleHttp\Client();
+        self::$nodes       = $this->config->getNodes();
+        self::$nearestNode = $this->config->getNearestNode();
+        $this->nodeIndex   = 0;
         $this->initializeNodes();
     }
 
@@ -81,7 +74,7 @@ class ApiCall
      */
     private function initializeNodes(): void
     {
-        if (!empty(self::$nearestNode)) {
+        if (self::$nearestNode !== null) {
             $this->setNodeHealthcheck(self::$nearestNode, true);
         }
 
@@ -97,7 +90,7 @@ class ApiCall
      *
      * @return string|array
      * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
-     * @throws \Exception
+     * @throws \Exception|\GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $endPoint, array $params, bool $asJson = true)
     {
@@ -111,7 +104,7 @@ class ApiCall
      * @param  mixed  $body
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function post(string $endPoint, $body): array
     {
@@ -125,7 +118,7 @@ class ApiCall
      * @param  array  $body
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function put(string $endPoint, array $body): array
     {
@@ -138,7 +131,7 @@ class ApiCall
      * @param  string  $endPoint
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(string $endPoint): array
     {
@@ -154,19 +147,16 @@ class ApiCall
      * @param  array  $options
      *
      * @return string|array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
-    private function makeRequest(
-      string $method,
-      string $endPoint,
-      bool $asJson,
-      array $options
-    ) {
-        $numRetries = 0;
-        while ($numRetries < $this->config->getNumRetries()) {
+    private function makeRequest(string $method, string $endPoint, bool $asJson, array $options)
+    {
+        $numRetries     = 0;
+        $last_exception = null;
+        while ($numRetries < $this->config->getNumRetries() + 1) {
             $numRetries++;
             $node = $this->getNode();
-            $node->setHealthy(false);
 
             try {
                 $url   = $node->url().$endPoint;
@@ -189,18 +179,18 @@ class ApiCall
                 }
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
-                    $errorMessage =
-                      json_decode($response->getBody()->getContents(),
-                        true)['message'] ?? 'API error.';
+                    $errorMessage = json_decode($response->getBody()
+                                                         ->getContents(), true)['message'] ?? 'API error.';
                     throw $this->getException($statusCode)
                                ->setMessage($errorMessage);
                 }
 
                 return $asJson ? json_decode($response->getBody()
-                                                      ->getContents(),
-                  true) : $response->getBody()->getContents();
+                                                      ->getContents(), true) : $response->getBody()
+                                                                                        ->getContents();
             } catch (ClientException $exception) {
-                if ($exception->getResponse()->getStatusCode() === 408) {
+                if ($exception->getResponse()
+                              ->getStatusCode() === 408) {
                     continue;
                 }
                 $this->setNodeHealthcheck($node, false);
@@ -208,9 +198,6 @@ class ApiCall
                                                     ->getStatusCode())
                            ->setMessage($exception->getMessage());
             } catch (RequestException $exception) {
-                if ($exception->getResponse()->getStatusCode() === 408) {
-                    continue;
-                }
                 $this->setNodeHealthcheck($node, false);
                 throw $this->getException($exception->getResponse()
                                                     ->getStatusCode())
@@ -220,13 +207,14 @@ class ApiCall
                 throw $exception;
             } catch (\Exception $exception) {
                 $this->setNodeHealthcheck($node, false);
-                throw $exception;
+                $last_exception = $exception;
+                sleep($this->config->getRetryIntervalSeconds());
             }
-
-            sleep($this->config->getRetryIntervalSeconds());
         }
 
-        throw new TypesenseClientError('Retries exceeded.');
+        if ($last_exception) {
+            throw $last_exception;
+        }
     }
 
     /**
@@ -235,9 +223,10 @@ class ApiCall
     private function getRequestOptions(): array
     {
         return [
-          'headers'            => [
+          'headers'         => [
             self::API_KEY_HEADER_NAME => $this->config->getApiKey(),
-          ], 'connect_timeout' => $this->config->getConnectionTimeoutSeconds(),
+          ],
+          'connect_timeout' => $this->config->getConnectionTimeoutSeconds(),
         ];
     }
 
@@ -249,10 +238,9 @@ class ApiCall
     private function nodeDueForHealthCheck(Node $node): bool
     {
         $currentTimestamp = time();
-        $checkNode        = ($currentTimestamp - $node->getLastAccessTs())
-                            > self::CHECK_FAILED_NODE_INTERVAL_S;
+        $checkNode        = ($currentTimestamp - $node->getLastAccessTs()) > $this->config->getHealthcheckIntervalSeconds();
         if ($checkNode) {
-            $this->lastHealthCheckTs = $currentTimestamp;
+            //
         }
 
         return $checkNode;
@@ -276,19 +264,18 @@ class ApiCall
      */
     public function getNode(): Lib\Node
     {
-        if (self::$nearestNode) {
-            if (self::$nearestNode->isHealthy()
-                || $this->nodeDueForHealthCheck(self::$nearestNode)) {
+        if (self::$nearestNode !== null) {
+            if (self::$nearestNode->isHealthy() || $this->nodeDueForHealthCheck(self::$nearestNode)) {
                 return self::$nearestNode;
             }
         }
         $i = 0;
         while ($i < count(self::$nodes)) {
             $i++;
+            $node            = self::$nodes[$this->nodeIndex];
             $this->nodeIndex = ($this->nodeIndex + 1) % count(self::$nodes);
-            if (self::$nodes[$this->nodeIndex]->isHealthy()
-                || $this->nodeDueForHealthCheck(self::$nodes[$this->nodeIndex])) {
-                return self::$nodes[$this->nodeIndex];
+            if ($node->isHealthy() || $this->nodeDueForHealthCheck($node)) {
+                return $node;
             }
         }
 
@@ -296,7 +283,6 @@ class ApiCall
          * None of the nodes are marked healthy, but some of them could have become healthy since last health check.
          * So we will just return the next node.
          */
-        $this->nodeIndex = ($this->nodeIndex + 1) % count(self::$nodes);
         return self::$nodes[$this->nodeIndex];
     }
 
@@ -308,6 +294,8 @@ class ApiCall
     public function getException(int $httpCode): TypesenseClientError
     {
         switch ($httpCode) {
+            case 0:
+                return new HTTPStatus0Error();
             case 400:
                 return new RequestMalformed();
             case 401:
