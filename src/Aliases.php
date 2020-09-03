@@ -35,7 +35,7 @@ class Aliases implements \ArrayAccess
     /**
      * Aliases constructor.
      *
-     * @param   \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Devloops\Typesence\Lib\Configuration  $config
      */
     public function __construct(Configuration $config)
     {
@@ -44,7 +44,7 @@ class Aliases implements \ArrayAccess
     }
 
     /**
-     * @param   string  $aliasName
+     * @param  string  $aliasName
      *
      * @return string
      */
@@ -54,11 +54,11 @@ class Aliases implements \ArrayAccess
     }
 
     /**
-     * @param   string  $name
-     * @param   array   $mapping
+     * @param  string  $name
+     * @param  array  $mapping
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function upsert(string $name, array $mapping): array
     {
@@ -67,14 +67,11 @@ class Aliases implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
-        return $this->apiCall->get(
-          $this->endPointPath(self::RESOURCE_PATH),
-          []
-        );
+        return $this->apiCall->get($this->endPointPath(self::RESOURCE_PATH), []);
     }
 
     /**

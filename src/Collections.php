@@ -54,18 +54,17 @@ class Collections implements \ArrayAccess
             return $this->{$collectionName};
         }
         if (!isset($this->collections[$collectionName])) {
-            $this->collections[$collectionName] =
-              new Collection($this->congif, $collectionName);
+            $this->collections[$collectionName] = new Collection($this->congif, $collectionName);
         }
 
         return $this->collections[$collectionName];
     }
 
     /**
-     * @param   array  $schema
+     * @param  array  $schema
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -74,7 +73,7 @@ class Collections implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -95,8 +94,7 @@ class Collections implements \ArrayAccess
     public function offsetGet($offset): Collection
     {
         if (!isset($this->collections[$offset])) {
-            $this->collections[$offset] =
-              new Collection($this->congif, $offset);
+            $this->collections[$offset] = new Collection($this->congif, $offset);
         }
 
         return $this->collections[$offset];

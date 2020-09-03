@@ -33,8 +33,8 @@ class Alias
     /**
      * Alias constructor.
      *
-     * @param   \Devloops\Typesence\Lib\Configuration  $config
-     * @param   string                                 $name
+     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  string  $name
      */
     public function __construct(Configuration $config, string $name)
     {
@@ -53,7 +53,7 @@ class Alias
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -62,7 +62,7 @@ class Alias
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

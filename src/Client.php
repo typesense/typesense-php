@@ -32,7 +32,7 @@ class Client
     /**
      * Client constructor.
      *
-     * @param   array  $config
+     * @param  array  $config
      *
      * @throws \Devloops\Typesence\Exceptions\ConfigError
      */

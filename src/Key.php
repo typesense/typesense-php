@@ -38,9 +38,7 @@ class Key
      * @param  string  $keyId
      */
     public function __construct(
-      Configuration $congif,
-      ApiCall $apiCall,
-      string $keyId
+      Configuration $congif, ApiCall $apiCall, string $keyId
     ) {
         $this->congif  = $congif;
         $this->apiCall = $apiCall;
@@ -57,7 +55,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -66,7 +64,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

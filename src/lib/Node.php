@@ -52,10 +52,7 @@ class Node
      * @param  string  $protocol
      */
     public function __construct(
-      string $host,
-      string $port,
-      string $path,
-      string $protocol
+      string $host, string $port, string $path, string $protocol
     ) {
         $this->host         = $host;
         $this->port         = $port;
@@ -69,8 +66,7 @@ class Node
      */
     public function url(): string
     {
-        return sprintf('%s://%s:%s%s', $this->protocol, $this->host,
-          $this->port, $this->path);
+        return sprintf('%s://%s:%s%s', $this->protocol, $this->host, $this->port, $this->path);
     }
 
     /**

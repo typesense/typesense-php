@@ -37,14 +37,12 @@ class Document
     /**
      * Document constructor.
      *
-     * @param   \Devloops\Typesence\Lib\Configuration  $config
-     * @param   string                                 $collectionName
-     * @param   string                                 $documentId
+     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  string  $collectionName
+     * @param  string  $documentId
      */
     public function __construct(
-      Configuration $config,
-      string $collectionName,
-      string $documentId
+      Configuration $config, string $collectionName, string $documentId
     ) {
         $this->config         = $config;
         $this->collectionName = $collectionName;
@@ -57,18 +55,12 @@ class Document
      */
     private function endpoint_path(): string
     {
-        return sprintf(
-          '%s/%s/%s/%s',
-          Collections::RESOURCE_PATH,
-          $this->collectionName,
-          Documents::RESOURCE_PATH,
-          $this->documentId
-        );
+        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, Documents::RESOURCE_PATH, $this->documentId);
     }
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -77,7 +69,7 @@ class Document
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

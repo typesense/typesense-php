@@ -39,8 +39,8 @@ class Documents implements \ArrayAccess
     /**
      * Documents constructor.
      *
-     * @param   \Devloops\Typesence\Lib\Configuration  $config
-     * @param   string                                 $collectionName
+     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  string  $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
     {
@@ -50,26 +50,20 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param   string  $action
+     * @param  string  $action
      *
      * @return string
      */
     private function endPointPath(string $action = ''): string
     {
-        return sprintf(
-          '%s/%s/%s/%s',
-          Collections::RESOURCE_PATH,
-          $this->collectionName,
-          self::RESOURCE_PATH,
-          $action
-        );
+        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, self::RESOURCE_PATH, $action);
     }
 
     /**
-     * @param   array  $document
+     * @param  array  $document
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $document): array
     {
@@ -77,10 +71,10 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param   array  $documents
+     * @param  array  $documents
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create_many(array $documents): array
     {
@@ -94,31 +88,27 @@ class Documents implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function export(): array
     {
-        $response =
-          $this->apiCall->get($this->endPointPath('export'), [], false);
+        $response = $this->apiCall->get($this->endPointPath('export'), [], false);
         return explode("\n", $response);
     }
 
     /**
-     * @param   array  $searchParams
+     * @param  array  $searchParams
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function search(array $searchParams): array
     {
-        return $this->apiCall->get(
-          $this->endPointPath('search'),
-          $searchParams
-        );
+        return $this->apiCall->get($this->endPointPath('search'), $searchParams);
     }
 
     /**
-     * @param   mixed  $documentId
+     * @param  mixed  $documentId
      *
      * @return bool
      */
@@ -133,8 +123,7 @@ class Documents implements \ArrayAccess
     public function offsetGet($documentId): Document
     {
         if (!isset($this->documents[$documentId])) {
-            $this->documents[$documentId] =
-              new Document($this->config, $this->collectionName, $documentId);
+            $this->documents[$documentId] = new Document($this->config, $this->collectionName, $documentId);
         }
 
         return $this->documents[$documentId];

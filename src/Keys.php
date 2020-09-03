@@ -15,7 +15,7 @@ use Devloops\Typesence\Lib\Configuration;
 class Keys implements \ArrayAccess
 {
 
-    public const RESOURCE_PATH = '/collections';
+    public const RESOURCE_PATH = '/keys';
 
     /**
      * @var \Devloops\Typesence\Lib\Configuration
@@ -39,8 +39,7 @@ class Keys implements \ArrayAccess
      * @param  \Devloops\Typesence\ApiCall  $apiCall
      */
     public function __construct(
-      Configuration $congif,
-      ApiCall $apiCall
+      Configuration $congif, ApiCall $apiCall
     ) {
         $this->congif  = $congif;
         $this->apiCall = $apiCall;
@@ -50,7 +49,7 @@ class Keys implements \ArrayAccess
      * @param  array  $schema
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -64,22 +63,18 @@ class Keys implements \ArrayAccess
      * @return string
      */
     public function generate_scoped_search_key(
-      string $searchKey,
-      array $parameters
+      string $searchKey, array $parameters
     ): string {
         $paramStr     = json_encode($parameters);
-        $digest       =
-          base64_encode(hash_hmac('sha256', utf8_encode($paramStr),
-            utf8_encode($searchKey)));
+        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey)));
         $keyPrefix    = substr($searchKey, 0, 4);
-        $rawScopedKey =
-          sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);
+        $rawScopedKey = sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);
         return base64_encode(utf8_encode($rawScopedKey));
     }
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -104,8 +99,7 @@ class Keys implements \ArrayAccess
     public function offsetGet($offset): Key
     {
         if (!isset($this->keys[$offset])) {
-            $this->keys[$offset] =
-              new Key($this->congif, $this->apiCall, $offset);
+            $this->keys[$offset] = new Key($this->congif, $this->apiCall, $offset);
         }
 
         return $this->keys[$offset];

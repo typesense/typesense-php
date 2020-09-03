@@ -40,8 +40,8 @@ class Overrides implements \ArrayAccess
     /**
      * Overrides constructor.
      *
-     * @param   \Devloops\Typesence\Lib\Configuration  $config
-     * @param   string                                 $collectionName
+     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  string  $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
     {
@@ -51,27 +51,21 @@ class Overrides implements \ArrayAccess
     }
 
     /**
-     * @param   string  $overrideId
+     * @param  string  $overrideId
      *
      * @return string
      */
     public function endPointPath(string $overrideId = ''): string
     {
-        return sprintf(
-          '%s/%s/%s/%s',
-          Collections::RESOURCE_PATH,
-          $this->collectionName,
-          self::RESOURCE_PATH,
-          $overrideId
-        );
+        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, self::RESOURCE_PATH, $overrideId);
     }
 
     /**
-     * @param   string  $documentId
-     * @param   array   $config
+     * @param  string  $documentId
+     * @param  array  $config
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function upsert(string $documentId, array $config): array
     {
@@ -80,7 +74,7 @@ class Overrides implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -101,8 +95,7 @@ class Overrides implements \ArrayAccess
     public function offsetGet($documentId)
     {
         if (!isset($this->overrides[$documentId])) {
-            $this->overrides[$documentId] =
-              new Override($this->config, $this->collectionName, $documentId);
+            $this->overrides[$documentId] = new Override($this->config, $this->collectionName, $documentId);
         }
 
         return $this->overrides[$documentId];
