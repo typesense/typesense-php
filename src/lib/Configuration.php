@@ -65,7 +65,7 @@ class Configuration
 
         $nearestNode = $config['nearest_node'] ?? [];
         if (!empty($nearestNode)) {
-            $this->nearestNode = new Node($nearestNode['host'], $nearestNode['post'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
+            $this->nearestNode = new Node($nearestNode['host'], $nearestNode['port'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
         }
 
         $this->apiKey                     = $config['api_key'] ?? '';
