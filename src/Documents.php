@@ -78,12 +78,27 @@ class Documents implements \ArrayAccess
      */
     public function create_many(array $documents): array
     {
+        $res = $this->import($documents);
+        return array_map(static function ($item) {
+            return json_decode($item, true);
+        }, explode("\n", $res));
+    }
+
+    /**
+     * @param  array  $documents
+     *
+     * @return string
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function import(array $documents): string
+    {
         $documentsStr = [];
         foreach ($documents as $document) {
             $documentsStr[] = json_encode($document);
         }
         $docsImport = implode("\n", $documentsStr);
-        return $this->apiCall->post($this->endPointPath('import'), $docsImport);
+        return $this->apiCall->post($this->endPointPath('import'), $docsImport, false);
     }
 
     /**
@@ -92,8 +107,7 @@ class Documents implements \ArrayAccess
      */
     public function export(): array
     {
-        $response = $this->apiCall->get($this->endPointPath('export'), [], false);
-        return explode("\n", $response);
+        return $this->apiCall->get($this->endPointPath('export'), [], false);
     }
 
     /**

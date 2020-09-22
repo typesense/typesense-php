@@ -103,12 +103,15 @@ class ApiCall
      * @param  string  $endPoint
      * @param  mixed  $body
      *
-     * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @param  bool  $asJson
+     *
+     * @return array|string
+     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function post(string $endPoint, $body): array
+    public function post(string $endPoint, $body, bool $asJson = true): array
     {
-        return $this->makeRequest('post', $endPoint, true, [
+        return $this->makeRequest('post', $endPoint, $asJson, [
           'data' => $body ?? [],
         ]);
     }
