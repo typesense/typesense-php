@@ -1,12 +1,11 @@
 <?php
 
-
-namespace Devloops\Typesence\Exceptions;
+namespace Typesence\Exceptions;
 
 /**
  * Class ServiceUnavailable
  *
- * @package Devloops\Typesence\Exceptions
+ * @package \Typesence\Exceptions
  * @date    4/8/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */

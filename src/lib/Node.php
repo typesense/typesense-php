@@ -1,12 +1,11 @@
 <?php
 
-
-namespace Devloops\Typesence\Lib;
+namespace Typesence\Lib;
 
 /**
  * Class Node
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */

@@ -1,14 +1,13 @@
 <?php
 
+namespace Typesence;
 
-namespace Devloops\Typesence;
-
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Overrides
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -18,12 +17,12 @@ class Overrides implements \ArrayAccess
     public const RESOURCE_PATH = 'overrides';
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -40,7 +39,7 @@ class Overrides implements \ArrayAccess
     /**
      * Overrides constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Typesence\Lib\Configuration  $config
      * @param  string  $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
@@ -65,7 +64,7 @@ class Overrides implements \ArrayAccess
      * @param  array  $config
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function upsert(string $documentId, array $config): array
     {
@@ -74,7 +73,7 @@ class Overrides implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {

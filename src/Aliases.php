@@ -1,14 +1,13 @@
 <?php
 
+namespace Typesence;
 
-namespace Devloops\Typesence;
-
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Aliases
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -18,12 +17,12 @@ class Aliases implements \ArrayAccess
     public const RESOURCE_PATH = '/aliases';
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -35,7 +34,7 @@ class Aliases implements \ArrayAccess
     /**
      * Aliases constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Typesence\Lib\Configuration  $config
      */
     public function __construct(Configuration $config)
     {
@@ -58,7 +57,7 @@ class Aliases implements \ArrayAccess
      * @param  array  $mapping
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function upsert(string $name, array $mapping): array
     {
@@ -67,7 +66,7 @@ class Aliases implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {

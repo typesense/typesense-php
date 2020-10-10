@@ -1,13 +1,13 @@
 <?php
 
-namespace Devloops\Typesence;
+namespace Typesence;
 
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Client
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,17 +15,17 @@ class Client
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
     /**
-     * @var \Devloops\Typesence\Collections
+     * @var \Typesence\Collections
      */
     public $collections;
 
     /**
-     * @var \Devloops\Typesence\Aliases
+     * @var \Typesence\Aliases
      */
     public $aliases;
 
@@ -34,7 +34,7 @@ class Client
      *
      * @param  array  $config
      *
-     * @throws \Devloops\Typesence\Exceptions\ConfigError
+     * @throws \Typesence\Exceptions\ConfigError
      */
     public function __construct(array $config)
     {
@@ -44,7 +44,7 @@ class Client
     }
 
     /**
-     * @return \Devloops\Typesence\Collections
+     * @return \Typesence\Collections
      */
     public function getCollections(): Collections
     {
@@ -52,7 +52,7 @@ class Client
     }
 
     /**
-     * @return \Devloops\Typesence\Aliases
+     * @return \Typesence\Aliases
      */
     public function getAliases(): Aliases
     {

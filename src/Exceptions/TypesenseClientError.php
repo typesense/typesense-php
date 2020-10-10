@@ -1,13 +1,13 @@
 <?php
 
-namespace Devloops\Typesence\Exceptions;
+namespace Typesence\Exceptions;
 
 use Exception;
 
 /**
  * Class TypesenseClientError
  *
- * @package Devloops\Typesence\Exceptions
+ * @package \Typesence\Exceptions
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */

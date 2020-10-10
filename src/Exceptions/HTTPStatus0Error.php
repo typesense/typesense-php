@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\Typesence\Exceptions;
+namespace Typesence\Exceptions;
 
 /**
  * Class HTTPStatus0Error

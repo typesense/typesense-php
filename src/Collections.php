@@ -1,14 +1,13 @@
 <?php
 
+namespace Typesence;
 
-namespace Devloops\Typesence;
-
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Collections
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -18,12 +17,12 @@ class Collections implements \ArrayAccess
     public const RESOURCE_PATH = '/collections';
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
-    private $congif;
+    private $config;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -35,12 +34,12 @@ class Collections implements \ArrayAccess
     /**
      * Collections constructor.
      *
-     * @param $congif
+     * @param $config
      */
-    public function __construct(Configuration $congif)
+    public function __construct(Configuration $config)
     {
-        $this->congif  = $congif;
-        $this->apiCall = new ApiCall($congif);
+        $this->config  = $config;
+        $this->apiCall = new ApiCall($config);
     }
 
     /**
@@ -54,7 +53,7 @@ class Collections implements \ArrayAccess
             return $this->{$collectionName};
         }
         if (!isset($this->collections[$collectionName])) {
-            $this->collections[$collectionName] = new Collection($this->congif, $collectionName);
+            $this->collections[$collectionName] = new Collection($this->config, $collectionName);
         }
 
         return $this->collections[$collectionName];
@@ -64,7 +63,7 @@ class Collections implements \ArrayAccess
      * @param  array  $schema
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -73,7 +72,7 @@ class Collections implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -94,7 +93,7 @@ class Collections implements \ArrayAccess
     public function offsetGet($offset): Collection
     {
         if (!isset($this->collections[$offset])) {
-            $this->collections[$offset] = new Collection($this->congif, $offset);
+            $this->collections[$offset] = new Collection($this->config, $offset);
         }
 
         return $this->collections[$offset];

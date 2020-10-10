@@ -1,14 +1,13 @@
 <?php
 
+namespace Typesence;
 
-namespace Devloops\Typesence;
-
-use Devloops\Typesence\Lib\Configuration;
+use Typesence\Lib\Configuration;
 
 /**
  * Class Keys
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date 6/1/20
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -18,12 +17,12 @@ class Keys implements \ArrayAccess
     public const RESOURCE_PATH = '/keys';
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
-    private $congif;
+    private $config;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -35,13 +34,13 @@ class Keys implements \ArrayAccess
     /**
      * Keys constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $congif
-     * @param  \Devloops\Typesence\ApiCall  $apiCall
+     * @param  \Typesence\Lib\Configuration  $config
+     * @param  \Typesence\ApiCall  $apiCall
      */
     public function __construct(
-      Configuration $congif, ApiCall $apiCall
+      Configuration $config, ApiCall $apiCall
     ) {
-        $this->congif  = $congif;
+        $this->config  = $config;
         $this->apiCall = $apiCall;
     }
 
@@ -49,7 +48,7 @@ class Keys implements \ArrayAccess
      * @param  array  $schema
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -62,7 +61,7 @@ class Keys implements \ArrayAccess
      *
      * @return string
      */
-    public function generate_scoped_search_key(
+    public function generateScopedSearchKey(
       string $searchKey, array $parameters
     ): string {
         $paramStr     = json_encode($parameters);
@@ -74,7 +73,7 @@ class Keys implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -94,12 +93,12 @@ class Keys implements \ArrayAccess
     /**
      * @param  mixed  $offset
      *
-     * @return \Devloops\Typesence\Key
+     * @return \Typesence\Key
      */
     public function offsetGet($offset): Key
     {
         if (!isset($this->keys[$offset])) {
-            $this->keys[$offset] = new Key($this->congif, $this->apiCall, $offset);
+            $this->keys[$offset] = new Key($this->config, $this->apiCall, $offset);
         }
 
         return $this->keys[$offset];

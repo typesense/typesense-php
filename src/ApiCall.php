@@ -1,26 +1,25 @@
 <?php
 
-namespace Devloops\Typesence;
+namespace Typesence;
 
-use Devloops\Typesence\Lib\Node;
-use GuzzleHttp\Exception\GuzzleException;
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Node;
+use \Typesence\Lib\Configuration;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use Devloops\Typesence\Exceptions\ServerError;
-use Devloops\Typesence\Exceptions\ObjectNotFound;
-use Devloops\Typesence\Exceptions\RequestMalformed;
-use Devloops\Typesence\Exceptions\HTTPStatus0Error;
-use Devloops\Typesence\Exceptions\ServiceUnavailable;
-use Devloops\Typesence\Exceptions\RequestUnauthorized;
-use Devloops\Typesence\Exceptions\ObjectAlreadyExists;
-use Devloops\Typesence\Exceptions\ObjectUnprocessable;
-use Devloops\Typesence\Exceptions\TypesenseClientError;
+use \Typesence\Exceptions\ServerError;
+use \Typesence\Exceptions\ObjectNotFound;
+use \Typesence\Exceptions\RequestMalformed;
+use \Typesence\Exceptions\HTTPStatus0Error;
+use \Typesence\Exceptions\ServiceUnavailable;
+use \Typesence\Exceptions\RequestUnauthorized;
+use \Typesence\Exceptions\ObjectAlreadyExists;
+use \Typesence\Exceptions\ObjectUnprocessable;
+use \Typesence\Exceptions\TypesenseClientError;
 
 /**
  * Class ApiCall
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -35,17 +34,17 @@ class ApiCall
     private $client;
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
     /**
-     * @var array|\Devloops\Typesence\Lib\Node[]
+     * @var array|\Typesence\Lib\Node[]
      */
     private static $nodes;
 
     /**
-     * @var \Devloops\Typesence\Lib\Node
+     * @var \Typesence\Lib\Node
      */
     private static $nearestNode;
 
@@ -57,7 +56,7 @@ class ApiCall
     /**
      * ApiCall constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Typesence\Lib\Configuration  $config
      */
     public function __construct(Configuration $config)
     {
@@ -75,11 +74,11 @@ class ApiCall
     private function initializeNodes(): void
     {
         if (self::$nearestNode !== null) {
-            $this->setNodeHealthcheck(self::$nearestNode, true);
+            $this->setNodeHealthCheck(self::$nearestNode, true);
         }
 
         foreach (self::$nodes as &$node) {
-            $this->setNodeHealthcheck($node, true);
+            $this->setNodeHealthCheck($node, true);
         }
     }
 
@@ -89,7 +88,7 @@ class ApiCall
      * @param  bool  $asJson
      *
      * @return string|array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesence\Exceptions\TypesenseClientError
      * @throws \Exception|\GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $endPoint, array $params, bool $asJson = true)
@@ -106,7 +105,7 @@ class ApiCall
      * @param  bool  $asJson
      *
      * @return array|string
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesence\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function post(string $endPoint, $body, bool $asJson = true): array
@@ -121,7 +120,7 @@ class ApiCall
      * @param  array  $body
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function put(string $endPoint, array $body): array
     {
@@ -134,7 +133,7 @@ class ApiCall
      * @param  string  $endPoint
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(string $endPoint): array
     {
@@ -150,7 +149,7 @@ class ApiCall
      * @param  array  $options
      *
      * @return string|array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      * @throws \Exception
      */
     private function makeRequest(string $method, string $endPoint, bool $asJson, array $options)
@@ -178,7 +177,7 @@ class ApiCall
 
                 $statusCode = $response->getStatusCode();
                 if (0 < $statusCode && $statusCode < 500) {
-                    $this->setNodeHealthcheck($node, true);
+                    $this->setNodeHealthCheck($node, true);
                 }
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
@@ -196,20 +195,20 @@ class ApiCall
                               ->getStatusCode() === 408) {
                     continue;
                 }
-                $this->setNodeHealthcheck($node, false);
+                $this->setNodeHealthCheck($node, false);
                 throw $this->getException($exception->getResponse()
                                                     ->getStatusCode())
                            ->setMessage($exception->getMessage());
             } catch (RequestException $exception) {
-                $this->setNodeHealthcheck($node, false);
+                $this->setNodeHealthCheck($node, false);
                 throw $this->getException($exception->getResponse()
                                                     ->getStatusCode())
                            ->setMessage($exception->getMessage());
             } catch (TypesenseClientError $exception) {
-                $this->setNodeHealthcheck($node, false);
+                $this->setNodeHealthCheck($node, false);
                 throw $exception;
             } catch (\Exception $exception) {
-                $this->setNodeHealthcheck($node, false);
+                $this->setNodeHealthCheck($node, false);
                 $last_exception = $exception;
                 sleep($this->config->getRetryIntervalSeconds());
             }
@@ -234,14 +233,14 @@ class ApiCall
     }
 
     /**
-     * @param  \Devloops\Typesence\Lib\Node  $node
+     * @param  \Typesence\Lib\Node  $node
      *
      * @return bool
      */
     private function nodeDueForHealthCheck(Node $node): bool
     {
         $currentTimestamp = time();
-        $checkNode        = ($currentTimestamp - $node->getLastAccessTs()) > $this->config->getHealthcheckIntervalSeconds();
+        $checkNode        = ($currentTimestamp - $node->getLastAccessTs()) > $this->config->getHealthCheckIntervalSeconds();
         if ($checkNode) {
             //
         }
@@ -250,10 +249,10 @@ class ApiCall
     }
 
     /**
-     * @param  \Devloops\Typesence\Lib\Node  $node
+     * @param  \Typesence\Lib\Node  $node
      * @param  bool  $isHealthy
      */
-    public function setNodeHealthcheck(Node $node, bool $isHealthy): void
+    public function setNodeHealthCheck(Node $node, bool $isHealthy): void
     {
         $node->setHealthy($isHealthy);
         $node->setLastAccessTs(time());
@@ -263,7 +262,7 @@ class ApiCall
      * Returns a healthy host from the pool in a round-robin fashion
      * Might return an unhealthy host periodically to check for recovery.
      *
-     * @return \Devloops\Typesence\Lib\Node
+     * @return \Typesence\Lib\Node
      */
     public function getNode(): Lib\Node
     {
@@ -292,7 +291,7 @@ class ApiCall
     /**
      * @param  int  $httpCode
      *
-     * @return \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @return \Typesence\Exceptions\TypesenseClientError
      */
     public function getException(int $httpCode): TypesenseClientError
     {

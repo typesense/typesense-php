@@ -1,14 +1,13 @@
 <?php
 
+namespace Typesence;
 
-namespace Devloops\Typesence;
-
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Key
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date 6/1/20
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -16,12 +15,12 @@ class Key
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
-    private $congif;
+    private $config;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -33,14 +32,14 @@ class Key
     /**
      * Key constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $congif
-     * @param  \Devloops\Typesence\ApiCall  $apiCall
+     * @param  \Typesence\Lib\Configuration  $config
+     * @param  \Typesence\ApiCall  $apiCall
      * @param  string  $keyId
      */
     public function __construct(
-      Configuration $congif, ApiCall $apiCall, string $keyId
+      Configuration $config, ApiCall $apiCall, string $keyId
     ) {
-        $this->congif  = $congif;
+        $this->config  = $config;
         $this->apiCall = $apiCall;
         $this->keyId   = $keyId;
     }
@@ -55,7 +54,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -64,7 +63,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

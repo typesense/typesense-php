@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Devloops\Typesence;
+namespace Typesence;
 
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Override
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -16,7 +16,7 @@ class Override
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
@@ -31,14 +31,14 @@ class Override
     private $overrideId;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
     /**
      * Override constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Typesence\Lib\Configuration  $config
      * @param  string  $collectionName
      * @param  int  $overrideId
      */
@@ -61,7 +61,7 @@ class Override
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -70,7 +70,7 @@ class Override
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

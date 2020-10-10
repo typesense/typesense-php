@@ -1,13 +1,13 @@
 <?php
 
-namespace Devloops\Typesence;
+namespace Typesence;
 
-use Devloops\Typesence\Lib\Configuration;
+use \Typesence\Lib\Configuration;
 
 /**
  * Class Documents
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -17,7 +17,7 @@ class Documents implements \ArrayAccess
     public const RESOURCE_PATH = 'documents';
 
     /**
-     * @var \Devloops\Typesence\Lib\Configuration
+     * @var \Typesence\Lib\Configuration
      */
     private $config;
 
@@ -27,7 +27,7 @@ class Documents implements \ArrayAccess
     private $collectionName;
 
     /**
-     * @var \Devloops\Typesence\ApiCall
+     * @var \Typesence\ApiCall
      */
     private $apiCall;
 
@@ -39,7 +39,7 @@ class Documents implements \ArrayAccess
     /**
      * Documents constructor.
      *
-     * @param  \Devloops\Typesence\Lib\Configuration  $config
+     * @param  \Typesence\Lib\Configuration  $config
      * @param  string  $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
@@ -63,7 +63,7 @@ class Documents implements \ArrayAccess
      * @param  array  $document
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $document): array
     {
@@ -74,7 +74,7 @@ class Documents implements \ArrayAccess
      * @param  array  $documents
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create_many(array $documents): array
     {
@@ -88,7 +88,7 @@ class Documents implements \ArrayAccess
      * @param  array  $documents
      *
      * @return string
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesence\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function import(array $documents): string
@@ -103,7 +103,7 @@ class Documents implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function export(): array
     {
@@ -114,7 +114,7 @@ class Documents implements \ArrayAccess
      * @param  array  $searchParams
      *
      * @return array
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function search(array $searchParams): array
     {

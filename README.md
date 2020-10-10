@@ -18,6 +18,14 @@ You can find some examples [here](https://github.com/devloopsnet/typesense-php/b
 
 See detailed [API documentation](https://typesense.org/api).
 
+## Compatibility
+
+| Typesense Server | typesense-ruby |
+|------------------|----------------|
+| \>= v0.15.0 | \>= v2.0.4 |
+| \>= v0.12.0 | \>= v2.0.0 |
+| <= v0.11 | <= v1.0.0 |
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/devloopsnet/typesense-php].

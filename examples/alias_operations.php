@@ -2,7 +2,7 @@
 
 include '../vendor/autoload.php';
 
-use Devloops\Typesence\Client;
+use \Typesence\Client;
 
 try {
     $client = new Client(

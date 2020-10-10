@@ -1,13 +1,13 @@
 <?php
 
-namespace Devloops\Typesence\Lib;
+namespace Typesence\Lib;
 
-use Devloops\Typesence\Exceptions\ConfigError;
+use \Typesence\Exceptions\ConfigError;
 
 /**
  * Class Configuration
  *
- * @package Devloops\Typesence
+ * @package \Typesence
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,12 +15,12 @@ class Configuration
 {
 
     /**
-     * @var \Devloops\Typesence\Lib\Node[]
+     * @var \Typesence\Lib\Node[]
      */
     private $nodes;
 
     /**
-     * @var \Devloops\Typesence\Lib\Node
+     * @var \Typesence\Lib\Node
      */
     private $nearestNode;
 
@@ -44,14 +44,14 @@ class Configuration
      */
     private $retryIntervalSeconds;
 
-    private $healthcheckIntervalSeconds;
+    private $healthCheckIntervalSeconds;
 
     /**
      * Configuration constructor.
      *
      * @param  array  $config
      *
-     * @throws \Devloops\Typesence\Exceptions\ConfigError
+     * @throws \Typesence\Exceptions\ConfigError
      */
     public function __construct(array $config)
     {
@@ -70,7 +70,7 @@ class Configuration
 
         $this->apiKey                     = $config['api_key'] ?? '';
         $this->connectionTimeoutSeconds   = (float) ($config['connection_timeout_seconds'] ?? 1.0);
-        $this->healthcheckIntervalSeconds = (int) ($config['healthcheck_interval_seconds'] ?? 60);
+        $this->healthCheckIntervalSeconds = (int) ($config['healthcheck_interval_seconds'] ?? 60);
         $this->numRetries                 = (float) ($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds       = (float) ($config['retry_interval_seconds'] ?? 1.0);
     }
@@ -78,7 +78,7 @@ class Configuration
     /**
      * @param  array  $config
      *
-     * @throws \Devloops\Typesence\Exceptions\ConfigError
+     * @throws \Typesence\Exceptions\ConfigError
      */
     private function validateConfigArray(array $config): void
     {
@@ -119,7 +119,7 @@ class Configuration
     }
 
     /**
-     * @return \Devloops\Typesence\Lib\Node[]
+     * @return \Typesence\Lib\Node[]
      */
     public function getNodes(): array
     {
@@ -127,7 +127,7 @@ class Configuration
     }
 
     /**
-     * @return \Devloops\Typesence\Lib\Node
+     * @return \Typesence\Lib\Node
      */
     public function getNearestNode(): ?Node
     {
@@ -169,9 +169,9 @@ class Configuration
     /**
      * @return float|mixed
      */
-    public function getHealthcheckIntervalSeconds()
+    public function getHealthCheckIntervalSeconds()
     {
-        return $this->healthcheckIntervalSeconds;
+        return $this->healthCheckIntervalSeconds;
     }
 
 }
