@@ -19,17 +19,17 @@ class Aliases implements \ArrayAccess
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var array
      */
-    private $aliases = [];
+    private array $aliases = [];
 
     /**
      * Aliases constructor.
@@ -90,7 +90,6 @@ class Aliases implements \ArrayAccess
 
         return $this->aliases[$name];
     }
-
 
     /**
      * @inheritDoc

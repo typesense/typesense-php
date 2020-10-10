@@ -17,34 +17,37 @@ class Configuration
     /**
      * @var \Typesence\Lib\Node[]
      */
-    private $nodes;
+    private array $nodes;
 
     /**
-     * @var \Typesence\Lib\Node
+     * @var \Typesence\Lib\Node|null
      */
-    private $nearestNode;
-
-    /**
-     * @var float
-     */
-    private $connectionTimeoutSeconds;
-
-    /**
-     * @var mixed|string
-     */
-    private $apiKey;
+    private ?Node $nearestNode;
 
     /**
      * @var float
      */
-    private $numRetries;
+    private float $connectionTimeoutSeconds;
+
+    /**
+     * @var string
+     */
+    private string $apiKey;
 
     /**
      * @var float
      */
-    private $retryIntervalSeconds;
+    private float $numRetries;
 
-    private $healthCheckIntervalSeconds;
+    /**
+     * @var float
+     */
+    private float $retryIntervalSeconds;
+
+    /**
+     * @var int
+     */
+    private int $healthCheckIntervalSeconds;
 
     /**
      * Configuration constructor.

@@ -17,17 +17,17 @@ class Client
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var \Typesence\Collections
      */
-    public $collections;
+    public Collections $collections;
 
     /**
      * @var \Typesence\Aliases
      */
-    public $aliases;
+    public Aliases $aliases;
 
     /**
      * Client constructor.

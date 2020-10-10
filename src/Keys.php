@@ -19,17 +19,17 @@ class Keys implements \ArrayAccess
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var array
      */
-    private $keys = [];
+    private array $keys = [];
 
     /**
      * Keys constructor.
@@ -60,11 +60,12 @@ class Keys implements \ArrayAccess
      * @param  array  $parameters
      *
      * @return string
+     * @throws \JsonException
      */
     public function generateScopedSearchKey(
       string $searchKey, array $parameters
     ): string {
-        $paramStr     = json_encode($parameters);
+        $paramStr     = json_encode($parameters, JSON_THROW_ON_ERROR);
         $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey)));
         $keyPrefix    = substr($searchKey, 0, 4);
         $rawScopedKey = sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);

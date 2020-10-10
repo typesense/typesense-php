@@ -17,17 +17,17 @@ class Alias
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * Alias constructor.

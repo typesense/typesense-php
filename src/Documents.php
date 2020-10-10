@@ -19,22 +19,22 @@ class Documents implements \ArrayAccess
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var string
      */
-    private $collectionName;
+    private string $collectionName;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var array
      */
-    private $documents = [];
+    private array $documents = [];
 
     /**
      * Documents constructor.
@@ -74,13 +74,13 @@ class Documents implements \ArrayAccess
      * @param  array  $documents
      *
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException|\JsonException
      */
     public function createMany(array $documents): array
     {
-        $res = $this->import(implode("\n", $documents));
+        $res = $this->import(implode("\n", array_map(static fn(array $document) => json_encode($document, JSON_THROW_ON_ERROR), $documents)));
         return array_map(static function ($item) {
-            return json_decode($item, true);
+            return json_decode($item, true, 512, JSON_THROW_ON_ERROR);
         }, explode("\n", $res));
     }
 

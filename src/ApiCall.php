@@ -31,27 +31,27 @@ class ApiCall
     /**
      * @var \GuzzleHttp\Client
      */
-    private $client;
+    private \GuzzleHttp\Client $client;
 
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var array|\Typesence\Lib\Node[]
      */
-    private static $nodes;
+    private static array $nodes;
 
     /**
-     * @var \Typesence\Lib\Node
+     * @var \Typesence\Lib\Node|null
      */
-    private static $nearestNode;
+    private static ?Node $nearestNode;
 
     /**
      * @var int
      */
-    private $nodeIndex;
+    private int $nodeIndex;
 
     /**
      * ApiCall constructor.
@@ -182,14 +182,14 @@ class ApiCall
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
                     $errorMessage = json_decode($response->getBody()
-                                                         ->getContents(), true)['message'] ?? 'API error.';
+                                                         ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
                     throw $this->getException($statusCode)
                                ->setMessage($errorMessage);
                 }
 
                 return $asJson ? json_decode($response->getBody()
-                                                      ->getContents(), true) : $response->getBody()
-                                                                                        ->getContents();
+                                                      ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
+                                                                                                                  ->getContents();
             } catch (ClientException $exception) {
                 if ($exception->getResponse()
                               ->getStatusCode() === 408) {

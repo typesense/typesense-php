@@ -17,17 +17,17 @@ class Key
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var string
      */
-    private $keyId;
+    private string $keyId;
 
     /**
      * Key constructor.

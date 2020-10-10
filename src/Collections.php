@@ -19,17 +19,17 @@ class Collections implements \ArrayAccess
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var array
      */
-    private $collections = [];
+    private array $collections = [];
 
     /**
      * Collections constructor.

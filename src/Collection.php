@@ -17,27 +17,27 @@ class Collection
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * @var \Typesence\Documents
      */
-    public $documents;
+    public Documents $documents;
 
     /**
      * @var \Typesence\Overrides
      */
-    public $overrides;
+    public Overrides $overrides;
 
     /**
      * Collection constructor.

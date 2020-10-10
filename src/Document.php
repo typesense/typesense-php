@@ -17,22 +17,22 @@ class Document
     /**
      * @var \Typesence\Lib\Configuration
      */
-    private $config;
+    private Configuration $config;
 
     /**
      * @var string
      */
-    private $collectionName;
+    private string $collectionName;
 
     /**
-     * @var int
+     * @var string
      */
-    private $documentId;
+    private string $documentId;
 
     /**
      * @var \Typesence\ApiCall
      */
-    private $apiCall;
+    private ApiCall $apiCall;
 
     /**
      * Document constructor.
