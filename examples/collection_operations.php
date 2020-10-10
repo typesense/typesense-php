@@ -129,7 +129,7 @@ try {
         $docsToImport[] = json_decode($exportedDocStr, true);
     }
     $importRes =
-      $client->collections['books']->documents->create_many($docsToImport);
+      $client->collections['books']->documents->createMany($docsToImport);
     print_r($importRes);
     echo "--------Import Documents-------\n";
     echo "\n";
