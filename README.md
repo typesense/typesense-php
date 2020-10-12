@@ -1,4 +1,4 @@
-# Typesense PHP Client
+# Typesense PHP Client (work in progress)
 
 PHP client for the Typesense API: https://github.com/typesense/typesense
 
