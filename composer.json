@@ -35,6 +35,9 @@
     "ext-json": "*"
   },
   "scripts": {
-    "typesenseServer": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data-1c/:/data typesense/typesense:0.15.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors"
+    "typesenseServer": [
+      "Composer\\Config::disableProcessTimeout",
+      "docker run -i -p 8108:8108 -v/tmp/typesense-server-data-1c/:/data typesense/typesense:0.15.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors"
+    ]
   }
 }

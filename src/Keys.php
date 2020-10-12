@@ -37,11 +37,10 @@ class Keys implements \ArrayAccess
      * @param  \Typesense\Lib\Configuration  $config
      * @param  \Typesense\ApiCall  $apiCall
      */
-    public function __construct(
-      Configuration $config, ApiCall $apiCall
-    ) {
+    public function __construct(Configuration $config)
+    {
         $this->config  = $config;
-        $this->apiCall = $apiCall;
+        $this->apiCall = new ApiCall($config);
     }
 
     /**
@@ -66,7 +65,7 @@ class Keys implements \ArrayAccess
       string $searchKey, array $parameters
     ): string {
         $paramStr     = json_encode($parameters, JSON_THROW_ON_ERROR);
-        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey)));
+        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey), TRUE));
         $keyPrefix    = substr($searchKey, 0, 4);
         $rawScopedKey = sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);
         return base64_encode(utf8_encode($rawScopedKey));

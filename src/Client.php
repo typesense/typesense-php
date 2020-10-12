@@ -30,6 +30,11 @@ class Client
     public Aliases $aliases;
 
     /**
+     * @var \Typesense\Keys
+     */
+    public Keys $keys;
+
+    /**
      * Client constructor.
      *
      * @param  array  $config
@@ -41,6 +46,7 @@ class Client
         $this->config      = new Configuration($config);
         $this->collections = new Collections($this->config);
         $this->aliases     = new Aliases($this->config);
+        $this->keys        = new Keys($this->config);
     }
 
     /**
@@ -57,6 +63,14 @@ class Client
     public function getAliases(): Aliases
     {
         return $this->aliases;
+    }
+
+    /**
+     * @return \Typesense\Keys
+     */
+    public function getKeys(): Keys
+    {
+        return $this->keys;
     }
 
 }
