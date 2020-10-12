@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence;
+namespace Typesense;
 
-use \Typesence\Lib\Configuration;
+use \Typesense\Lib\Configuration;
 
 /**
  * Class Collections
  *
- * @package \Typesence
+ * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -17,12 +17,12 @@ class Collections implements \ArrayAccess
     public const RESOURCE_PATH = '/collections';
 
     /**
-     * @var \Typesence\Lib\Configuration
+     * @var \Typesense\Lib\Configuration
      */
     private Configuration $config;
 
     /**
-     * @var \Typesence\ApiCall
+     * @var \Typesense\ApiCall
      */
     private ApiCall $apiCall;
 
@@ -63,7 +63,7 @@ class Collections implements \ArrayAccess
      * @param  array  $schema
      *
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -72,7 +72,7 @@ class Collections implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {

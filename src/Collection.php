@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence;
+namespace Typesense;
 
-use \Typesence\Lib\Configuration;
+use \Typesense\Lib\Configuration;
 
 /**
  * Class Collection
  *
- * @package \Typesence
+ * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,7 +15,7 @@ class Collection
 {
 
     /**
-     * @var \Typesence\Lib\Configuration
+     * @var \Typesense\Lib\Configuration
      */
     private Configuration $config;
 
@@ -25,17 +25,17 @@ class Collection
     private string $name;
 
     /**
-     * @var \Typesence\ApiCall
+     * @var \Typesense\ApiCall
      */
     private ApiCall $apiCall;
 
     /**
-     * @var \Typesence\Documents
+     * @var \Typesense\Documents
      */
     public Documents $documents;
 
     /**
-     * @var \Typesence\Overrides
+     * @var \Typesense\Overrides
      */
     public Overrides $overrides;
 
@@ -63,7 +63,7 @@ class Collection
     }
 
     /**
-     * @return \Typesence\Documents
+     * @return \Typesense\Documents
      */
     public function getDocuments(): Documents
     {
@@ -71,7 +71,7 @@ class Collection
     }
 
     /**
-     * @return \Typesence\Overrides
+     * @return \Typesense\Overrides
      */
     public function getOverrides(): Overrides
     {
@@ -80,7 +80,7 @@ class Collection
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -89,7 +89,7 @@ class Collection
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

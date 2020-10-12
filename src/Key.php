@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence;
+namespace Typesense;
 
-use \Typesence\Lib\Configuration;
+use \Typesense\Lib\Configuration;
 
 /**
  * Class Key
  *
- * @package \Typesence
+ * @package \Typesense
  * @date 6/1/20
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,12 +15,12 @@ class Key
 {
 
     /**
-     * @var \Typesence\Lib\Configuration
+     * @var \Typesense\Lib\Configuration
      */
     private Configuration $config;
 
     /**
-     * @var \Typesence\ApiCall
+     * @var \Typesense\ApiCall
      */
     private ApiCall $apiCall;
 
@@ -32,8 +32,8 @@ class Key
     /**
      * Key constructor.
      *
-     * @param  \Typesence\Lib\Configuration  $config
-     * @param  \Typesence\ApiCall  $apiCall
+     * @param  \Typesense\Lib\Configuration  $config
+     * @param  \Typesense\ApiCall  $apiCall
      * @param  string  $keyId
      */
     public function __construct(
@@ -54,7 +54,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -63,7 +63,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

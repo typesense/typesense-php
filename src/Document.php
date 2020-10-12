@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence;
+namespace Typesense;
 
-use \Typesence\Lib\Configuration;
+use \Typesense\Lib\Configuration;
 
 /**
  * Class Document
  *
- * @package \Typesence
+ * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,7 +15,7 @@ class Document
 {
 
     /**
-     * @var \Typesence\Lib\Configuration
+     * @var \Typesense\Lib\Configuration
      */
     private Configuration $config;
 
@@ -30,14 +30,14 @@ class Document
     private string $documentId;
 
     /**
-     * @var \Typesence\ApiCall
+     * @var \Typesense\ApiCall
      */
     private ApiCall $apiCall;
 
     /**
      * Document constructor.
      *
-     * @param  \Typesence\Lib\Configuration  $config
+     * @param  \Typesense\Lib\Configuration  $config
      * @param  string  $collectionName
      * @param  string  $documentId
      */
@@ -60,7 +60,7 @@ class Document
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -69,7 +69,7 @@ class Document
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function delete(): array
     {

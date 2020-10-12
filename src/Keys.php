@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence;
+namespace Typesense;
 
-use Typesence\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Keys
  *
- * @package \Typesence
+ * @package \Typesense
  * @date 6/1/20
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -17,12 +17,12 @@ class Keys implements \ArrayAccess
     public const RESOURCE_PATH = '/keys';
 
     /**
-     * @var \Typesence\Lib\Configuration
+     * @var \Typesense\Lib\Configuration
      */
     private Configuration $config;
 
     /**
-     * @var \Typesence\ApiCall
+     * @var \Typesense\ApiCall
      */
     private ApiCall $apiCall;
 
@@ -34,8 +34,8 @@ class Keys implements \ArrayAccess
     /**
      * Keys constructor.
      *
-     * @param  \Typesence\Lib\Configuration  $config
-     * @param  \Typesence\ApiCall  $apiCall
+     * @param  \Typesense\Lib\Configuration  $config
+     * @param  \Typesense\ApiCall  $apiCall
      */
     public function __construct(
       Configuration $config, ApiCall $apiCall
@@ -48,7 +48,7 @@ class Keys implements \ArrayAccess
      * @param  array  $schema
      *
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $schema): array
     {
@@ -74,7 +74,7 @@ class Keys implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesence\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
      */
     public function retrieve(): array
     {
@@ -94,7 +94,7 @@ class Keys implements \ArrayAccess
     /**
      * @param  mixed  $offset
      *
-     * @return \Typesence\Key
+     * @return \Typesense\Key
      */
     public function offsetGet($offset): Key
     {

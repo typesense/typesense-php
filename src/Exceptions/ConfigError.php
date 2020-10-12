@@ -1,11 +1,11 @@
 <?php
 
-namespace Typesence\Exceptions;
+namespace Typesense\Exceptions;
 
 /**
  * Class ConfigError
  *
- * @package \Typesence\Exceptions
+ * @package \Typesense\Exceptions
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */

@@ -1,10 +1,16 @@
 {
-  "name": "devloopsnet/typesens-php",
+  "name": "typesense/typesense-php",
   "description": "PHP client for Typesense https://github.com/typesense/typesense",
   "type": "library",
-  "homepage": "https://www.devloops.net",
+  "homepage": "https://github.com/typesense/typesense-php",
   "license": "Apache-2.0",
   "authors": [
+    {
+      "name": "Typesense",
+      "email": "contact@typesense.org",
+      "homepage": "https://typesense.org",
+      "role": "Developer"
+    },
     {
       "name": "Abdullah Al-Faqeir",
       "email": "abdullah@devloops.net",
@@ -12,15 +18,23 @@
       "role": "Developer"
     }
   ],
+  "support": {
+    "docs": "https://typesense.org/api",
+    "source": "https://github.com/typesense/typesense-php",
+    "issues": "https://github.com/typesense/typesense-php/issues"
+  },
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "Typesence\\": "src/"
+      "Typesense\\": "src/"
     }
   },
   "require": {
-    "php/php": ">7.4.*",
+    "php": ">=7.4",
     "guzzlehttp/guzzle": "^7.0",
     "ext-json": "*"
+  },
+  "scripts": {
+    "typesenseServer": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data-1c/:/data typesense/typesense:0.15.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors"
   }
 }

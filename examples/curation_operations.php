@@ -2,12 +2,12 @@
 
 include '../vendor/autoload.php';
 
-use \Typesence\Client;
+use \Typesense\Client;
 
 try {
     $client = new Client(
       [
-        'api_key'         => 'abcd',
+        'api_key'         => 'xyz',
         'nodes'           => [
           [
             'host'     => 'localhost',
@@ -19,6 +19,11 @@ try {
       ]
     );
     echo '<pre>';
+    try {
+        print_r($client->collections['books']->delete());
+    } catch (Exception $e) {
+        // Don't error out if the collection was not found
+    }
     echo "--------Create Collection-------\n";
     print_r(
       $client->collections->create(

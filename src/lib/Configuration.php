@@ -1,13 +1,13 @@
 <?php
 
-namespace Typesence\Lib;
+namespace Typesense\Lib;
 
-use \Typesence\Exceptions\ConfigError;
+use \Typesense\Exceptions\ConfigError;
 
 /**
  * Class Configuration
  *
- * @package \Typesence
+ * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
@@ -15,12 +15,12 @@ class Configuration
 {
 
     /**
-     * @var \Typesence\Lib\Node[]
+     * @var \Typesense\Lib\Node[]
      */
     private array $nodes;
 
     /**
-     * @var \Typesence\Lib\Node|null
+     * @var \Typesense\Lib\Node|null
      */
     private ?Node $nearestNode;
 
@@ -54,7 +54,7 @@ class Configuration
      *
      * @param  array  $config
      *
-     * @throws \Typesence\Exceptions\ConfigError
+     * @throws \Typesense\Exceptions\ConfigError
      */
     public function __construct(array $config)
     {
@@ -66,8 +66,9 @@ class Configuration
             $this->nodes[] = new Node($node['host'], $node['port'], $node['path'] ?? '', $node['protocol']);
         }
 
-        $nearestNode = $config['nearest_node'] ?? [];
-        if (!empty($nearestNode)) {
+        $nearestNode = $config['nearest_node'] ?? null;
+        $this->nearestNode = null;
+        if (!is_null($nearestNode)) {
             $this->nearestNode = new Node($nearestNode['host'], $nearestNode['port'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
         }
 
@@ -81,7 +82,7 @@ class Configuration
     /**
      * @param  array  $config
      *
-     * @throws \Typesence\Exceptions\ConfigError
+     * @throws \Typesense\Exceptions\ConfigError
      */
     private function validateConfigArray(array $config): void
     {
@@ -122,7 +123,7 @@ class Configuration
     }
 
     /**
-     * @return \Typesence\Lib\Node[]
+     * @return \Typesense\Lib\Node[]
      */
     public function getNodes(): array
     {
@@ -130,7 +131,7 @@ class Configuration
     }
 
     /**
-     * @return \Typesence\Lib\Node
+     * @return \Typesense\Lib\Node
      */
     public function getNearestNode(): ?Node
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Typesence\Lib;
+namespace Typesense\Lib;
 
 /**
  * Class Node
  *
- * @package \Typesence
+ * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
