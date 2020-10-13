@@ -1,6 +1,6 @@
 {
   "name": "typesense/typesense-php",
-  "description": "PHP client for Typesense https://github.com/typesense/typesense",
+  "description": "PHP client for Typesense Search Server: https://github.com/typesense/typesense",
   "type": "library",
   "homepage": "https://github.com/typesense/typesense-php",
   "license": "Apache-2.0",
