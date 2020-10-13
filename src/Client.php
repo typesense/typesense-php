@@ -36,6 +36,21 @@ class Client
     public Keys $keys;
 
     /**
+     * @var Debug
+     */
+    public Debug $debug;
+
+    /**
+     * @var Metrics
+     */
+    public Metrics $metrics;
+
+    /**
+     * @var Health
+     */
+    public Health $health;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -55,6 +70,9 @@ class Client
         $this->collections = new Collections($this->apiCall);
         $this->aliases     = new Aliases($this->apiCall);
         $this->keys        = new Keys($this->apiCall);
+        $this->debug       = new Debug($this->apiCall);
+        $this->metrics     = new Metrics($this->apiCall);
+        $this->health      = new Health($this->apiCall);
     }
 
     /**
@@ -79,5 +97,29 @@ class Client
     public function getKeys(): Keys
     {
         return $this->keys;
+    }
+
+    /**
+     * @return Debug
+     */
+    public function getDebug(): Debug
+    {
+        return $this->debug;
+    }
+
+    /**
+     * @return Metrics
+     */
+    public function getMetrics(): Metrics
+    {
+        return $this->metrics;
+    }
+
+    /**
+     * @return Health
+     */
+    public function getHealth(): Health
+    {
+        return $this->health;
     }
 }

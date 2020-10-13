@@ -4,7 +4,6 @@ namespace Typesense;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Typesense\Exceptions\TypesenseClientError;
-use Typesense\Lib\Configuration;
 
 /**
  * Class Alias
