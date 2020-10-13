@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -17,12 +19,7 @@ class Collections implements \ArrayAccess
     public const RESOURCE_PATH = '/collections';
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -34,12 +31,11 @@ class Collections implements \ArrayAccess
     /**
      * Collections constructor.
      *
-     * @param $config
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config)
+    public function __construct(ApiCall $apiCall)
     {
-        $this->config  = $config;
-        $this->apiCall = new ApiCall($config);
+        $this->apiCall = $apiCall;
     }
 
     /**
@@ -53,7 +49,7 @@ class Collections implements \ArrayAccess
             return $this->{$collectionName};
         }
         if (!isset($this->collections[$collectionName])) {
-            $this->collections[$collectionName] = new Collection($this->config, $collectionName);
+            $this->collections[$collectionName] = new Collection($collectionName, $this->apiCall);
         }
 
         return $this->collections[$collectionName];
@@ -63,7 +59,7 @@ class Collections implements \ArrayAccess
      * @param array $schema
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function create(array $schema): array
     {
@@ -72,7 +68,7 @@ class Collections implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -93,7 +89,7 @@ class Collections implements \ArrayAccess
     public function offsetGet($offset): Collection
     {
         if (!isset($this->collections[$offset])) {
-            $this->collections[$offset] = new Collection($this->config, $offset);
+            $this->collections[$offset] = new Collection($offset, $this->apiCall);
         }
 
         return $this->collections[$offset];

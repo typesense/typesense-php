@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,31 +17,25 @@ class Alias
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
      * @var string
      */
     private string $name;
 
     /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
     /**
      * Alias constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
      * @param string $name
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config, string $name)
+    public function __construct(string $name, ApiCall $apiCall)
     {
-        $this->config  = $config;
         $this->name    = $name;
-        $this->apiCall = new ApiCall($this->config);
+        $this->apiCall = $apiCall;
     }
 
     /**
@@ -52,7 +48,7 @@ class Alias
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -61,7 +57,7 @@ class Alias
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function delete(): array
     {

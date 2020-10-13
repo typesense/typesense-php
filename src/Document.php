@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,11 +17,6 @@ class Document
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
      * @var string
      */
     private string $collectionName;
@@ -30,26 +27,22 @@ class Document
     private string $documentId;
 
     /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
     /**
      * Document constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
      * @param string $collectionName
      * @param string $documentId
+     * @param ApiCall $apiCall
      */
-    public function __construct(
-        Configuration $config,
-        string $collectionName,
-        string $documentId
-    ) {
-        $this->config         = $config;
+    public function __construct(string $collectionName, string $documentId, ApiCall $apiCall)
+    {
         $this->collectionName = $collectionName;
         $this->documentId     = $documentId;
-        $this->apiCall        = new ApiCall($config);
+        $this->apiCall        = $apiCall;
     }
 
     /**
@@ -57,12 +50,18 @@ class Document
      */
     private function endpointPath(): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, Documents::RESOURCE_PATH, $this->documentId);
+        return sprintf(
+            '%s/%s/%s/%s',
+            Collections::RESOURCE_PATH,
+            $this->collectionName,
+            Documents::RESOURCE_PATH,
+            $this->documentId
+        );
     }
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -71,7 +70,7 @@ class Document
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function delete(): array
     {

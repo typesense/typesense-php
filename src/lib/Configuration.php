@@ -15,12 +15,12 @@ class Configuration
 {
 
     /**
-     * @var \Typesense\Lib\Node[]
+     * @var Node[]
      */
     private array $nodes;
 
     /**
-     * @var \Typesense\Lib\Node|null
+     * @var Node|null
      */
     private ?Node $nearestNode;
 
@@ -54,7 +54,7 @@ class Configuration
      *
      * @param array $config
      *
-     * @throws \Typesense\Exceptions\ConfigError
+     * @throws ConfigError
      */
     public function __construct(array $config)
     {
@@ -69,7 +69,13 @@ class Configuration
         $nearestNode       = $config['nearest_node'] ?? null;
         $this->nearestNode = null;
         if (!is_null($nearestNode)) {
-            $this->nearestNode = new Node($nearestNode['host'], $nearestNode['port'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
+            $this->nearestNode =
+                new Node(
+                    $nearestNode['host'],
+                    $nearestNode['port'],
+                    $nearestNode['path'] ?? '',
+                    $nearestNode['protocol']
+                );
         }
 
         $this->apiKey = $config['api_key'] ?? '';
@@ -82,7 +88,7 @@ class Configuration
     /**
      * @param array $config
      *
-     * @throws \Typesense\Exceptions\ConfigError
+     * @throws ConfigError
      */
     private function validateConfigArray(array $config): void
     {
@@ -98,12 +104,16 @@ class Configuration
 
         foreach ($nodes as $node) {
             if (!$this->validateNodeFields($node)) {
-                throw new ConfigError('`node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
+                throw new ConfigError(
+                    '`node` entry be a dictionary with the following required keys: host, port, protocol, api_key'
+                );
             }
         }
         $nearestNode = $config['nearest_node'] ?? [];
         if (!empty($nearestNode) && !$this->validateNodeFields($nearestNode)) {
-            throw new ConfigError('`nearest_node` entry be a dictionary with the following required keys: host, port, protocol, api_key');
+            throw new ConfigError(
+                '`nearest_node` entry be a dictionary with the following required keys: host, port, protocol, api_key'
+            );
         }
     }
 
@@ -123,7 +133,7 @@ class Configuration
     }
 
     /**
-     * @return \Typesense\Lib\Node[]
+     * @return Node[]
      */
     public function getNodes(): array
     {
@@ -131,7 +141,7 @@ class Configuration
     }
 
     /**
-     * @return \Typesense\Lib\Node
+     * @return Node
      */
     public function getNearestNode(): ?Node
     {

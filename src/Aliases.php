@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -17,12 +19,7 @@ class Aliases implements \ArrayAccess
     public const RESOURCE_PATH = '/aliases';
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -34,12 +31,11 @@ class Aliases implements \ArrayAccess
     /**
      * Aliases constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config)
+    public function __construct(ApiCall $apiCall)
     {
-        $this->config  = $config;
-        $this->apiCall = new ApiCall($this->config);
+        $this->apiCall = $apiCall;
     }
 
     /**
@@ -57,7 +53,7 @@ class Aliases implements \ArrayAccess
      * @param array $mapping
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function upsert(string $name, array $mapping): array
     {
@@ -66,7 +62,7 @@ class Aliases implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -85,7 +81,7 @@ class Aliases implements \ArrayAccess
         }
 
         if (!isset($this->aliases[$name])) {
-            $this->aliases[$name] = new Alias($this->config, $name);
+            $this->aliases[$name] = new Alias($name, $this->apiCall);
         }
 
         return $this->aliases[$name];
@@ -105,7 +101,7 @@ class Aliases implements \ArrayAccess
     public function offsetGet($offset)
     {
         if (!isset($this->aliases[$offset])) {
-            $this->aliases[$offset] = new Alias($this->config, $offset);
+            $this->aliases[$offset] = new Alias($offset, $this->apiCall);
         }
 
         return $this->aliases[$offset];

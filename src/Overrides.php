@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -17,12 +19,7 @@ class Overrides implements \ArrayAccess
     public const RESOURCE_PATH = 'overrides';
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -39,14 +36,13 @@ class Overrides implements \ArrayAccess
     /**
      * Overrides constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
      * @param string $collectionName
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config, string $collectionName)
+    public function __construct(string $collectionName, ApiCall $apiCall)
     {
-        $this->config         = $config;
         $this->collectionName = $collectionName;
-        $this->apiCall        = new ApiCall($config);
+        $this->apiCall        = $apiCall;
     }
 
     /**
@@ -56,7 +52,13 @@ class Overrides implements \ArrayAccess
      */
     public function endPointPath(string $overrideId = ''): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, self::RESOURCE_PATH, $overrideId);
+        return sprintf(
+            '%s/%s/%s/%s',
+            Collections::RESOURCE_PATH,
+            $this->collectionName,
+            self::RESOURCE_PATH,
+            $overrideId
+        );
     }
 
     /**
@@ -64,7 +66,7 @@ class Overrides implements \ArrayAccess
      * @param array $config
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function upsert(string $documentId, array $config): array
     {
@@ -73,7 +75,7 @@ class Overrides implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -94,7 +96,7 @@ class Overrides implements \ArrayAccess
     public function offsetGet($documentId)
     {
         if (!isset($this->overrides[$documentId])) {
-            $this->overrides[$documentId] = new Override($this->config, $this->collectionName, $documentId);
+            $this->overrides[$documentId] = new Override($this->collectionName, $documentId, $this->apiCall);
         }
 
         return $this->overrides[$documentId];

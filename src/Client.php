@@ -2,6 +2,7 @@
 
 namespace Typesense;
 
+use Typesense\Exceptions\ConfigError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,42 +16,49 @@ class Client
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
+     * @var Configuration
      */
     private Configuration $config;
 
     /**
-     * @var \Typesense\Collections
+     * @var Collections
      */
     public Collections $collections;
 
     /**
-     * @var \Typesense\Aliases
+     * @var Aliases
      */
     public Aliases $aliases;
 
     /**
-     * @var \Typesense\Keys
+     * @var Keys
      */
     public Keys $keys;
+
+    /**
+     * @var ApiCall
+     */
+    private ApiCall $apiCall;
 
     /**
      * Client constructor.
      *
      * @param array $config
      *
-     * @throws \Typesense\Exceptions\ConfigError
+     * @throws ConfigError
      */
     public function __construct(array $config)
     {
-        $this->config      = new Configuration($config);
-        $this->collections = new Collections($this->config);
-        $this->aliases     = new Aliases($this->config);
-        $this->keys        = new Keys($this->config);
+        $this->config  = new Configuration($config);
+        $this->apiCall = new ApiCall($this->config);
+
+        $this->collections = new Collections($this->apiCall);
+        $this->aliases     = new Aliases($this->apiCall);
+        $this->keys        = new Keys($this->apiCall);
     }
 
     /**
-     * @return \Typesense\Collections
+     * @return Collections
      */
     public function getCollections(): Collections
     {
@@ -58,7 +66,7 @@ class Client
     }
 
     /**
-     * @return \Typesense\Aliases
+     * @return Aliases
      */
     public function getAliases(): Aliases
     {
@@ -66,7 +74,7 @@ class Client
     }
 
     /**
-     * @return \Typesense\Keys
+     * @return Keys
      */
     public function getKeys(): Keys
     {

@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,11 +17,6 @@ class Override
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
      * @var string
      */
     private string $collectionName;
@@ -30,26 +27,22 @@ class Override
     private string $overrideId;
 
     /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
     /**
      * Override constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
      * @param string $collectionName
-     * @param int $overrideId
+     * @param string $overrideId
+     * @param ApiCall $apiCall
      */
-    public function __construct(
-        Configuration $config,
-        string $collectionName,
-        string $overrideId
-    ) {
-        $this->config         = $config;
+    public function __construct(string $collectionName, string $overrideId, ApiCall $apiCall)
+    {
         $this->collectionName = $collectionName;
         $this->overrideId     = $overrideId;
-        $this->apiCall        = new ApiCall($this->config);
+        $this->apiCall        = $apiCall;
     }
 
     /**
@@ -57,12 +50,18 @@ class Override
      */
     private function endPointPath(): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, Overrides::RESOURCE_PATH, $this->overrideId);
+        return sprintf(
+            '%s/%s/%s/%s',
+            Collections::RESOURCE_PATH,
+            $this->collectionName,
+            Overrides::RESOURCE_PATH,
+            $this->overrideId
+        );
     }
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -71,7 +70,7 @@ class Override
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function delete(): array
     {

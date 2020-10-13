@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -17,12 +19,7 @@ class Keys implements \ArrayAccess
     public const RESOURCE_PATH = '/keys';
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -34,20 +31,18 @@ class Keys implements \ArrayAccess
     /**
      * Keys constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
-     * @param \Typesense\ApiCall $apiCall
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config)
+    public function __construct(ApiCall $apiCall)
     {
-        $this->config  = $config;
-        $this->apiCall = new ApiCall($config);
+        $this->apiCall = $apiCall;
     }
 
     /**
      * @param array $schema
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function create(array $schema): array
     {
@@ -74,7 +69,7 @@ class Keys implements \ArrayAccess
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -99,7 +94,7 @@ class Keys implements \ArrayAccess
     public function offsetGet($offset): Key
     {
         if (!isset($this->keys[$offset])) {
-            $this->keys[$offset] = new Key($this->config, $this->apiCall, $offset);
+            $this->keys[$offset] = new Key($offset, $this->apiCall);
         }
 
         return $this->keys[$offset];

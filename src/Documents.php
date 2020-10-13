@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -17,17 +19,12 @@ class Documents implements \ArrayAccess
     public const RESOURCE_PATH = 'documents';
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
      * @var string
      */
     private string $collectionName;
 
     /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -39,14 +36,13 @@ class Documents implements \ArrayAccess
     /**
      * Documents constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
      * @param string $collectionName
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config, string $collectionName)
+    public function __construct(string $collectionName, ApiCall $apiCall)
     {
-        $this->config         = $config;
         $this->collectionName = $collectionName;
-        $this->apiCall        = new ApiCall($config);
+        $this->apiCall        = $apiCall;
     }
 
     /**
@@ -63,7 +59,7 @@ class Documents implements \ArrayAccess
      * @param array $document
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function create(array $document): array
     {
@@ -74,11 +70,19 @@ class Documents implements \ArrayAccess
      * @param array $documents
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException|\JsonException
+     * @throws TypesenseClientError|GuzzleException|\JsonException
      */
     public function createMany(array $documents): array
     {
-        $res = $this->import(implode("\n", array_map(static fn(array $document) => json_encode($document, JSON_THROW_ON_ERROR), $documents)));
+        $res = $this->import(
+            implode(
+                "\n",
+                array_map(
+                    static fn(array $document) => json_encode($document, JSON_THROW_ON_ERROR),
+                    $documents
+                )
+            )
+        );
         return array_map(static function ($item) {
             return json_decode($item, true, 512, JSON_THROW_ON_ERROR);
         }, explode("\n", $res));
@@ -88,8 +92,8 @@ class Documents implements \ArrayAccess
      * @param string $documents
      *
      * @return string
-     * @throws \Typesense\Exceptions\TypesenseClientError
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError
+     * @throws GuzzleException
      */
     public function import(string $documents): string
     {
@@ -98,7 +102,7 @@ class Documents implements \ArrayAccess
 
     /**
      * @return string
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function export(): string
     {
@@ -109,7 +113,7 @@ class Documents implements \ArrayAccess
      * @param array $searchParams
      *
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function search(array $searchParams): array
     {
@@ -132,7 +136,7 @@ class Documents implements \ArrayAccess
     public function offsetGet($documentId): Document
     {
         if (!isset($this->documents[$documentId])) {
-            $this->documents[$documentId] = new Document($this->config, $this->collectionName, $documentId);
+            $this->documents[$documentId] = new Document($this->collectionName, $documentId, $this->apiCall);
         }
 
         return $this->documents[$documentId];

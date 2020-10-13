@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,12 +17,7 @@ class Key
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
@@ -32,18 +29,13 @@ class Key
     /**
      * Key constructor.
      *
-     * @param \Typesense\Lib\Configuration $config
-     * @param \Typesense\ApiCall $apiCall
      * @param string $keyId
+     * @param ApiCall $apiCall
      */
-    public function __construct(
-        Configuration $config,
-        ApiCall $apiCall,
-        string $keyId
-    ) {
-        $this->config  = $config;
-        $this->apiCall = $apiCall;
+    public function __construct(string $keyId, ApiCall $apiCall)
+    {
         $this->keyId   = $keyId;
+        $this->apiCall = $apiCall;
     }
 
     /**
@@ -56,7 +48,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -65,7 +57,7 @@ class Key
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function delete(): array
     {

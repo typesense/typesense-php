@@ -2,6 +2,8 @@
 
 namespace Typesense;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\Lib\Configuration;
 
 /**
@@ -15,43 +17,37 @@ class Collection
 {
 
     /**
-     * @var \Typesense\Lib\Configuration
-     */
-    private Configuration $config;
-
-    /**
      * @var string
      */
     private string $name;
 
     /**
-     * @var \Typesense\ApiCall
+     * @var ApiCall
      */
     private ApiCall $apiCall;
 
     /**
-     * @var \Typesense\Documents
+     * @var Documents
      */
     public Documents $documents;
 
     /**
-     * @var \Typesense\Overrides
+     * @var Overrides
      */
     public Overrides $overrides;
 
     /**
      * Collection constructor.
      *
-     * @param $config
-     * @param $name
+     * @param string $name
+     * @param ApiCall $apiCall
      */
-    public function __construct(Configuration $config, string $name)
+    public function __construct(string $name, ApiCall $apiCall)
     {
-        $this->config    = $config;
         $this->name      = $name;
-        $this->apiCall   = new ApiCall($config);
-        $this->documents = new Documents($config, $name);
-        $this->overrides = new Overrides($config, $name);
+        $this->apiCall   = $apiCall;
+        $this->documents = new Documents($name, $this->apiCall);
+        $this->overrides = new Overrides($name, $this->apiCall);
     }
 
     /**
@@ -63,7 +59,7 @@ class Collection
     }
 
     /**
-     * @return \Typesense\Documents
+     * @return Documents
      */
     public function getDocuments(): Documents
     {
@@ -71,7 +67,7 @@ class Collection
     }
 
     /**
-     * @return \Typesense\Overrides
+     * @return Overrides
      */
     public function getOverrides(): Overrides
     {
@@ -80,7 +76,7 @@ class Collection
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function retrieve(): array
     {
@@ -89,7 +85,7 @@ class Collection
 
     /**
      * @return array
-     * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
+     * @throws TypesenseClientError|GuzzleException
      */
     public function delete(): array
     {
