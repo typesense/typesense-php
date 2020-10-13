@@ -20,9 +20,7 @@ Here are some examples that walk you through how to use the client: [doc/example
 
 | Typesense Server | typesense-php |
 |------------------|----------------|
-| \>= v0.15.0 | \>= v2.0.4 |
-| \>= v0.12.0 | \>= v2.0.0 |
-| <= v0.11 | <= v1.0.0 |
+| \>= v0.15.0 | \>= v3.0.0 |
 
 ## Contributing
 
