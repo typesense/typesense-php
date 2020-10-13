@@ -2,19 +2,19 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Node;
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Node;
+use Typesense\Lib\Configuration;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use \Typesense\Exceptions\ServerError;
-use \Typesense\Exceptions\ObjectNotFound;
-use \Typesense\Exceptions\RequestMalformed;
-use \Typesense\Exceptions\HTTPStatus0Error;
-use \Typesense\Exceptions\ServiceUnavailable;
-use \Typesense\Exceptions\RequestUnauthorized;
-use \Typesense\Exceptions\ObjectAlreadyExists;
-use \Typesense\Exceptions\ObjectUnprocessable;
-use \Typesense\Exceptions\TypesenseClientError;
+use Typesense\Exceptions\ServerError;
+use Typesense\Exceptions\ObjectNotFound;
+use Typesense\Exceptions\RequestMalformed;
+use Typesense\Exceptions\HTTPStatus0Error;
+use Typesense\Exceptions\ServiceUnavailable;
+use Typesense\Exceptions\RequestUnauthorized;
+use Typesense\Exceptions\ObjectAlreadyExists;
+use Typesense\Exceptions\ObjectUnprocessable;
+use Typesense\Exceptions\TypesenseClientError;
 
 /**
  * Class ApiCall
@@ -56,7 +56,7 @@ class ApiCall
     /**
      * ApiCall constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
+     * @param \Typesense\Lib\Configuration $config
      */
     public function __construct(Configuration $config)
     {
@@ -83,9 +83,9 @@ class ApiCall
     }
 
     /**
-     * @param  string  $endPoint
-     * @param  array  $params
-     * @param  bool  $asJson
+     * @param string $endPoint
+     * @param array $params
+     * @param bool $asJson
      *
      * @return string|array
      * @throws \Typesense\Exceptions\TypesenseClientError
@@ -94,15 +94,15 @@ class ApiCall
     public function get(string $endPoint, array $params, bool $asJson = true)
     {
         return $this->makeRequest('get', $endPoint, $asJson, [
-          'data' => $params ?? [],
+            'data' => $params ?? [],
         ]);
     }
 
     /**
-     * @param  string  $endPoint
-     * @param  mixed  $body
+     * @param string $endPoint
+     * @param mixed $body
      *
-     * @param  bool  $asJson
+     * @param bool $asJson
      *
      * @return array|string
      * @throws \Typesense\Exceptions\TypesenseClientError
@@ -111,13 +111,13 @@ class ApiCall
     public function post(string $endPoint, $body, bool $asJson = true)
     {
         return $this->makeRequest('post', $endPoint, $asJson, [
-          'data' => $body ?? [],
+            'data' => $body ?? [],
         ]);
     }
 
     /**
-     * @param  string  $endPoint
-     * @param  array  $body
+     * @param string $endPoint
+     * @param array $body
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -125,12 +125,12 @@ class ApiCall
     public function put(string $endPoint, array $body): array
     {
         return $this->makeRequest('put', $endPoint, true, [
-          'data' => $body ?? [],
+            'data' => $body ?? [],
         ]);
     }
 
     /**
-     * @param  string  $endPoint
+     * @param string $endPoint
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -143,10 +143,10 @@ class ApiCall
     /**
      * Makes the actual http request, along with retries
      *
-     * @param  string  $method
-     * @param  string  $endPoint
-     * @param  bool  $asJson
-     * @param  array  $options
+     * @param string $method
+     * @param string $endPoint
+     * @param bool $asJson
+     * @param array $options
      *
      * @return string|array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -161,7 +161,7 @@ class ApiCall
             $node = $this->getNode();
 
             try {
-                $url   = $node->url().$endPoint;
+                $url   = $node->url() . $endPoint;
                 $reqOp = $this->getRequestOptions();
                 if (isset($options['data'])) {
                     if ($method === 'get') {
@@ -182,28 +182,30 @@ class ApiCall
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
                     $errorMessage = json_decode($response->getBody()
-                                                         ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
+                            ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
                     throw $this->getException($statusCode)
-                               ->setMessage($errorMessage);
+                        ->setMessage($errorMessage);
                 }
 
                 return $asJson ? json_decode($response->getBody()
-                                                      ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
-                                                                                                                  ->getContents();
+                    ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
+                    ->getContents();
             } catch (ClientException $exception) {
-                if ($exception->getResponse()
-                              ->getStatusCode() === 408) {
+                if (
+                    $exception->getResponse()
+                        ->getStatusCode() === 408
+                ) {
                     continue;
                 }
                 $this->setNodeHealthCheck($node, false);
                 throw $this->getException($exception->getResponse()
-                                                    ->getStatusCode())
-                           ->setMessage($exception->getMessage());
+                    ->getStatusCode())
+                    ->setMessage($exception->getMessage());
             } catch (RequestException $exception) {
                 $this->setNodeHealthCheck($node, false);
                 throw $this->getException($exception->getResponse()
-                                                    ->getStatusCode())
-                           ->setMessage($exception->getMessage());
+                    ->getStatusCode())
+                    ->setMessage($exception->getMessage());
             } catch (TypesenseClientError $exception) {
                 $this->setNodeHealthCheck($node, false);
                 throw $exception;
@@ -225,15 +227,15 @@ class ApiCall
     private function getRequestOptions(): array
     {
         return [
-          'headers'         => [
-            self::API_KEY_HEADER_NAME => $this->config->getApiKey(),
-          ],
-          'connect_timeout' => $this->config->getConnectionTimeoutSeconds(),
+            'headers' => [
+                self::API_KEY_HEADER_NAME => $this->config->getApiKey(),
+            ],
+            'connect_timeout' => $this->config->getConnectionTimeoutSeconds(),
         ];
     }
 
     /**
-     * @param  \Typesense\Lib\Node  $node
+     * @param \Typesense\Lib\Node $node
      *
      * @return bool
      */
@@ -249,8 +251,8 @@ class ApiCall
     }
 
     /**
-     * @param  \Typesense\Lib\Node  $node
-     * @param  bool  $isHealthy
+     * @param \Typesense\Lib\Node $node
+     * @param bool $isHealthy
      */
     public function setNodeHealthCheck(Node $node, bool $isHealthy): void
     {
@@ -289,7 +291,7 @@ class ApiCall
     }
 
     /**
-     * @param  int  $httpCode
+     * @param int $httpCode
      *
      * @return \Typesense\Exceptions\TypesenseClientError
      */
@@ -316,5 +318,4 @@ class ApiCall
                 return new TypesenseClientError();
         }
     }
-
 }

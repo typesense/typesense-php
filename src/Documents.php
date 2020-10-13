@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Documents
@@ -39,8 +39,8 @@ class Documents implements \ArrayAccess
     /**
      * Documents constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  string  $collectionName
+     * @param \Typesense\Lib\Configuration $config
+     * @param string $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
     {
@@ -50,7 +50,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  string  $action
+     * @param string $action
      *
      * @return string
      */
@@ -60,7 +60,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  array  $document
+     * @param array $document
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -71,7 +71,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  array  $documents
+     * @param array $documents
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException|\JsonException
@@ -85,7 +85,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  string  $documents
+     * @param string $documents
      *
      * @return string
      * @throws \Typesense\Exceptions\TypesenseClientError
@@ -106,7 +106,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  array  $searchParams
+     * @param array $searchParams
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -117,7 +117,7 @@ class Documents implements \ArrayAccess
     }
 
     /**
-     * @param  mixed  $documentId
+     * @param mixed $documentId
      *
      * @return bool
      */
@@ -155,5 +155,4 @@ class Documents implements \ArrayAccess
     {
         $this->documents[$offset] = $value;
     }
-
 }

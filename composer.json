@@ -34,10 +34,15 @@
     "guzzlehttp/guzzle": "^7.0",
     "ext-json": "*"
   },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
+  },
   "scripts": {
     "typesenseServer": [
       "Composer\\Config::disableProcessTimeout",
       "docker run -i -p 8108:8108 -v/tmp/typesense-server-data-1c/:/data typesense/typesense:0.15.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors"
-    ]
+    ],
+    "lint": "phpcs -v",
+    "lint:fix": "phpcbf"
   }
 }

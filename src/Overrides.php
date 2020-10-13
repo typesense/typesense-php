@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Overrides
@@ -39,8 +39,8 @@ class Overrides implements \ArrayAccess
     /**
      * Overrides constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  string  $collectionName
+     * @param \Typesense\Lib\Configuration $config
+     * @param string $collectionName
      */
     public function __construct(Configuration $config, string $collectionName)
     {
@@ -50,7 +50,7 @@ class Overrides implements \ArrayAccess
     }
 
     /**
-     * @param  string  $overrideId
+     * @param string $overrideId
      *
      * @return string
      */
@@ -60,8 +60,8 @@ class Overrides implements \ArrayAccess
     }
 
     /**
-     * @param  string  $documentId
-     * @param  array  $config
+     * @param string $documentId
+     * @param array $config
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -115,5 +115,4 @@ class Overrides implements \ArrayAccess
     {
         unset($this->overrides[$documentId]);
     }
-
 }

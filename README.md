@@ -18,7 +18,7 @@ See detailed [API documentation](https://typesense.org/api).
 
 ## Compatibility
 
-| Typesense Server | typesense-ruby |
+| Typesense Server | typesense-php |
 |------------------|----------------|
 | \>= v0.15.0 | \>= v2.0.4 |
 | \>= v0.12.0 | \>= v2.0.0 |
@@ -27,6 +27,20 @@ See detailed [API documentation](https://typesense.org/api).
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/typesense/typesense-php].
+
+## Development
+
+Run linter:
+
+```shell script
+composer run-script lint:fix
+```
+
+Run Typesense Server:
+
+```shell script
+composer run-script typesenseServer
+```
 
 ## Credits
 

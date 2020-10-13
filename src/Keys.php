@@ -34,8 +34,8 @@ class Keys implements \ArrayAccess
     /**
      * Keys constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  \Typesense\ApiCall  $apiCall
+     * @param \Typesense\Lib\Configuration $config
+     * @param \Typesense\ApiCall $apiCall
      */
     public function __construct(Configuration $config)
     {
@@ -44,7 +44,7 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  array  $schema
+     * @param array $schema
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -55,17 +55,18 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  string  $searchKey
-     * @param  array  $parameters
+     * @param string $searchKey
+     * @param array $parameters
      *
      * @return string
      * @throws \JsonException
      */
     public function generateScopedSearchKey(
-      string $searchKey, array $parameters
+        string $searchKey,
+        array $parameters
     ): string {
         $paramStr     = json_encode($parameters, JSON_THROW_ON_ERROR);
-        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey), TRUE));
+        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey), true));
         $keyPrefix    = substr($searchKey, 0, 4);
         $rawScopedKey = sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);
         return base64_encode(utf8_encode($rawScopedKey));
@@ -81,7 +82,7 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  mixed  $offset
+     * @param mixed $offset
      *
      * @return bool
      */
@@ -91,7 +92,7 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  mixed  $offset
+     * @param mixed $offset
      *
      * @return \Typesense\Key
      */
@@ -105,8 +106,8 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  mixed  $offset
-     * @param  mixed  $value
+     * @param mixed $offset
+     * @param mixed $value
      */
     public function offsetSet($offset, $value): void
     {
@@ -114,11 +115,10 @@ class Keys implements \ArrayAccess
     }
 
     /**
-     * @param  mixed  $offset
+     * @param mixed $offset
      */
     public function offsetUnset($offset): void
     {
         unset($this->keys[$offset]);
     }
-
 }

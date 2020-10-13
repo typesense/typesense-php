@@ -19,5 +19,4 @@ class TypesenseClientError extends Exception
         $this->message = $message;
         return $this;
     }
-
 }

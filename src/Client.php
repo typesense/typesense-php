@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Client
@@ -37,7 +37,7 @@ class Client
     /**
      * Client constructor.
      *
-     * @param  array  $config
+     * @param array $config
      *
      * @throws \Typesense\Exceptions\ConfigError
      */
@@ -72,5 +72,4 @@ class Client
     {
         return $this->keys;
     }
-
 }

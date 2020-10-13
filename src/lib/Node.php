@@ -45,13 +45,16 @@ class Node
     /**
      * Node constructor.
      *
-     * @param  string  $host
-     * @param  string  $port
-     * @param  string  $path
-     * @param  string  $protocol
+     * @param string $host
+     * @param string $port
+     * @param string $path
+     * @param string $protocol
      */
     public function __construct(
-      string $host, string $port, string $path, string $protocol
+        string $host,
+        string $port,
+        string $path,
+        string $protocol
     ) {
         $this->host         = $host;
         $this->port         = $port;
@@ -77,7 +80,7 @@ class Node
     }
 
     /**
-     * @param  bool  $healthy
+     * @param bool $healthy
      */
     public function setHealthy(bool $healthy): void
     {
@@ -93,11 +96,10 @@ class Node
     }
 
     /**
-     * @param  int  $lastAccessTs
+     * @param int $lastAccessTs
      */
     public function setLastAccessTs(int $lastAccessTs): void
     {
         $this->lastAccessTs = $lastAccessTs;
     }
-
 }

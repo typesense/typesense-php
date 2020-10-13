@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Collections
@@ -60,7 +60,7 @@ class Collections implements \ArrayAccess
     }
 
     /**
-     * @param  array  $schema
+     * @param array $schema
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -114,5 +114,4 @@ class Collections implements \ArrayAccess
     {
         unset($this->collections[$offset]);
     }
-
 }

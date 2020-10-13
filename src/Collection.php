@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Collection
@@ -95,5 +95,4 @@ class Collection
     {
         return $this->apiCall->delete($this->endPointPath());
     }
-
 }

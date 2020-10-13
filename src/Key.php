@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Key
@@ -32,12 +32,14 @@ class Key
     /**
      * Key constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  \Typesense\ApiCall  $apiCall
-     * @param  string  $keyId
+     * @param \Typesense\Lib\Configuration $config
+     * @param \Typesense\ApiCall $apiCall
+     * @param string $keyId
      */
     public function __construct(
-      Configuration $config, ApiCall $apiCall, string $keyId
+        Configuration $config,
+        ApiCall $apiCall,
+        string $keyId
     ) {
         $this->config  = $config;
         $this->apiCall = $apiCall;
@@ -69,5 +71,4 @@ class Key
     {
         return $this->apiCall->delete($this->endpointPath());
     }
-
 }

@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Aliases
@@ -34,7 +34,7 @@ class Aliases implements \ArrayAccess
     /**
      * Aliases constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
+     * @param \Typesense\Lib\Configuration $config
      */
     public function __construct(Configuration $config)
     {
@@ -43,7 +43,7 @@ class Aliases implements \ArrayAccess
     }
 
     /**
-     * @param  string  $aliasName
+     * @param string $aliasName
      *
      * @return string
      */
@@ -53,8 +53,8 @@ class Aliases implements \ArrayAccess
     }
 
     /**
-     * @param  string  $name
-     * @param  array  $mapping
+     * @param string $name
+     * @param array $mapping
      *
      * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError|\GuzzleHttp\Exception\GuzzleException
@@ -126,5 +126,4 @@ class Aliases implements \ArrayAccess
     {
         unset($this->aliases[$offset]);
     }
-
 }

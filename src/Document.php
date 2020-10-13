@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Document
@@ -37,12 +37,14 @@ class Document
     /**
      * Document constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  string  $collectionName
-     * @param  string  $documentId
+     * @param \Typesense\Lib\Configuration $config
+     * @param string $collectionName
+     * @param string $documentId
      */
     public function __construct(
-      Configuration $config, string $collectionName, string $documentId
+        Configuration $config,
+        string $collectionName,
+        string $documentId
     ) {
         $this->config         = $config;
         $this->collectionName = $collectionName;
@@ -53,7 +55,7 @@ class Document
     /**
      * @return string
      */
-    private function endpoint_path(): string
+    private function endpointPath(): string
     {
         return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, Documents::RESOURCE_PATH, $this->documentId);
     }
@@ -64,7 +66,7 @@ class Document
      */
     public function retrieve(): array
     {
-        return $this->apiCall->get($this->endpoint_path(), []);
+        return $this->apiCall->get($this->endpointPath(), []);
     }
 
     /**
@@ -73,7 +75,6 @@ class Document
      */
     public function delete(): array
     {
-        return $this->apiCall->delete($this->endpoint_path());
+        return $this->apiCall->delete($this->endpointPath());
     }
-
 }

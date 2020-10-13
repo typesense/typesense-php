@@ -2,7 +2,7 @@
 
 namespace Typesense\Lib;
 
-use \Typesense\Exceptions\ConfigError;
+use Typesense\Exceptions\ConfigError;
 
 /**
  * Class Configuration
@@ -52,7 +52,7 @@ class Configuration
     /**
      * Configuration constructor.
      *
-     * @param  array  $config
+     * @param array $config
      *
      * @throws \Typesense\Exceptions\ConfigError
      */
@@ -66,21 +66,21 @@ class Configuration
             $this->nodes[] = new Node($node['host'], $node['port'], $node['path'] ?? '', $node['protocol']);
         }
 
-        $nearestNode = $config['nearest_node'] ?? null;
+        $nearestNode       = $config['nearest_node'] ?? null;
         $this->nearestNode = null;
         if (!is_null($nearestNode)) {
             $this->nearestNode = new Node($nearestNode['host'], $nearestNode['port'], $nearestNode['path'] ?? '', $nearestNode['protocol']);
         }
 
-        $this->apiKey                     = $config['api_key'] ?? '';
-        $this->connectionTimeoutSeconds   = (float) ($config['connection_timeout_seconds'] ?? 1.0);
-        $this->healthCheckIntervalSeconds = (int) ($config['healthcheck_interval_seconds'] ?? 60);
-        $this->numRetries                 = (float) ($config['num_retries'] ?? 3);
-        $this->retryIntervalSeconds       = (float) ($config['retry_interval_seconds'] ?? 1.0);
+        $this->apiKey = $config['api_key'] ?? '';
+        $this->connectionTimeoutSeconds   = (float)($config['connection_timeout_seconds'] ?? 1.0);
+        $this->healthCheckIntervalSeconds = (int)($config['healthcheck_interval_seconds'] ?? 60);
+        $this->numRetries           = (float)($config['num_retries'] ?? 3);
+        $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
     }
 
     /**
-     * @param  array  $config
+     * @param array $config
      *
      * @throws \Typesense\Exceptions\ConfigError
      */
@@ -108,16 +108,16 @@ class Configuration
     }
 
     /**
-     * @param  array  $node
+     * @param array $node
      *
      * @return bool
      */
     public function validateNodeFields(array $node): bool
     {
         $keys = [
-          'host',
-          'port',
-          'protocol',
+            'host',
+            'port',
+            'protocol',
         ];
         return !array_diff_key(array_flip($keys), $node);
     }
@@ -177,5 +177,4 @@ class Configuration
     {
         return $this->healthCheckIntervalSeconds;
     }
-
 }

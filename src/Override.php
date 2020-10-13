@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Override
@@ -38,12 +37,14 @@ class Override
     /**
      * Override constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  string  $collectionName
-     * @param  int  $overrideId
+     * @param \Typesense\Lib\Configuration $config
+     * @param string $collectionName
+     * @param int $overrideId
      */
     public function __construct(
-      Configuration $config, string $collectionName, string $overrideId
+        Configuration $config,
+        string $collectionName,
+        string $overrideId
     ) {
         $this->config         = $config;
         $this->collectionName = $collectionName;
@@ -76,5 +77,4 @@ class Override
     {
         return $this->apiCall->delete($this->endPointPath());
     }
-
 }

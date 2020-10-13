@@ -2,7 +2,7 @@
 
 include '../vendor/autoload.php';
 
-use \Typesense\Client;
+use Typesense\Client;
 
 try {
     $client = new Client(

@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use \Typesense\Lib\Configuration;
+use Typesense\Lib\Configuration;
 
 /**
  * Class Alias
@@ -32,8 +32,8 @@ class Alias
     /**
      * Alias constructor.
      *
-     * @param  \Typesense\Lib\Configuration  $config
-     * @param  string  $name
+     * @param \Typesense\Lib\Configuration $config
+     * @param string $name
      */
     public function __construct(Configuration $config, string $name)
     {
@@ -67,5 +67,4 @@ class Alias
     {
         return $this->apiCall->delete($this->endPointPath());
     }
-
 }
