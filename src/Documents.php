@@ -56,22 +56,24 @@ class Documents implements \ArrayAccess
 
     /**
      * @param array $document
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function create(array $document): array
+    public function create(array $document, array $options = []): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document);
+        return $this->apiCall->post($this->endPointPath(''), $document, true, $options);
     }
 
     /**
      * @param array $documents
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|GuzzleException|\JsonException
      */
-    public function createMany(array $documents): array
+    public function createMany(array $documents, array $options = []): array
     {
         $res = $this->import(
             implode(
@@ -80,7 +82,8 @@ class Documents implements \ArrayAccess
                     static fn(array $document) => json_encode($document, JSON_THROW_ON_ERROR),
                     $documents
                 )
-            )
+            ),
+            $options
         );
         return array_map(static function ($item) {
             return json_decode($item, true, 512, JSON_THROW_ON_ERROR);
@@ -89,14 +92,15 @@ class Documents implements \ArrayAccess
 
     /**
      * @param string $documents
+     * @param array $options
      *
      * @return string
      * @throws TypesenseClientError
      * @throws GuzzleException
      */
-    public function import(string $documents): string
+    public function import(string $documents, array $options = []): string
     {
-        return $this->apiCall->post($this->endPointPath('import'), $documents, false);
+        return $this->apiCall->post($this->endPointPath('import'), $documents, false, $options);
     }
 
     /**

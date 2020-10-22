@@ -104,12 +104,40 @@ try {
             ]
         )
     );
+
+    // You can also upsert a document, by passing an upsert => true option:
+    //$client->collections['books']->documents->create(
+    //    [
+    //        'id' => '1',
+    //        'original_publication_year' => 2008,
+    //        'authors' => [
+    //            'Suzanne Collins',
+    //        ],
+    //        'average_rating' => 4.34,
+    //        'publication_year' => 2008,
+    //        'publication_year_facet' => '2008',
+    //        'authors_facet' => [
+    //            'Suzanne Collins',
+    //        ],
+    //        'title' => 'The Hunger Games',
+    //        'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
+    //        'ratings_count' => 4780653,
+    //    ],
+    //    ['upsert' => true]
+    //);
     echo "--------Create Document-------\n";
     echo "\n";
     echo "--------Export Documents-------\n";
     $exportedDocStrs = $client->collections['books']->documents->export();
     print_r($exportedDocStrs);
     echo "--------Export Documents-------\n";
+    echo "\n";
+    echo "--------Update Single Document-------\n";
+    print_r($client->collections['books']->documents['1']->update([
+        'id' => '1',
+        'average_rating' => 4.5,
+    ]));
+    echo "--------Update Single Document-------\n";
     echo "\n";
     echo "--------Fetch Single Document-------\n";
     print_r($client->collections['books']->documents['1']->retrieve());
@@ -140,7 +168,19 @@ try {
     $importRes =
         $client->collections['books']->documents->createMany($docsToImport);
     print_r($importRes);
+
+    // Or if you have documents in JSONL format, and want to save the overhead of parsing JSON,
+    // you can also use the import method:
+    // $client->collections['books']->documents->import($documentsJSONLString);
     echo "--------Import Documents-------\n";
+    echo "\n";
+    echo "--------Upsert Documents-------\n";
+    $upsertRes =
+        $client->collections['books']->documents->createMany($docsToImport, [
+            'upsert' => true
+        ]);
+    print_r($upsertRes);
+    echo "--------Upsert Documents-------\n";
     echo "\n";
     echo "--------Delete Collection-------\n";
     print_r($client->collections['books']->delete());

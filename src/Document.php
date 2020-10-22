@@ -68,6 +68,17 @@ class Document
     }
 
     /**
+     * @param array $partialDocument
+     *
+     * @return array
+     * @throws TypesenseClientError|GuzzleException
+     */
+    public function update(array $partialDocument): array
+    {
+        return $this->apiCall->put($this->endpointPath(), $partialDocument);
+    }
+
+    /**
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */

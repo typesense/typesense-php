@@ -96,7 +96,7 @@ class ApiCall
     public function get(string $endPoint, array $params, bool $asJson = true)
     {
         return $this->makeRequest('get', $endPoint, $asJson, [
-            'data' => $params ?? [],
+            'query' => $params ?? [],
         ]);
     }
 
@@ -105,15 +105,17 @@ class ApiCall
      * @param mixed $body
      *
      * @param bool $asJson
+     * @param array $queryParameters
      *
      * @return array|string
      * @throws TypesenseClientError
      * @throws GuzzleException
      */
-    public function post(string $endPoint, $body, bool $asJson = true)
+    public function post(string $endPoint, $body, bool $asJson = true, array $queryParameters = [])
     {
         return $this->makeRequest('post', $endPoint, $asJson, [
             'data' => $body ?? [],
+            'query' => $queryParameters ?? []
         ]);
     }
 
@@ -121,25 +123,31 @@ class ApiCall
      * @param string $endPoint
      * @param array $body
      *
+     * @param array $queryParameters
+     *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function put(string $endPoint, array $body): array
+    public function put(string $endPoint, array $body, array $queryParameters = []): array
     {
         return $this->makeRequest('put', $endPoint, true, [
             'data' => $body ?? [],
+            'query' => $queryParameters ?? []
         ]);
     }
 
     /**
      * @param string $endPoint
+     * @param array $queryParameters
      *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function delete(string $endPoint): array
+    public function delete(string $endPoint, array $queryParameters = []): array
     {
-        return $this->makeRequest('delete', $endPoint, true, []);
+        return $this->makeRequest('delete', $endPoint, true, [
+            'query' => $queryParameters ?? []
+        ]);
     }
 
     /**
@@ -166,13 +174,20 @@ class ApiCall
                 $url   = $node->url() . $endPoint;
                 $reqOp = $this->getRequestOptions();
                 if (isset($options['data'])) {
-                    if ($method === 'get') {
-                        $reqOp['query'] = http_build_query($options['data']);
-                    } elseif (is_string($options['data'])) {
+                    if (is_string($options['data'])) {
                         $reqOp['body'] = $options['data'];
                     } else {
                         $reqOp['json'] = $options['data'];
                     }
+                }
+
+                if (isset($options['query'])) {
+                    foreach ($options['query'] as $key => $value) :
+                        if (is_bool($value)) {
+                            $options['query'][$key] = ($value) ? 'true' : 'false';
+                        }
+                    endforeach;
+                    $reqOp['query'] = http_build_query($options['query']);
                 }
 
                 $response = $this->client->request($method, $url, $reqOp);
