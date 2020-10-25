@@ -180,7 +180,15 @@ try {
     echo "--------Upsert Documents-------\n";
     $upsertRes =
         $client->collections['books']->documents->import($docsToImport, [
-            'mode' => 'upsert'
+            'action' => 'upsert'
+        ]);
+    print_r($upsertRes);
+    echo "--------Upsert Documents-------\n";
+    echo "\n";
+    echo "--------Update Documents-------\n";
+    $upsertRes =
+        $client->collections['books']->documents->import($docsToImport, [
+            'action' => 'update'
         ]);
     print_r($upsertRes);
     echo "--------Upsert Documents-------\n";

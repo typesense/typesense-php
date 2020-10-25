@@ -73,7 +73,7 @@ class Documents implements \ArrayAccess
      */
     public function upsert(array $document): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document, true, ['mode' => 'upsert']);
+        return $this->apiCall->post($this->endPointPath(''), $document, true, ['action' => 'upsert']);
     }
 
     /**
@@ -84,7 +84,7 @@ class Documents implements \ArrayAccess
      */
     public function update(array $document): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document, true, ['mode' => 'update']);
+        return $this->apiCall->post($this->endPointPath(''), $document, true, ['action' => 'update']);
     }
 
     /**
