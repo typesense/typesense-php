@@ -9,12 +9,12 @@ use Typesense\Client;
 try {
     $client = new Client(
         [
-            'api_key' => 'jOr5q242ucEQHAbjMpu3bo6NEK5nKS00',
+            'api_key' => 'xyz',
             'nodes' => [
                 [
-                    'host' => '5wgzaxkobfc2vldtp-1.a1.typesense.net',
-                    'port' => '443',
-                    'protocol' => 'https',
+                    'host' => 'localhost',
+                    'port' => '8108',
+                    'protocol' => 'http',
                 ],
             ],
             'connection_timeout_seconds' => 2,
