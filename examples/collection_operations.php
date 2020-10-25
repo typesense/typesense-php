@@ -9,12 +9,12 @@ use Typesense\Client;
 try {
     $client = new Client(
         [
-            'api_key' => 'xyz',
+            'api_key' => 'jOr5q242ucEQHAbjMpu3bo6NEK5nKS00',
             'nodes' => [
                 [
-                    'host' => 'localhost',
-                    'port' => '8108',
-                    'protocol' => 'http',
+                    'host' => '5wgzaxkobfc2vldtp-1.a1.typesense.net',
+                    'port' => '443',
+                    'protocol' => 'https',
                 ],
             ],
             'connection_timeout_seconds' => 2,
@@ -107,29 +107,29 @@ try {
     echo "--------Create Document-------\n";
     echo "\n";
 
-//    echo "--------Upsert Document-------\n";
-//    print_r(
-//        $client->collections['books']->documents->upsert(
-//            [
-//                'id' => '1',
-//                'original_publication_year' => 2008,
-//                'authors' => [
-//                    'Suzanne Collins',
-//                ],
-//                'average_rating' => 4.34,
-//                'publication_year' => 2008,
-//                'publication_year_facet' => '2008',
-//                'authors_facet' => [
-//                    'Suzanne Collins',
-//                ],
-//                'title' => 'The Hunger Games',
-//                'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
-//                'ratings_count' => 4780653,
-//            ]
-//        )
-//    );
-//    echo "--------Upsert Document-------\n";
-//    echo "\n";
+    echo "--------Upsert Document-------\n";
+    print_r(
+        $client->collections['books']->documents->upsert(
+            [
+                'id' => '1',
+                'original_publication_year' => 2008,
+                'authors' => [
+                    'Suzanne Collins',
+                ],
+                'average_rating' => 4.6,
+                'publication_year' => 2008,
+                'publication_year_facet' => '2008',
+                'authors_facet' => [
+                    'Suzanne Collins',
+                ],
+                'title' => 'The Hunger Games',
+                'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
+                'ratings_count' => 4780653,
+            ]
+        )
+    );
+    echo "--------Upsert Document-------\n";
+    echo "\n";
 
     echo "--------Export Documents-------\n";
     $exportedDocStrs = $client->collections['books']->documents->export();
