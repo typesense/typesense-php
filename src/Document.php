@@ -75,7 +75,7 @@ class Document
      */
     public function update(array $partialDocument): array
     {
-        return $this->apiCall->put($this->endpointPath(), $partialDocument);
+        return $this->apiCall->patch($this->endpointPath(), $partialDocument);
     }
 
     /**

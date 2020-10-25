@@ -3,6 +3,9 @@
 namespace Typesense\Lib;
 
 use Typesense\Exceptions\ConfigError;
+use Psr\Log\LoggerInterface;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * Class Configuration
@@ -50,6 +53,16 @@ class Configuration
     private int $healthCheckIntervalSeconds;
 
     /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * @var int
+     */
+    private int $logLevel;
+
+    /**
      * Configuration constructor.
      *
      * @param array $config
@@ -83,6 +96,10 @@ class Configuration
         $this->healthCheckIntervalSeconds = (int)($config['healthcheck_interval_seconds'] ?? 60);
         $this->numRetries           = (float)($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
+
+        $this->logLevel = $config->logLevel ?? Logger::WARNING;
+        $this->logger = new Logger('typesense');
+        $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
     }
 
     /**
@@ -186,5 +203,13 @@ class Configuration
     public function getHealthCheckIntervalSeconds()
     {
         return $this->healthCheckIntervalSeconds;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
     }
 }

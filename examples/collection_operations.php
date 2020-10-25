@@ -104,29 +104,33 @@ try {
             ]
         )
     );
-
-    // You can also upsert a document, by passing an upsert => true option:
-    //$client->collections['books']->documents->create(
-    //    [
-    //        'id' => '1',
-    //        'original_publication_year' => 2008,
-    //        'authors' => [
-    //            'Suzanne Collins',
-    //        ],
-    //        'average_rating' => 4.34,
-    //        'publication_year' => 2008,
-    //        'publication_year_facet' => '2008',
-    //        'authors_facet' => [
-    //            'Suzanne Collins',
-    //        ],
-    //        'title' => 'The Hunger Games',
-    //        'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
-    //        'ratings_count' => 4780653,
-    //    ],
-    //    ['upsert' => true]
-    //);
     echo "--------Create Document-------\n";
     echo "\n";
+
+//    echo "--------Upsert Document-------\n";
+//    print_r(
+//        $client->collections['books']->documents->upsert(
+//            [
+//                'id' => '1',
+//                'original_publication_year' => 2008,
+//                'authors' => [
+//                    'Suzanne Collins',
+//                ],
+//                'average_rating' => 4.34,
+//                'publication_year' => 2008,
+//                'publication_year_facet' => '2008',
+//                'authors_facet' => [
+//                    'Suzanne Collins',
+//                ],
+//                'title' => 'The Hunger Games',
+//                'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
+//                'ratings_count' => 4780653,
+//            ]
+//        )
+//    );
+//    echo "--------Upsert Document-------\n";
+//    echo "\n";
+
     echo "--------Export Documents-------\n";
     $exportedDocStrs = $client->collections['books']->documents->export();
     print_r($exportedDocStrs);
@@ -134,7 +138,6 @@ try {
     echo "\n";
     echo "--------Update Single Document-------\n";
     print_r($client->collections['books']->documents['1']->update([
-        'id' => '1',
         'average_rating' => 4.5,
     ]));
     echo "--------Update Single Document-------\n";
@@ -160,24 +163,24 @@ try {
     echo "--------Delete Document-------\n";
     echo "\n";
     echo "--------Import Documents-------\n";
-    $docsToImport         = [];
+    $docsToImport = [];
     $exportedDocStrsArray = explode('\n', $exportedDocStrs);
     foreach ($exportedDocStrsArray as $exportedDocStr) {
         $docsToImport[] = json_decode($exportedDocStr, true);
     }
     $importRes =
-        $client->collections['books']->documents->createMany($docsToImport);
+        $client->collections['books']->documents->import($docsToImport);
     print_r($importRes);
 
     // Or if you have documents in JSONL format, and want to save the overhead of parsing JSON,
-    // you can also use the import method:
-    // $client->collections['books']->documents->import($documentsJSONLString);
+    // you can also pass in a JSONL string of documents
+    // $client->collections['books']->documents->import($exportedDocStrsArray);
     echo "--------Import Documents-------\n";
     echo "\n";
     echo "--------Upsert Documents-------\n";
     $upsertRes =
-        $client->collections['books']->documents->createMany($docsToImport, [
-            'upsert' => true
+        $client->collections['books']->documents->import($docsToImport, [
+            'mode' => 'upsert'
         ]);
     print_r($upsertRes);
     echo "--------Upsert Documents-------\n";

@@ -4,6 +4,7 @@ namespace Typesense;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Typesense\Lib\Node;
 use Typesense\Lib\Configuration;
 use GuzzleHttp\Exception\ClientException;
@@ -56,6 +57,11 @@ class ApiCall
     private int $nodeIndex;
 
     /**
+     * @var LoggerInterface
+     */
+    public LoggerInterface $logger;
+
+    /**
      * ApiCall constructor.
      *
      * @param Configuration $config
@@ -63,6 +69,7 @@ class ApiCall
     public function __construct(Configuration $config)
     {
         $this->config      = $config;
+        $this->logger      = $config->getLogger();
         $this->client      = new \GuzzleHttp\Client();
         self::$nodes       = $this->config->getNodes();
         self::$nearestNode = $this->config->getNearestNode();
@@ -123,14 +130,15 @@ class ApiCall
      * @param string $endPoint
      * @param array $body
      *
+     * @param bool $asJson
      * @param array $queryParameters
      *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function put(string $endPoint, array $body, array $queryParameters = []): array
+    public function put(string $endPoint, array $body, bool $asJson = true, array $queryParameters = []): array
     {
-        return $this->makeRequest('put', $endPoint, true, [
+        return $this->makeRequest('put', $endPoint, $asJson, [
             'data' => $body ?? [],
             'query' => $queryParameters ?? []
         ]);
@@ -138,14 +146,34 @@ class ApiCall
 
     /**
      * @param string $endPoint
+     * @param array $body
+     *
+     * @param bool $asJson
      * @param array $queryParameters
      *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function delete(string $endPoint, array $queryParameters = []): array
+    public function patch(string $endPoint, array $body, bool $asJson = true, array $queryParameters = []): array
     {
-        return $this->makeRequest('delete', $endPoint, true, [
+        return $this->makeRequest('patch', $endPoint, $asJson, [
+            'data' => $body ?? [],
+            'query' => $queryParameters ?? []
+        ]);
+    }
+
+    /**
+     * @param string $endPoint
+     *
+     * @param bool $asJson
+     * @param array $queryParameters
+     *
+     * @return array
+     * @throws TypesenseClientError|GuzzleException
+     */
+    public function delete(string $endPoint, bool $asJson = true, array $queryParameters = []): array
+    {
+        return $this->makeRequest('delete', $endPoint, $asJson, [
             'query' => $queryParameters ?? []
         ]);
     }
@@ -329,5 +357,13 @@ class ApiCall
             default:
                 return new TypesenseClientError();
         }
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
     }
 }
