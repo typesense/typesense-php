@@ -32,7 +32,8 @@
   "require": {
     "php": ">=7.4",
     "guzzlehttp/guzzle": "^7.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "monolog/monolog": "^2.1"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "3.*"

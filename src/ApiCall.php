@@ -4,6 +4,7 @@ namespace Typesense;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Typesense\Lib\Node;
 use Typesense\Lib\Configuration;
 use GuzzleHttp\Exception\ClientException;
@@ -56,6 +57,11 @@ class ApiCall
     private int $nodeIndex;
 
     /**
+     * @var LoggerInterface
+     */
+    public LoggerInterface $logger;
+
+    /**
      * ApiCall constructor.
      *
      * @param Configuration $config
@@ -63,6 +69,7 @@ class ApiCall
     public function __construct(Configuration $config)
     {
         $this->config      = $config;
+        $this->logger      = $config->getLogger();
         $this->client      = new \GuzzleHttp\Client();
         self::$nodes       = $this->config->getNodes();
         self::$nearestNode = $this->config->getNearestNode();
@@ -96,7 +103,7 @@ class ApiCall
     public function get(string $endPoint, array $params, bool $asJson = true)
     {
         return $this->makeRequest('get', $endPoint, $asJson, [
-            'data' => $params ?? [],
+            'query' => $params ?? [],
         ]);
     }
 
@@ -105,15 +112,17 @@ class ApiCall
      * @param mixed $body
      *
      * @param bool $asJson
+     * @param array $queryParameters
      *
      * @return array|string
      * @throws TypesenseClientError
      * @throws GuzzleException
      */
-    public function post(string $endPoint, $body, bool $asJson = true)
+    public function post(string $endPoint, $body, bool $asJson = true, array $queryParameters = [])
     {
         return $this->makeRequest('post', $endPoint, $asJson, [
             'data' => $body ?? [],
+            'query' => $queryParameters ?? []
         ]);
     }
 
@@ -121,25 +130,52 @@ class ApiCall
      * @param string $endPoint
      * @param array $body
      *
+     * @param bool $asJson
+     * @param array $queryParameters
+     *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function put(string $endPoint, array $body): array
+    public function put(string $endPoint, array $body, bool $asJson = true, array $queryParameters = []): array
     {
-        return $this->makeRequest('put', $endPoint, true, [
+        return $this->makeRequest('put', $endPoint, $asJson, [
             'data' => $body ?? [],
+            'query' => $queryParameters ?? []
+        ]);
+    }
+
+    /**
+     * @param string $endPoint
+     * @param array $body
+     *
+     * @param bool $asJson
+     * @param array $queryParameters
+     *
+     * @return array
+     * @throws TypesenseClientError|GuzzleException
+     */
+    public function patch(string $endPoint, array $body, bool $asJson = true, array $queryParameters = []): array
+    {
+        return $this->makeRequest('patch', $endPoint, $asJson, [
+            'data' => $body ?? [],
+            'query' => $queryParameters ?? []
         ]);
     }
 
     /**
      * @param string $endPoint
      *
+     * @param bool $asJson
+     * @param array $queryParameters
+     *
      * @return array
      * @throws TypesenseClientError|GuzzleException
      */
-    public function delete(string $endPoint): array
+    public function delete(string $endPoint, bool $asJson = true, array $queryParameters = []): array
     {
-        return $this->makeRequest('delete', $endPoint, true, []);
+        return $this->makeRequest('delete', $endPoint, $asJson, [
+            'query' => $queryParameters ?? []
+        ]);
     }
 
     /**
@@ -166,13 +202,20 @@ class ApiCall
                 $url   = $node->url() . $endPoint;
                 $reqOp = $this->getRequestOptions();
                 if (isset($options['data'])) {
-                    if ($method === 'get') {
-                        $reqOp['query'] = http_build_query($options['data']);
-                    } elseif (is_string($options['data'])) {
+                    if (is_string($options['data'])) {
                         $reqOp['body'] = $options['data'];
                     } else {
                         $reqOp['json'] = $options['data'];
                     }
+                }
+
+                if (isset($options['query'])) {
+                    foreach ($options['query'] as $key => $value) :
+                        if (is_bool($value)) {
+                            $options['query'][$key] = ($value) ? 'true' : 'false';
+                        }
+                    endforeach;
+                    $reqOp['query'] = http_build_query($options['query']);
                 }
 
                 $response = $this->client->request($method, $url, $reqOp);
@@ -314,5 +357,13 @@ class ApiCall
             default:
                 return new TypesenseClientError();
         }
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
     }
 }
