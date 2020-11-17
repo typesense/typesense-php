@@ -41,7 +41,7 @@ class Documents implements \ArrayAccess
     public function __construct(string $collectionName, ApiCall $apiCall)
     {
         $this->collectionName = $collectionName;
-        $this->apiCall = $apiCall;
+        $this->apiCall        = $apiCall;
     }
 
     /**
@@ -148,6 +148,17 @@ class Documents implements \ArrayAccess
     public function export(): string
     {
         return $this->apiCall->get($this->endPointPath('export'), [], false);
+    }
+
+    /**
+     * @param array $queryParams
+     *
+     * @return array
+     * @throws TypesenseClientError|GuzzleException
+     */
+    public function delete(array $queryParams = []): array
+    {
+        return $this->apiCall->delete($this->endPointPath(), true, $queryParams);
     }
 
     /**

@@ -98,7 +98,7 @@ class Configuration
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
 
         $this->logLevel = $config->logLevel ?? Logger::WARNING;
-        $this->logger = new Logger('typesense');
+        $this->logger   = new Logger('typesense');
         $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
     }
 
