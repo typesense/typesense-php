@@ -163,7 +163,7 @@ try {
     echo "--------Delete Document-------\n";
     echo "\n";
     echo "--------Import Documents-------\n";
-    $docsToImport = [];
+    $docsToImport         = [];
     $exportedDocStrsArray = explode('\n', $exportedDocStrs);
     foreach ($exportedDocStrsArray as $exportedDocStr) {
         $docsToImport[] = json_decode($exportedDocStr, true);
@@ -192,6 +192,10 @@ try {
         ]);
     print_r($upsertRes);
     echo "--------Upsert Documents-------\n";
+    echo "\n";
+    echo "--------Bulk Delete Documents-------\n";
+    print_r($client->collections['books']->documents->delete(['filter_by' => 'publication_year:=2008']));
+    echo "--------Bulk Delete Documents-------\n";
     echo "\n";
     echo "--------Delete Collection-------\n";
     print_r($client->collections['books']->delete());
