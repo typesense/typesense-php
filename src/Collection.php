@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -75,7 +75,7 @@ class Collection
 
     /**
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function retrieve(): array
     {
@@ -84,7 +84,7 @@ class Collection
 
     /**
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function delete(): array
     {
