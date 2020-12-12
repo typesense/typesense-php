@@ -205,7 +205,7 @@ class ApiCall
                     if (is_string($options['data'])) {
                         $reqOp['body'] = $options['data'];
                     } else {
-                        $reqOp['json'] = $options['data'];
+                        $reqOp['body'] = \json_encode($options['data']);
                     }
                 }
 
