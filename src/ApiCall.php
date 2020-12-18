@@ -218,7 +218,12 @@ class ApiCall
                     $reqOp['query'] = http_build_query($options['query']);
                 }
 
-                $response = $this->client->send(\strtoupper($method), $url, $reqOp);
+                $response = $this->client->send(
+                    \strtoupper($method),
+                    $url . '?' . ($reqOp['query'] ?? ''),
+                    $reqOp['headers'] ?? [],
+                    $reqOp['body'] ?? null
+                );
 
                 $statusCode = $response->getStatusCode();
                 if (0 < $statusCode && $statusCode < 500) {
