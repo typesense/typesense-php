@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -51,14 +51,14 @@ class Documents implements \ArrayAccess
      */
     private function endPointPath(string $action = ''): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, self::RESOURCE_PATH, $action);
+        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, static::RESOURCE_PATH, $action);
     }
 
     /**
      * @param array $document
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function create(array $document): array
     {
@@ -69,7 +69,7 @@ class Documents implements \ArrayAccess
      * @param array $document
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function upsert(array $document): array
     {
@@ -80,7 +80,7 @@ class Documents implements \ArrayAccess
      * @param array $document
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function update(array $document): array
     {
@@ -92,7 +92,7 @@ class Documents implements \ArrayAccess
      * @param array $options
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException|\JsonException
+     * @throws TypesenseClientError|HttpClientException|\JsonException
      */
     public function createMany(array $documents, array $options = []): array
     {
@@ -143,7 +143,7 @@ class Documents implements \ArrayAccess
 
     /**
      * @return string
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function export(): string
     {
@@ -154,7 +154,7 @@ class Documents implements \ArrayAccess
      * @param array $queryParams
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function delete(array $queryParams = []): array
     {
@@ -165,7 +165,7 @@ class Documents implements \ArrayAccess
      * @param array $searchParams
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function search(array $searchParams): array
     {

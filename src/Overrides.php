@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -55,7 +55,7 @@ class Overrides implements \ArrayAccess
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
             $this->collectionName,
-            self::RESOURCE_PATH,
+            static::RESOURCE_PATH,
             $overrideId
         );
     }
@@ -65,7 +65,7 @@ class Overrides implements \ArrayAccess
      * @param array $config
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function upsert(string $documentId, array $config): array
     {
@@ -74,7 +74,7 @@ class Overrides implements \ArrayAccess
 
     /**
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function retrieve(): array
     {

@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -44,7 +44,7 @@ class Aliases implements \ArrayAccess
      */
     public function endPointPath(string $aliasName): string
     {
-        return sprintf('%s/%s', self::RESOURCE_PATH, $aliasName);
+        return sprintf('%s/%s', static::RESOURCE_PATH, $aliasName);
     }
 
     /**
@@ -52,7 +52,7 @@ class Aliases implements \ArrayAccess
      * @param array $mapping
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function upsert(string $name, array $mapping): array
     {
@@ -61,11 +61,11 @@ class Aliases implements \ArrayAccess
 
     /**
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function retrieve(): array
     {
-        return $this->apiCall->get(self::RESOURCE_PATH, []);
+        return $this->apiCall->get(static::RESOURCE_PATH, []);
     }
 
     /**

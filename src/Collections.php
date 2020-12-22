@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -58,20 +58,20 @@ class Collections implements \ArrayAccess
      * @param array $schema
      *
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function create(array $schema): array
     {
-        return $this->apiCall->post(self::RESOURCE_PATH, $schema);
+        return $this->apiCall->post(static::RESOURCE_PATH, $schema);
     }
 
     /**
      * @return array
-     * @throws TypesenseClientError|GuzzleException
+     * @throws TypesenseClientError|HttpClientException
      */
     public function retrieve(): array
     {
-        return $this->apiCall->get(self::RESOURCE_PATH, []);
+        return $this->apiCall->get(static::RESOURCE_PATH, []);
     }
 
     /**

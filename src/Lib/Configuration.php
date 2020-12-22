@@ -2,10 +2,14 @@
 
 namespace Typesense\Lib;
 
-use Typesense\Exceptions\ConfigError;
-use Psr\Log\LoggerInterface;
-use Monolog\Logger;
+use Http\Client\Common\HttpMethodsClient;
+use Http\Client\HttpClient;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\MessageFactoryDiscovery;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Typesense\Exceptions\ConfigError;
 
 /**
  * Class Configuration
@@ -26,11 +30,6 @@ class Configuration
      * @var Node|null
      */
     private ?Node $nearestNode;
-
-    /**
-     * @var float
-     */
-    private float $connectionTimeoutSeconds;
 
     /**
      * @var string
@@ -58,6 +57,11 @@ class Configuration
     private LoggerInterface $logger;
 
     /**
+     * @var null|HttpClient
+     */
+    private ?HttpClient $client = null;
+
+    /**
      * @var int
      */
     private int $logLevel;
@@ -81,7 +85,7 @@ class Configuration
 
         $nearestNode       = $config['nearest_node'] ?? null;
         $this->nearestNode = null;
-        if (!is_null($nearestNode)) {
+        if (null !== $nearestNode) {
             $this->nearestNode =
                 new Node(
                     $nearestNode['host'],
@@ -92,7 +96,6 @@ class Configuration
         }
 
         $this->apiKey = $config['api_key'] ?? '';
-        $this->connectionTimeoutSeconds   = (float)($config['connection_timeout_seconds'] ?? 1.0);
         $this->healthCheckIntervalSeconds = (int)($config['healthcheck_interval_seconds'] ?? 60);
         $this->numRetries           = (float)($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
@@ -100,6 +103,10 @@ class Configuration
         $this->logLevel = $config['log_level'] ?? Logger::WARNING;
         $this->logger   = new Logger('typesense');
         $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
+
+        if (true === \array_key_exists('client', $config) && $config['client'] instanceof HttpClient) {
+            $this->client = $config['client'];
+        }
     }
 
     /**
@@ -190,14 +197,6 @@ class Configuration
     }
 
     /**
-     * @return float
-     */
-    public function getConnectionTimeoutSeconds(): float
-    {
-        return $this->connectionTimeoutSeconds;
-    }
-
-    /**
      * @return float|mixed
      */
     public function getHealthCheckIntervalSeconds()
@@ -208,8 +207,19 @@ class Configuration
     /**
      * @return LoggerInterface
      */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function getClient(): HttpClient
+    {
+        return new HttpMethodsClient(
+            $this->client ?? HttpClientDiscovery::find(),
+            MessageFactoryDiscovery::find()
+        );
     }
 }
