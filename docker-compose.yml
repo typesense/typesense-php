@@ -7,7 +7,7 @@ services:
             TYPESENSE_DATA_DIR: /data
             TYPESENSE_API_KEY: xyz
         volumes:
-            - /tmp/typesense-server-data/:/data
+            - /tmp/typesense-server-data:/data
         ports:
             - 8108:8108
         restart: "no"

@@ -274,8 +274,7 @@ class ApiCall
         return [
             'headers' => [
                 static::API_KEY_HEADER_NAME => $this->config->getApiKey(),
-            ],
-            'connect_timeout' => $this->config->getConnectionTimeoutSeconds(),
+            ]
         ];
     }
 

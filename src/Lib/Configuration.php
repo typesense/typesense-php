@@ -32,11 +32,6 @@ class Configuration
     private ?Node $nearestNode;
 
     /**
-     * @var float
-     */
-    private float $connectionTimeoutSeconds;
-
-    /**
      * @var string
      */
     private string $apiKey;
@@ -101,7 +96,6 @@ class Configuration
         }
 
         $this->apiKey = $config['api_key'] ?? '';
-        $this->connectionTimeoutSeconds   = (float)($config['connection_timeout_seconds'] ?? 1.0);
         $this->healthCheckIntervalSeconds = (int)($config['healthcheck_interval_seconds'] ?? 60);
         $this->numRetries           = (float)($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
@@ -200,14 +194,6 @@ class Configuration
     public function getRetryIntervalSeconds(): float
     {
         return $this->retryIntervalSeconds;
-    }
-
-    /**
-     * @return float
-     */
-    public function getConnectionTimeoutSeconds(): float
-    {
-        return $this->connectionTimeoutSeconds;
     }
 
     /**

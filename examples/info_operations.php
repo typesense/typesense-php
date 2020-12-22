@@ -18,7 +18,6 @@ try {
                     'protocol' => 'http',
                 ],
             ],
-            'connection_timeout_seconds' => 2,
             'client' => new HttplugClient(),
         ]
     );
