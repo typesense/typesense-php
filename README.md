@@ -22,7 +22,8 @@ Typesense use [HTTPlug](http://httplug.io/). List of clients & adapters [here](h
 
 | Typesense Server | typesense-php |
 |------------------|----------------|
-| \>= v0.16.0 | \>= v4.2.0 |
+| \>= v0.18.0 | \>= v4.4.0 |
+| \>= v0.17.0 | \>= v4.2.0 |
 | \>= v0.16.0 | \>= v4.1.0 |
 | \>= v0.15.0 | \>= v4.0.0 |
 
