@@ -9,8 +9,6 @@ use Typesense\Exceptions\TypesenseClientError;
  * Class synonym
  *
  * @package \Typesense
- * @date    4/5/20
- * @author  Typesense <contact@typesense.org>
  */
 class Synonym
 {

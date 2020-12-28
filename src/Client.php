@@ -51,6 +51,11 @@ class Client
     public Health $health;
 
     /**
+     * @var Operations
+     */
+    public Operations $operations;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -73,6 +78,7 @@ class Client
         $this->debug       = new Debug($this->apiCall);
         $this->metrics     = new Metrics($this->apiCall);
         $this->health      = new Health($this->apiCall);
+        $this->operations  = new Operations($this->apiCall);
     }
 
     /**
@@ -121,5 +127,13 @@ class Client
     public function getHealth(): Health
     {
         return $this->health;
+    }
+
+    /**
+     * @return Operations
+     */
+    public function getOperations(): Operations
+    {
+        return $this->operations;
     }
 }
