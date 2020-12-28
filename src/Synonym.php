@@ -38,7 +38,7 @@ class Synonym
     public function __construct(string $collectionName, string $synonymId, ApiCall $apiCall)
     {
         $this->collectionName = $collectionName;
-        $this->synonymId     = $synonymId;
+        $this->synonymId      = $synonymId;
         $this->apiCall        = $apiCall;
     }
 

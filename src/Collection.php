@@ -52,7 +52,7 @@ class Collection
         $this->apiCall   = $apiCall;
         $this->documents = new Documents($name, $this->apiCall);
         $this->overrides = new Overrides($name, $this->apiCall);
-        $this->synonyms = new Synonyms($name, $this->apiCall);
+        $this->synonyms  = new Synonyms($name, $this->apiCall);
     }
 
     /**

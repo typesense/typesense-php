@@ -68,12 +68,12 @@ class ApiCall
      */
     public function __construct(Configuration $config)
     {
-        $this->config      = $config;
-        $this->logger      = $config->getLogger();
-        $this->client      = $config->getClient();
+        $this->config        = $config;
+        $this->logger        = $config->getLogger();
+        $this->client        = $config->getClient();
         static::$nodes       = $this->config->getNodes();
         static::$nearestNode = $this->config->getNearestNode();
-        $this->nodeIndex   = 0;
+        $this->nodeIndex     = 0;
         $this->initializeNodes();
     }
 
