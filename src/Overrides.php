@@ -61,15 +61,15 @@ class Overrides implements \ArrayAccess
     }
 
     /**
-     * @param string $documentId
+     * @param string $overrideId
      * @param array $config
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function upsert(string $documentId, array $config): array
+    public function upsert(string $overrideId, array $config): array
     {
-        return $this->apiCall->put($this->endPointPath($documentId), $config);
+        return $this->apiCall->put($this->endPointPath($overrideId), $config);
     }
 
     /**
@@ -84,36 +84,36 @@ class Overrides implements \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetExists($documentId): bool
+    public function offsetExists($overrideId): bool
     {
-        return isset($this->overrides[$documentId]);
+        return isset($this->overrides[$overrideId]);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetGet($documentId)
+    public function offsetGet($overrideId)
     {
-        if (!isset($this->overrides[$documentId])) {
-            $this->overrides[$documentId] = new Override($this->collectionName, $documentId, $this->apiCall);
+        if (!isset($this->overrides[$overrideId])) {
+            $this->overrides[$overrideId] = new Override($this->collectionName, $overrideId, $this->apiCall);
         }
 
-        return $this->overrides[$documentId];
+        return $this->overrides[$overrideId];
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetSet($documentId, $value): void
+    public function offsetSet($overrideId, $value): void
     {
-        $this->overrides[$documentId] = $value;
+        $this->overrides[$overrideId] = $value;
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset($documentId): void
+    public function offsetUnset($overrideId): void
     {
-        unset($this->overrides[$documentId]);
+        unset($this->overrides[$overrideId]);
     }
 }
