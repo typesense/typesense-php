@@ -36,6 +36,11 @@ class Collection
     public Overrides $overrides;
 
     /**
+     * @var Synonyms
+     */
+    public Synonyms $synonyms;
+
+    /**
      * Collection constructor.
      *
      * @param string $name
@@ -47,6 +52,7 @@ class Collection
         $this->apiCall   = $apiCall;
         $this->documents = new Documents($name, $this->apiCall);
         $this->overrides = new Overrides($name, $this->apiCall);
+        $this->synonyms = new Synonyms($name, $this->apiCall);
     }
 
     /**
@@ -71,6 +77,14 @@ class Collection
     public function getOverrides(): Overrides
     {
         return $this->overrides;
+    }
+
+    /**
+     * @return Synonyms
+     */
+    public function getSynonyms(): Synonyms
+    {
+        return $this->synonyms;
     }
 
     /**
