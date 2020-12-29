@@ -6,16 +6,14 @@ use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
- * Class Overrides
+ * Class Synonyms
  *
  * @package \Typesense
- * @date    4/5/20
- * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
-class Overrides implements \ArrayAccess
+class Synonyms implements \ArrayAccess
 {
 
-    public const RESOURCE_PATH = 'overrides';
+    public const RESOURCE_PATH = 'synonyms';
 
     /**
      * @var ApiCall
@@ -30,10 +28,10 @@ class Overrides implements \ArrayAccess
     /**
      * @var array
      */
-    private array $overrides = [];
+    private array $synonyms = [];
 
     /**
-     * Overrides constructor.
+     * Synonyms constructor.
      *
      * @param string $collectionName
      * @param ApiCall $apiCall
@@ -45,31 +43,31 @@ class Overrides implements \ArrayAccess
     }
 
     /**
-     * @param string $overrideId
+     * @param string $synonymId
      *
      * @return string
      */
-    public function endPointPath(string $overrideId = ''): string
+    public function endPointPath(string $synonymId = ''): string
     {
         return sprintf(
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
             $this->collectionName,
             static::RESOURCE_PATH,
-            $overrideId
+            $synonymId
         );
     }
 
     /**
-     * @param string $overrideId
+     * @param string $synonymId
      * @param array $config
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function upsert(string $overrideId, array $config): array
+    public function upsert(string $synonymId, array $config): array
     {
-        return $this->apiCall->put($this->endPointPath($overrideId), $config);
+        return $this->apiCall->put($this->endPointPath($synonymId), $config);
     }
 
     /**
@@ -84,36 +82,36 @@ class Overrides implements \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetExists($overrideId): bool
+    public function offsetExists($synonymId): bool
     {
-        return isset($this->overrides[$overrideId]);
+        return isset($this->synonyms[$synonymId]);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetGet($overrideId)
+    public function offsetGet($synonymId)
     {
-        if (!isset($this->overrides[$overrideId])) {
-            $this->overrides[$overrideId] = new Override($this->collectionName, $overrideId, $this->apiCall);
+        if (!isset($this->synonyms[$synonymId])) {
+            $this->synonyms[$synonymId] = new Synonym($this->collectionName, $synonymId, $this->apiCall);
         }
 
-        return $this->overrides[$overrideId];
+        return $this->synonyms[$synonymId];
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetSet($overrideId, $value): void
+    public function offsetSet($synonymId, $value): void
     {
-        $this->overrides[$overrideId] = $value;
+        $this->synonyms[$synonymId] = $value;
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset($overrideId): void
+    public function offsetUnset($synonymId): void
     {
-        unset($this->overrides[$overrideId]);
+        unset($this->synonyms[$synonymId]);
     }
 }
