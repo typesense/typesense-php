@@ -16,7 +16,7 @@ Read the documentation here: [https://typesense.org/api/](https://typesense.org/
 
 Here are some examples that walk you through how to use the client: [doc/examples](examples)
 
-Typesense use [HTTPlug](http://httplug.io/). List of clients & adapters [here](http://docs.php-http.org/en/latest/clients.html)
+Typesense uses [HTTPlug](http://httplug.io/) as an abstraction layer for an HTTP client. You'll find the List of supported HTTP clients & adapters [here](http://docs.php-http.org/en/latest/clients.html). Please be sure to install a supported client.
 
 ## Compatibility
 
