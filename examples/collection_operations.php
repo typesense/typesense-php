@@ -159,12 +159,35 @@ try {
     );
     echo "--------Search Document-------\n";
     echo "\n";
+    echo "--------Multi search-------\n";
+    print_r(
+        $client->multiSearch->perform(
+            [
+                'searches' => [
+                    [
+                        'q' => 'hunger',
+                        'sort_by' => 'ratings_count:desc',
+                    ],
+                    [
+                        'q' => 'game',
+                        'sort_by' => 'ratings_count:asc',
+                    ]
+                ]
+            ],
+            [
+                'query_by' => 'title',
+                'collection' => 'books'
+            ]
+        )
+    );
+    echo "--------Multi Search-------\n";
+    echo "\n";
     echo "--------Delete Document-------\n";
     print_r($client->collections['books']->documents['1']->delete());
     echo "--------Delete Document-------\n";
     echo "\n";
     echo "--------Import Documents-------\n";
-    $docsToImport         = [];
+    $docsToImport = [];
     $exportedDocStrsArray = explode('\n', $exportedDocStrs);
     foreach ($exportedDocStrsArray as $exportedDocStr) {
         $docsToImport[] = json_decode($exportedDocStr, true);

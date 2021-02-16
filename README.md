@@ -22,6 +22,7 @@ Typesense uses [HTTPlug](http://httplug.io/) as an abstraction layer for an HTTP
 
 | Typesense Server | typesense-php |
 |------------------|----------------|
+| \>= v0.19.0 | \>= v4.5.0 |
 | \>= v0.18.0 | \>= v4.4.0 |
 | \>= v0.17.0 | \>= v4.2.0 |
 | \>= v0.16.0 | \>= v4.1.0 |

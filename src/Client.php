@@ -56,6 +56,11 @@ class Client
     public Operations $operations;
 
     /**
+     * @var MultiSearch
+     */
+    public MultiSearch $multiSearch;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -79,6 +84,7 @@ class Client
         $this->metrics     = new Metrics($this->apiCall);
         $this->health      = new Health($this->apiCall);
         $this->operations  = new Operations($this->apiCall);
+        $this->multiSearch = new MultiSearch($this->apiCall);
     }
 
     /**
@@ -135,5 +141,13 @@ class Client
     public function getOperations(): Operations
     {
         return $this->operations;
+    }
+
+    /**
+     * @return MultiSearch
+     */
+    public function getMultiSearch(): MultiSearch
+    {
+        return $this->multiSearch;
     }
 }
