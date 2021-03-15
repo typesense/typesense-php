@@ -5,18 +5,18 @@ Official PHP client for the Typesense API: https://github.com/typesense/typesens
 ## Installation
 
 ```
-$ composer require typesense/typesense-php
+$ composer require php-http/curl-client typesense/typesense-php
 ```
 
 You can also add `typesense/typesense-php` to your project's `composer.json`.
+
+Typesense uses [HTTPlug](http://httplug.io/) as an abstraction layer for an HTTP client. You'll find the List of supported HTTP clients & adapters [here](http://docs.php-http.org/en/latest/clients.html). Please be sure to install a supported client.
 
 ## Usage
 
 Read the documentation here: [https://typesense.org/api/](https://typesense.org/api/)
 
 Here are some examples that walk you through how to use the client: [doc/examples](examples)
-
-Typesense uses [HTTPlug](http://httplug.io/) as an abstraction layer for an HTTP client. You'll find the List of supported HTTP clients & adapters [here](http://docs.php-http.org/en/latest/clients.html). Please be sure to install a supported client.
 
 ## Compatibility
 
