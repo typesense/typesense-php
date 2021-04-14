@@ -69,13 +69,14 @@ class Document
 
     /**
      * @param array $partialDocument
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function update(array $partialDocument): array
+    public function update(array $partialDocument, array $options = []): array
     {
-        return $this->apiCall->patch($this->endpointPath(), $partialDocument);
+        return $this->apiCall->patch($this->endpointPath(), $partialDocument, true, $options);
     }
 
     /**
