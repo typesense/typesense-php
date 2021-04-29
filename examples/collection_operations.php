@@ -118,7 +118,7 @@ try {
                     'Suzanne Collins',
                 ],
                 'average_rating' => 4.6,
-                'publication_year' => 2008,
+                'publication_year' => "2008",
                 'publication_year_facet' => '2008',
                 'authors_facet' => [
                     'Suzanne Collins',
@@ -126,6 +126,9 @@ try {
                 'title' => 'The Hunger Games',
                 'image_url' => 'https://images.gr-assets.com/books/1447303603m/2767052.jpg',
                 'ratings_count' => 4780653,
+            ],
+            [
+                'dirty_values' => 'coerce_or_reject',
             ]
         )
     );

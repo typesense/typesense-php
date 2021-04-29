@@ -51,40 +51,59 @@ class Documents implements \ArrayAccess
      */
     private function endPointPath(string $action = ''): string
     {
-        return sprintf('%s/%s/%s/%s', Collections::RESOURCE_PATH, $this->collectionName, static::RESOURCE_PATH, $action);
+        return sprintf(
+            '%s/%s/%s/%s',
+            Collections::RESOURCE_PATH,
+            $this->collectionName,
+            static::RESOURCE_PATH,
+            $action
+        );
     }
 
     /**
      * @param array $document
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function create(array $document): array
+    public function create(array $document, array $options = []): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document, true);
+        return $this->apiCall->post($this->endPointPath(''), $document, true, $options);
     }
 
     /**
      * @param array $document
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function upsert(array $document): array
+    public function upsert(array $document, array $options = []): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document, true, ['action' => 'upsert']);
+        return $this->apiCall->post(
+            $this->endPointPath(''),
+            $document,
+            true,
+            array_merge($options, ['action' => 'upsert'])
+        );
     }
 
     /**
      * @param array $document
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function update(array $document): array
+    public function update(array $document, array $options = []): array
     {
-        return $this->apiCall->post($this->endPointPath(''), $document, true, ['action' => 'update']);
+        return $this->apiCall->post(
+            $this->endPointPath(''),
+            $document,
+            true,
+            array_merge($options, ['action' => 'update'])
+        );
     }
 
     /**
@@ -109,8 +128,7 @@ class Documents implements \ArrayAccess
      *
      * @return string|array
      * @throws TypesenseClientError
-     * @throws GuzzleException
-     * @throws \JsonException
+     * @throws \JsonException|HttpClientException
      */
     public function import($documents, array $options = [])
     {
