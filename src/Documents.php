@@ -160,12 +160,14 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * @param array $queryParams
+     *
      * @return string
      * @throws TypesenseClientError|HttpClientException
      */
-    public function export(): string
+    public function export(array $queryParams = []): string
     {
-        return $this->apiCall->get($this->endPointPath('export'), [], false);
+        return $this->apiCall->get($this->endPointPath('export'), $queryParams, false);
     }
 
     /**
