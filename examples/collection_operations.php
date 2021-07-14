@@ -136,7 +136,7 @@ try {
     echo "\n";
 
     echo "--------Export Documents-------\n";
-    $exportedDocStrs = $client->collections['books']->documents->export();
+    $exportedDocStrs = $client->collections['books']->documents->export(["exclude_fields" => "authors_facet"]);
     print_r($exportedDocStrs);
     echo "--------Export Documents-------\n";
     echo "\n";
