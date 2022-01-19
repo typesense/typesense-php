@@ -92,7 +92,7 @@ class Overrides implements \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($overrideId)
+    public function offsetGet($overrideId): Override
     {
         if (!isset($this->overrides[$overrideId])) {
             $this->overrides[$overrideId] = new Override($this->collectionName, $overrideId, $this->apiCall);

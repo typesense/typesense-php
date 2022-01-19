@@ -90,7 +90,7 @@ class Synonyms implements \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($synonymId)
+    public function offsetGet($synonymId): Synonym
     {
         if (!isset($this->synonyms[$synonymId])) {
             $this->synonyms[$synonymId] = new Synonym($this->collectionName, $synonymId, $this->apiCall);
