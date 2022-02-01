@@ -97,7 +97,7 @@ class Aliases implements \ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): Alias
     {
         if (!isset($this->aliases[$offset])) {
             $this->aliases[$offset] = new Alias($offset, $this->apiCall);
