@@ -6,6 +6,7 @@ use Exception;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\Exception\HttpException;
 use Http\Client\HttpClient;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use Typesense\Exceptions\HTTPStatus0Error;
 use Typesense\Exceptions\ObjectAlreadyExists;
@@ -202,7 +203,7 @@ class ApiCall
                 $url   = $node->url() . $endPoint;
                 $reqOp = $this->getRequestOptions();
                 if (isset($options['data'])) {
-                    if (is_string($options['data']) || is_resource($options['data'])) {
+                    if (is_string($options['data']) || $options['data'] instanceof StreamInterface) {
                         $reqOp['body'] = $options['data'];
                     } else {
                         $reqOp['body'] = \json_encode($options['data']);
