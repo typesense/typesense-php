@@ -202,7 +202,7 @@ class ApiCall
                 $url   = $node->url() . $endPoint;
                 $reqOp = $this->getRequestOptions();
                 if (isset($options['data'])) {
-                    if (is_string($options['data'])) {
+                    if (is_string($options['data']) || is_resource($options['data'])) {
                         $reqOp['body'] = $options['data'];
                     } else {
                         $reqOp['body'] = \json_encode($options['data']);
