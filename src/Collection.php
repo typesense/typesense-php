@@ -97,6 +97,17 @@ class Collection
     }
 
     /**
+     * @param array $schema
+     *
+     * @return array
+     * @throws TypesenseClientError|HttpClientException
+     */
+    public function update(array $schema): array
+    {
+        return $this->apiCall->patch($this->endPointPath(), $schema);
+    }
+
+    /**
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
