@@ -65,6 +65,11 @@ class Client
     public Presets $presets;
 
     /**
+     * @var Analytics
+     */
+    public Analytics $analytics;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -90,6 +95,7 @@ class Client
         $this->operations  = new Operations($this->apiCall);
         $this->multiSearch = new MultiSearch($this->apiCall);
         $this->presets     = new Presets($this->apiCall);
+        $this->analytics   = new Analytics($this->apiCall);
     }
 
     /**
@@ -162,5 +168,13 @@ class Client
     public function getPresets(): Presets
     {
         return $this->presets;
+    }
+
+    /**
+     * @return Analytics
+     */
+    public function getAnalytics(): Analytics
+    {
+        return $this->analytics;
     }
 }

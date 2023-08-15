@@ -17,7 +17,7 @@ class Presets
     /**
      * @var ApiCall
      */
-    private ApiCall $apiCall;
+    private $apiCall;
 
     public const PRESETS_PATH = '/presets';
 
@@ -39,7 +39,7 @@ class Presets
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function searchWithPreset($presetName): array|string
+    public function searchWithPreset($presetName)
     {
         return $this->apiCall->post($this->multiSearchEndpointPath(), [], true, ['preset' => $presetName]);
     }
@@ -49,7 +49,7 @@ class Presets
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function get(): array|string
+    public function get()
     {
         return $this->apiCall->get(static::PRESETS_PATH, []);
     }
@@ -61,10 +61,11 @@ class Presets
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function put(array $options = []): array
+    public function put(array $options = [])
     {
         $presetName = $options['preset_name'];
         $presetsData = $options['preset_data'];
+
         return $this->apiCall->put($this->endpointPath($presetName), $presetsData);
     }
 
@@ -74,7 +75,7 @@ class Presets
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function delete($presetName): array
+    public function delete($presetName)
     {
         return $this->apiCall->delete($this->endpointPath($presetName));
     }
@@ -83,7 +84,7 @@ class Presets
      * @param $presetsName
      * @return string
      */
-    private function endpointPath($presetsName): string
+    private function endpointPath($presetsName)
     {
         return sprintf(
             '%s/%s',
@@ -96,7 +97,7 @@ class Presets
      * @param $presetsName
      * @return string
      */
-    private function multiSearchEndpointPath(): string
+    private function multiSearchEndpointPath()
     {
         return sprintf(
             '%s',
