@@ -59,11 +59,22 @@ class Keys implements \ArrayAccess
         string $searchKey,
         array $parameters
     ): string {
-        $paramStr     = json_encode($parameters, JSON_THROW_ON_ERROR);
-        $digest       = base64_encode(hash_hmac('sha256', utf8_encode($paramStr), utf8_encode($searchKey), true));
-        $keyPrefix    = substr($searchKey, 0, 4);
-        $rawScopedKey = sprintf('%s%s%s', utf8_decode($digest), $keyPrefix, $paramStr);
-        return base64_encode(utf8_encode($rawScopedKey));
+        $paramStr = json_encode($parameters, JSON_THROW_ON_ERROR);
+        $digest = base64_encode(
+            hash_hmac(
+                'sha256',
+                mb_convert_encoding($paramStr, 'UTF-8', 'ISO-8859-1'),
+                mb_convert_encoding($searchKey, 'UTF-8', 'ISO-8859-1'),
+                true)
+        );
+        $keyPrefix = substr($searchKey, 0, 4);
+        $rawScopedKey = sprintf(
+            '%s%s%s',
+            mb_convert_encoding($digest, 'ISO-8859-1', 'UTF-8'),
+            $keyPrefix,
+            $paramStr
+        );
+        return base64_encode(mb_convert_encoding($rawScopedKey, 'UTF-8', 'ISO-8859-1'));
     }
 
     /**
