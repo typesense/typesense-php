@@ -8,6 +8,8 @@ class Analytics
 
     private ApiCall $apiCall;
 
+    private AnalyticsRules $rules;
+
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
