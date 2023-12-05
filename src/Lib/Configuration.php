@@ -3,11 +3,11 @@
 namespace Typesense\Lib;
 
 use Http\Client\Common\HttpMethodsClient;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Typesense\Exceptions\ConfigError;
 
@@ -57,9 +57,9 @@ class Configuration
     private LoggerInterface $logger;
 
     /**
-     * @var null|HttpClient
+     * @var null|ClientInterface
      */
-    private ?HttpClient $client = null;
+    private ?ClientInterface $client = null;
 
     /**
      * @var int
@@ -104,7 +104,7 @@ class Configuration
         $this->logger   = new Logger('typesense');
         $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
 
-        if (true === \array_key_exists('client', $config) && $config['client'] instanceof HttpClient) {
+        if (true === \array_key_exists('client', $config) && $config['client'] instanceof ClientInterface) {
             $this->client = $config['client'];
         }
     }
@@ -213,13 +213,13 @@ class Configuration
     }
 
     /**
-     * @return HttpClient
+     * @return ClientInterface
      */
-    public function getClient(): HttpClient
+    public function getClient(): ClientInterface
     {
         return new HttpMethodsClient(
-            $this->client ?? HttpClientDiscovery::find(),
-            MessageFactoryDiscovery::find()
+            $this->client ?? Psr18ClientDiscovery::find(),
+                Psr17FactoryDiscovery::findRequestFactory()
         );
     }
 }

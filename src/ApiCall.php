@@ -5,7 +5,7 @@ namespace Typesense;
 use Exception;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\Exception\HttpException;
-use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use Typesense\Exceptions\HTTPStatus0Error;
@@ -33,9 +33,9 @@ class ApiCall
     private const API_KEY_HEADER_NAME = 'X-TYPESENSE-API-KEY';
 
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
-    private HttpClient $client;
+    private ClientInterface $client;
 
     /**
      * @var Configuration
