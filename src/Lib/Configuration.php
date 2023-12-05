@@ -219,7 +219,8 @@ class Configuration
     {
         return new HttpMethodsClient(
             $this->client ?? Psr18ClientDiscovery::find(),
-                Psr17FactoryDiscovery::findRequestFactory()
+                Psr17FactoryDiscovery::findRequestFactory(),
+                Psr17FactoryDiscovery::findStreamFactory(),
         );
     }
 }
