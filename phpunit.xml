@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+  bootstrap="vendor/autoload.php"
+  beStrictAboutChangesToGlobalState="true"
+  colors="true"
+  columns="max"
+  executionOrder="random"
+  enforceTimeLimit="true"
+  defaultTimeLimit="2"
+  timeoutForSmallTests="1"
+  timeoutForMediumTests="3"
+  timeoutForLargeTests="5"
+  displayDetailsOnTestsThatTriggerWarnings="true"
+  failOnDeprecation="true"
+  failOnWarning="true"
+  failOnNotice="true"
+  failOnRisky="true"
+>
+  <source>
+    <include>
+      <directory>src</directory>
+    </include>
+  </source>
+  <testsuites>
+    <testsuite name="Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <report>
+      <clover outputFile="clover.xml"/>
+      <html outputDirectory="coverage" lowUpperBound="80" highLowerBound="95"/>
+    </report>
+  </coverage>
+  <php>
+    <ini name="memory_limit" value="-1"/>
+    <ini name="error_reporting" value="-1"/>
+    <ini name="log_errors_max_len" value="0"/>
+    <ini name="xdebug.show_exception_trace" value="0"/>
+    <ini name="zend.assertions" value="1"/>
+    <ini name="assert.exception" value="1"/>
+  </php>
+</phpunit>
