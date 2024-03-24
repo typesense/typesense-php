@@ -2,6 +2,8 @@ name: Testing
 
 on:
   push:
+  schedule:
+    - cron: '0 0 * * 1' # run tests on every week Monday
 
 jobs:
   static_analyze:
@@ -22,7 +24,7 @@ jobs:
         run: echo "COMPOSER_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.COMPOSER_DIR }}
           key: ${{ runner.os }}-composer-static-analyze-${{ hashFiles('**/composer.json') }}
@@ -47,10 +49,10 @@ jobs:
         run: vendor/bin/pint -v --test
 
       - name: Run type coverage check
-        run: vendor/bin/pest --type-coverage --min=95
+        run: vendor/bin/pest --memory-limit=-1 --type-coverage --min=95
 
   testing:
-    name: PHP ${{ matrix.php }} (Testing)
+    name: PHP ${{ matrix.php }}
 
     runs-on: ubuntu-latest
 
@@ -62,7 +64,7 @@ jobs:
 
     services:
       typesense:
-        image: typesense/typesense:0.25.1
+        image: typesense/typesense:0.25.2
         ports:
             - 8108:8108/tcp
         volumes:
@@ -85,7 +87,7 @@ jobs:
         run: echo "COMPOSER_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.COMPOSER_DIR }}
           key: ${{ runner.os }}-composer-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
