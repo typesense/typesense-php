@@ -27,7 +27,7 @@ abstract class Request
     }
 
     /**
-     * @param  'GET'|'POST'|'PATCH'|'DELETE'  $method
+     * @param  'GET'|'POST'|'PATCH'|'PUT'|'DELETE'  $method
      * @param  ($ndjson is true ? array<int, array<string, mixed>> : array<string, mixed>)  $body
      * @return ($expectArray is false ? stdClass : array<int, stdClass>)
      *
