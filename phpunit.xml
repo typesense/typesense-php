@@ -7,11 +7,6 @@
   colors="true"
   columns="max"
   executionOrder="random"
-  enforceTimeLimit="true"
-  defaultTimeLimit="2"
-  timeoutForSmallTests="1"
-  timeoutForMediumTests="3"
-  timeoutForLargeTests="5"
   displayDetailsOnTestsThatTriggerWarnings="true"
   failOnDeprecation="true"
   failOnWarning="true"
@@ -30,7 +25,6 @@
   </testsuites>
   <coverage>
     <report>
-      <clover outputFile="clover.xml"/>
       <html outputDirectory="coverage" lowUpperBound="80" highLowerBound="95"/>
     </report>
   </coverage>
@@ -39,7 +33,6 @@
     <ini name="error_reporting" value="-1"/>
     <ini name="log_errors_max_len" value="0"/>
     <ini name="xdebug.show_exception_trace" value="0"/>
-    <ini name="zend.assertions" value="1"/>
     <ini name="assert.exception" value="1"/>
   </php>
 </phpunit>
