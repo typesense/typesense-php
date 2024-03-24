@@ -1,15 +1,15 @@
-version: "3.8"
+version: "3"
 
 services:
   typesense:
-    image: typesense/typesense:0.25.1
+    image: typesense/typesense:0.25.2
     container_name: typesense-testing
     restart: "on-failure"
     ports:
       - "8108:8108/tcp"
     environment:
-      TYPESENSE_DATA_DIR: /var/tmp
-      TYPESENSE_API_KEY: testing
+      TYPESENSE_DATA_DIR: "/var/tmp"
+      TYPESENSE_API_KEY: "testing"
       TYPESENSE_ENABLE_CORS: "true"
       TYPESENSE_PEERING_ADDRESS: "127.0.0.1"
       TYPESENSE_PEERING_PORT: "12345"
