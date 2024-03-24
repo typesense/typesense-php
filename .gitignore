@@ -1,4 +1,11 @@
-.idea
-.tmp
-/composer.lock
-vendor
+/.fleet
+/.idea
+/.vscode
+/coverage
+/vendor
+.DS_Store
+.phpunit.result.cache
+clover.xml
+composer.phar
+composer.lock
+Thumbs.db
