@@ -62,7 +62,7 @@ class Synonym extends Request
 
         return array_map(
             fn (stdClass $datum) => SynonymObject::from($datum),
-            $data->aliases,
+            $data->synonyms,
         );
     }
 
