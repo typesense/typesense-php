@@ -15,6 +15,10 @@
       "email": "abdullah@devloops.net",
       "homepage": "https://www.devloops.net",
       "role": "Developer"
+    },
+    {
+      "name": "bepsvpt",
+      "email": "6ibrl@cpp.tw"
     }
   ],
   "homepage": "https://github.com/typesense/typesense-php",
@@ -32,12 +36,12 @@
     "psr/http-factory-implementation": "^1.0"
   },
   "require-dev": {
-    "ergebnis/composer-normalize": "^2.40",
+    "ergebnis/composer-normalize": "^2.42",
     "guzzlehttp/guzzle": "^7.8",
-    "laravel/pint": "^1.13",
-    "pestphp/pest": "^2.28",
+    "laravel/pint": "^1.14",
+    "pestphp/pest": "^2.34",
     "pestphp/pest-plugin-faker": "^2.0",
-    "pestphp/pest-plugin-type-coverage": "^2.5",
+    "pestphp/pest-plugin-type-coverage": "^2.8",
     "phpstan/phpstan": "^1.10",
     "symfony/http-client": "^7.0"
   },
@@ -60,17 +64,12 @@
       "php-http/discovery": false
     },
     "optimize-autoloader": true,
-    "preferred-install": {
-      "*": "dist"
-    },
     "sort-packages": true
   },
   "scripts": {
-    "lint": "phpcs -v",
-    "lint:fix": "phpcbf",
-    "typesenseServer": [
+    "typesense-server": [
       "Composer\\Config::disableProcessTimeout",
-      "docker-compose up"
+      "docker-compose pull && docker-compose up"
     ]
   }
 }
