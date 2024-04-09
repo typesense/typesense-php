@@ -76,6 +76,10 @@ try {
     );
     echo "--------Create Collection-------\n";
     echo "\n";
+    echo "--------Check if Collection exists-------\n";
+    print_r($client->collections['books']->exists());
+    echo "--------Check if Collection exists-------\n";
+    echo "\n";
     echo "--------Retrieve Collection-------\n";
     print_r($client->collections['books']->retrieve());
     echo "--------Retrieve Collection-------\n";
