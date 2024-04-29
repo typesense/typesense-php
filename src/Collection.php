@@ -92,6 +92,18 @@ class Collection
     }
 
     /**
+     * Set collection exists flag.
+     *
+     * @param bool $exists
+     *
+     * @return void
+     */
+    public function setExists(bool $exists): void
+    {
+        $this->exists = $exists;
+    }
+
+    /**
      * @return bool|null
      */
     public function exists(): ?bool
