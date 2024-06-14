@@ -233,7 +233,7 @@ class ApiCall
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
                     $errorMessage = json_decode($response->getBody()
-                            ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
+                        ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
                     throw $this->getException($statusCode)
                         ->setMessage($errorMessage);
                 }
@@ -244,7 +244,7 @@ class ApiCall
             } catch (HttpException $exception) {
                 if (
                     $exception->getResponse()
-                        ->getStatusCode() === 408
+                    ->getStatusCode() === 408
                 ) {
                     continue;
                 }

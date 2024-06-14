@@ -25,6 +25,11 @@ class Client
     public Collections $collections;
 
     /**
+     * @var Stopwords
+     */
+    public Stopwords $stopwords;
+
+    /**
      * @var Aliases
      */
     public Aliases $aliases;
@@ -87,6 +92,7 @@ class Client
         $this->apiCall = new ApiCall($this->config);
 
         $this->collections = new Collections($this->apiCall);
+        $this->stopwords = new Stopwords($this->apiCall);
         $this->aliases     = new Aliases($this->apiCall);
         $this->keys        = new Keys($this->apiCall);
         $this->debug       = new Debug($this->apiCall);
@@ -104,6 +110,14 @@ class Client
     public function getCollections(): Collections
     {
         return $this->collections;
+    }
+
+    /**
+     * @return Stopwords
+     */
+    public function getStopwords(): Stopwords
+    {
+        return $this->stopwords;
     }
 
     /**
