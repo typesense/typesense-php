@@ -98,11 +98,20 @@ class Documents implements \ArrayAccess
      */
     public function update(array $document, array $options = []): array
     {
-        return $this->apiCall->post(
+        if (empty($options['filter_by'])) {
+            return $this->apiCall->post(
+                $this->endPointPath(''),
+                $document,
+                true,
+                array_merge($options, ['action' => 'update'])
+            );
+        }
+
+        return $this->apiCall->patch(
             $this->endPointPath(''),
             $document,
             true,
-            array_merge($options, ['action' => 'update'])
+            $options
         );
     }
 
