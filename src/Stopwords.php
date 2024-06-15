@@ -6,7 +6,7 @@ use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
- * Class Document
+ * Class Stopwords
  *
  * @package \Typesense
  * @date    4/5/20
@@ -22,7 +22,7 @@ class Stopwords
     public const STOPWORDS_PATH = '/stopwords';
 
     /**
-     * Document constructor.
+     * Stopwords constructor.
      *
      * @param ApiCall $apiCall
      */
@@ -43,6 +43,7 @@ class Stopwords
             []
         );
     }
+
     /**
      * @return array|string
      * @throws HttpClientException
@@ -62,24 +63,28 @@ class Stopwords
      */
     public function put(array $options = [])
     {
-        $stopwordsName = $options['stopwords_name'];
-        $stopwordsData = $options['stopwords_data'];
+        $stopwordsName = $options['name'];
+        $stopwordsData = $options['stopwords'];
+        $stopwordsLocale = $options['locale'];
         return $this->apiCall->put(
             $this->endpointPath($stopwordsName),
-            ['stopwords' => $stopwordsData]
+            [
+              'stopwords' => $stopwordsData,
+              'locale' => $stopwordsLocale
+            ]
         );
     }
 
     /**
-     * @param $presetName
+     * @param $stopwordsName
      * @return array
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function delete($presetName)
+    public function delete($stopwordsName)
     {
         return $this->apiCall->delete(
-            $this->endpointPath($presetName)
+            $this->endpointPath($stopwordsName)
         );
     }
 
