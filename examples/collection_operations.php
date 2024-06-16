@@ -194,7 +194,7 @@ try {
     echo "--------Delete Document-------\n";
     echo "\n";
     echo "--------Import Documents-------\n";
-    $docsToImport = [];
+    $docsToImport         = [];
     $exportedDocStrsArray = explode('\n', $exportedDocStrs);
     foreach ($exportedDocStrsArray as $exportedDocStr) {
         $docsToImport[] = json_decode($exportedDocStr, true);

@@ -11,5 +11,4 @@ namespace Typesense\Exceptions;
  */
 class ServiceUnavailable extends TypesenseClientError
 {
-
 }

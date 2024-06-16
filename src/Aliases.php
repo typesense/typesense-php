@@ -14,7 +14,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Aliases implements \ArrayAccess
 {
-
     public const RESOURCE_PATH = '/aliases';
 
     /**

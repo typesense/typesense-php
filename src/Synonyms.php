@@ -12,7 +12,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Synonyms implements \ArrayAccess
 {
-
     public const RESOURCE_PATH = 'synonyms';
 
     /**

@@ -10,5 +10,4 @@ namespace Typesense\Exceptions;
  */
 class HTTPStatus0Error extends TypesenseClientError
 {
-
 }

@@ -11,7 +11,6 @@ namespace Typesense\Lib;
  */
 class Node
 {
-
     /**
      * @var string
      */

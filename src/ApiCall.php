@@ -29,7 +29,6 @@ use Typesense\Lib\Node;
  */
 class ApiCall
 {
-
     private const API_KEY_HEADER_NAME = 'X-TYPESENSE-API-KEY';
 
     /**

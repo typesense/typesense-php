@@ -63,7 +63,7 @@ class Presets
      */
     public function put(array $options = [])
     {
-        $presetName = $options['preset_name'];
+        $presetName  = $options['preset_name'];
         $presetsData = $options['preset_data'];
 
         return $this->apiCall->put($this->endpointPath($presetName), $presetsData);

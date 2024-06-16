@@ -10,7 +10,7 @@ class AnalyticsRule
     public function __construct(string $ruleName, ApiCall $apiCall)
     {
         $this->ruleName = $ruleName;
-        $this->apiCall = $apiCall;
+        $this->apiCall  = $apiCall;
     }
 
     public function retrieve()

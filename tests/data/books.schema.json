@@ -1,0 +1,30 @@
+{
+  "name": "books",
+  "fields": [
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "authors",
+      "type": "string[]",
+      "facet": true
+    },
+    {
+      "name": "isbn",
+      "type": "string"
+    },
+    {
+      "name": "publisher",
+      "type": "string"
+    },
+    {
+      "name": "pages",
+      "type": "int32"
+    }
+  ]
+}

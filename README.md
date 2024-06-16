@@ -49,6 +49,14 @@ Run Typesense Server:
 composer run-script typesenseServer
 ```
 
+Run tests:
+
+```shell script
+docker compose up
+cp phpunit.xml.dist phpunit.xml
+composer run-script test
+```
+
 ## Credits
 
 This client was originally developed by [Abdullah Al-Faqeir](https://github.org/abdullahfaqeir) from 
