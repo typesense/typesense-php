@@ -1,0 +1,22 @@
+name: tests
+
+on: [push]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    services:
+      typesense:
+        image: typesense/typesense:26.0
+        ports:
+          - 8108:8108/tcp
+        volumes:
+          - /tmp/typesense-server-data:/data
+        env:
+          TYPESENSE_DATA_DIR: /data
+          TYPESENSE_API_KEY: xyz
+          TYPESENSE_ENABLE_CORS: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: php-actions/composer@v6
+      - run: vendor/bin/phpunit

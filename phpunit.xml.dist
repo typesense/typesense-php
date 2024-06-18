@@ -10,7 +10,7 @@
     </testsuites>
 
     <php>
-        <env name="TYPESENSE_NODE_HOST" value="host.docker.internal" />
+        <env name="TYPESENSE_NODE_HOST" value="localhost" />
         <env name="TYPESENSE_NODE_PORT" value="8108" />
         <env name="TYPESENSE_NODE_PROTOCOL" value="http" />
         <env name="TYPESENSE_API_KEY" value="xyz" />

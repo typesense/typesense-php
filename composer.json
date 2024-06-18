@@ -56,7 +56,9 @@
     "preferred-install": {
       "*": "dist"
     },
-    "sort-packages": true
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   },
   "scripts": {
     "typesenseServer": [
