@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   test:
-    name: Run test with PHP v8.3
+    name: Run tests with PHP v8.3
     runs-on: ubuntu-latest
     services:
       typesense:
@@ -23,5 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          coverage: xdebug
       - uses: php-actions/composer@v6
-      - run: vendor/bin/phpunit
+      - name: Run tests
+        run: vendor/bin/phpunit --coverage-text
