@@ -20,7 +20,6 @@ use Typesense\Exceptions\ConfigError;
  */
 class Configuration
 {
-
     /**
      * @var Node[]
      */
@@ -219,8 +218,8 @@ class Configuration
     {
         return new HttpMethodsClient(
             $this->client ?? Psr18ClientDiscovery::find(),
-                Psr17FactoryDiscovery::findRequestFactory(),
-                Psr17FactoryDiscovery::findStreamFactory(),
+            Psr17FactoryDiscovery::findRequestFactory(),
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
     }
 }

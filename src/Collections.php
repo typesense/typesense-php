@@ -14,7 +14,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Collections implements \ArrayAccess
 {
-
     public const RESOURCE_PATH = '/collections';
 
     /**

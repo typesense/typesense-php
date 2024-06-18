@@ -14,7 +14,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Overrides implements \ArrayAccess
 {
-
     public const RESOURCE_PATH = 'overrides';
 
     /**

@@ -14,7 +14,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Document
 {
-
     /**
      * @var string
      */

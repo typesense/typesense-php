@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+>
+    <testsuites>
+        <testsuite name="feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="TYPESENSE_NODE_HOST" value="host.docker.internal" />
+        <env name="TYPESENSE_NODE_PORT" value="8108" />
+        <env name="TYPESENSE_NODE_PROTOCOL" value="http" />
+        <env name="TYPESENSE_API_KEY" value="xyz" />
+    </php>
+</phpunit>

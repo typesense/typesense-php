@@ -12,7 +12,6 @@ use Typesense\Exceptions\TypesenseClientError;
  */
 class Synonym
 {
-
     /**
      * @var string
      */
