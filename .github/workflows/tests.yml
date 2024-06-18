@@ -3,7 +3,8 @@ name: tests
 on: [push]
 
 jobs:
-  build_and_test:
+  test:
+    name: Run test with PHP v8.3
     runs-on: ubuntu-latest
     services:
       typesense:
@@ -18,5 +19,9 @@ jobs:
           TYPESENSE_ENABLE_CORS: true
     steps:
       - uses: actions/checkout@v4
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
       - uses: php-actions/composer@v6
       - run: vendor/bin/phpunit
