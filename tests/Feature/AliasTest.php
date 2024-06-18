@@ -36,4 +36,11 @@ class AliasTest extends TestCase
         $this->expectException(ObjectNotFound::class);
         $this->client()->aliases['companies']->retrieve();
     }
+
+    public function testCanRetrieveAllAliases(): void
+    {
+        $response = $this->client()->aliases->retrieve();
+
+        $this->assertEquals(['aliases' => [0 => $this->sampleAliasResponse]], $response);
+    }
 }
