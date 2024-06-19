@@ -11,6 +11,7 @@ class AliasTest extends TestCase
         "name" => "companies",
         "collection_name" => "companies_june11",
     ];
+    private $upsertResponse = null;
 
     protected function setUp(): void
     {
@@ -19,7 +20,12 @@ class AliasTest extends TestCase
         $aliasedCollection = [
             'collection_name' => 'companies_june11'
         ];
-        $this->client()->aliases->upsert('companies', $aliasedCollection);
+        $this->upsertResponse = $this->client()->aliases->upsert('companies', $aliasedCollection);
+    }
+
+    public function testCanUpsertAnAlias(): void
+    {
+        $this->assertEquals($this->sampleAliasResponse, $this->upsertResponse);
     }
 
     public function testCanRetrieveAlias(): void
