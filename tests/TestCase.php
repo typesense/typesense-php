@@ -40,7 +40,7 @@ abstract class TestCase extends BaseTestCase
 
     private function loadFromDataDir(string $path): array
     {
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             return [];
         }
 
@@ -83,6 +83,11 @@ abstract class TestCase extends BaseTestCase
         $collections = $this->typesenseClient->collections->retrieve();
         foreach ($collections as $collection) {
             $this->typesenseClient->collections[$collection['name']]->delete();
+        }
+
+        $aliases = $this->typesenseClient->aliases->retrieve();
+        foreach ($aliases['aliases'] as $alias) {
+            $this->typesenseClient->aliases[$alias['name']]->delete();
         }
     }
 }
