@@ -23,6 +23,14 @@ class AliasTest extends TestCase
         $this->upsertResponse = $this->client()->aliases->upsert('companies', $aliasedCollection);
     }
 
+    protected function tearDown(): void
+    {
+        $aliases = $this->client()->aliases->retrieve();
+        foreach ($aliases['aliases'] as $alias) {
+            $this->client()->aliases[$alias['name']]->delete();
+        }
+    }
+
     public function testCanUpsertAnAlias(): void
     {
         $this->assertEquals($this->sampleAliasResponse, $this->upsertResponse);

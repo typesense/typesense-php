@@ -84,10 +84,5 @@ abstract class TestCase extends BaseTestCase
         foreach ($collections as $collection) {
             $this->typesenseClient->collections[$collection['name']]->delete();
         }
-
-        $aliases = $this->typesenseClient->aliases->retrieve();
-        foreach ($aliases['aliases'] as $alias) {
-            $this->typesenseClient->aliases[$alias['name']]->delete();
-        }
     }
 }
