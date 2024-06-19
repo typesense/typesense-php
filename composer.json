@@ -65,7 +65,7 @@
       "Composer\\Config::disableProcessTimeout",
       "docker-compose up"
     ],
-    "test": "vendor/bin/phpunit",
+    "test": "vendor/bin/phpunit --testdox",
     "lint": "phpcs -v",
     "lint:fix": "phpcbf"
   }
