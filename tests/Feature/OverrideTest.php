@@ -56,7 +56,7 @@ class OverrideTest extends TestCase
 
     public function testCanRetrieveAllOverrides(): void
     {
-        $returnData = $this->client()->collections['books']->overrides->retrieve();;
+        $returnData = $this->client()->collections['books']->overrides->retrieve();
         $this->assertEquals(1, count($returnData['overrides']));
     }
 }
