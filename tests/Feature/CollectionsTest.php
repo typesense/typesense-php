@@ -58,6 +58,6 @@ class CollectionsTest extends TestCase
     public function testCanRetrieveAllCollections(): void
     {
         $response = $this->client()->collections->retrieve();
-        $this->assertEquals(1, count($response));
+        $this->assertCount(1, $response);
     }
 }

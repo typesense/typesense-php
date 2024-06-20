@@ -47,6 +47,6 @@ class SynonymsTest extends TestCase
     public function testCanRetrieveAllSynonyms(): void
     {
         $returnData = $this->synonyms->retrieve();
-        $this->assertEquals(1, count($returnData['synonyms']));
+        $this->assertCount(1, $returnData['synonyms']);
     }
 }

@@ -52,6 +52,6 @@ class AnalyticsRulesTest extends TestCase
     public function testCanRetrieveAllRules(): void
     {
         $returnData = $this->client()->analytics->rules()->retrieve();
-        $this->assertEquals(count($returnData['rules']), 1);
+        $this->assertCount(1, $returnData['rules']);
     }
 }

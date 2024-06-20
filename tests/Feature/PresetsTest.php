@@ -51,12 +51,12 @@ class PresetsTest extends TestCase
         $this->assertEquals($this->presetName, $returnData['name']);
 
         $returnPresets =  $this->client()->presets->get();
-        $this->assertEquals(0, count($returnPresets['presets']));
+        $this->assertCount(0, $returnPresets['presets']);
     }
 
     public function testCanRetrieveAllPresets(): void
     {
         $returnData =  $this->client()->presets->get();
-        $this->assertEquals(1, count($returnData['presets']));
+        $this->assertCount(1, $returnData['presets']);
     }
 }

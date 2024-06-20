@@ -33,7 +33,7 @@ class MultiSearchTest extends TestCase
     public function testCanPerformAMultiSearch(): void
     {
         $returnData = $this->client()->multiSearch->perform($this->searchRequests, $this->commonSearchParams);
-        $this->assertEquals(2, count($returnData['results']));
+        $this->assertCount(2, $returnData['results']);
     }
 
     public function testCanLimitNumberOfRequestsInOneMultiSearch(): void

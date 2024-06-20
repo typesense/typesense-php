@@ -54,6 +54,6 @@ class StopwordsTest extends TestCase
     public function testCanRetrieveAllStopwords(): void
     {
         $returnData = $this->client()->stopwords->getAll();
-        $this->assertEquals(1, count($returnData['stopwords']));
+        $this->assertCount(1, $returnData['stopwords']);
     }
 }
