@@ -5,7 +5,7 @@ namespace Feature;
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
 
-class AliasTest extends TestCase
+class AliasesTest extends TestCase
 {
     private $sampleAliasResponse = [
         "name" => "companies",

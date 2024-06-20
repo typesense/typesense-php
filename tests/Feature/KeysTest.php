@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
 
 
-class KeyTest extends TestCase
+class KeysTest extends TestCase
 {
     private $keyId = null;
     private $createKeyResponse = null;

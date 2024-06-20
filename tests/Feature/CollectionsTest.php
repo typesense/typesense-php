@@ -5,7 +5,7 @@ namespace Feature;
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
 
-class CollectionTest extends TestCase
+class CollectionsTest extends TestCase
 {
     private $createCollectionRes = null;
 

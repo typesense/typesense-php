@@ -5,7 +5,7 @@ namespace Feature;
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
 
-class AnalyticsRuleTest extends TestCase
+class AnalyticsRulesTest extends TestCase
 {
     private $ruleName = 'product_queries_aggregation';
     private $ruleConfiguration = [

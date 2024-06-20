@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
 
 
-class OverrideTest extends TestCase
+class OverridesTest extends TestCase
 {
     private $overrideUpsertRes = null;
     private $overrideId = 'customize-book';
