@@ -15,6 +15,8 @@ class AnalyticsEventsTest extends TestCase
 
     public function testNeedImplementationForAnalyticsEvents(): void
     {
-        $this->assertTrue(true);
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.',
+        );
     }
 }
