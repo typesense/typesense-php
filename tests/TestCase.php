@@ -40,7 +40,7 @@ abstract class TestCase extends BaseTestCase
 
     private function loadFromDataDir(string $path): array
     {
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             return [];
         }
 

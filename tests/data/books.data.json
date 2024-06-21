@@ -1,32 +1,27 @@
 [
   {
+    "id": "1",
     "title": "Book 1",
     "description": "Wonderful Description",
-    "authors": [
-      "Jane",
-      "John"
-    ],
+    "authors": ["Jane", "John"],
     "isbn": "1234567890",
     "publisher": "AwesomeBooks",
     "pages": 123
   },
   {
+    "id": "2",
     "title": "Book 2",
     "description": "Another helpful description",
-    "authors": [
-      "Jeff",
-      "Mia"
-    ],
+    "authors": ["Jeff", "Mia"],
     "isbn": "1234567891",
     "publisher": "AwesomeBooks",
     "pages": 150
   },
   {
+    "id": "3",
     "title": "Book 3",
     "description": "Another useless description",
-    "authors": [
-      "Martin"
-    ],
+    "authors": ["Martin"],
     "isbn": "1234567892",
     "publisher": "PubLishEr",
     "pages": 268

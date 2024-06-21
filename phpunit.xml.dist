@@ -10,6 +10,7 @@
     failOnWarning="true"
     failOnNotice="true"
     failOnRisky="true"
+    executionOrder="random"
 >
     <testsuites>
         <testsuite name="feature">
