@@ -55,24 +55,15 @@ class Stopwords
     }
 
     /**
-     * @param array $options
+     * @param array $stopwordSet
      *
      * @return array
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function put(array $options = [])
+    public function put(array $stopwordSet)
     {
-        $stopwordsName = $options['name'];
-        $stopwordsData = $options['stopwords'];
-        $stopwordsLocale = $options['locale'];
-        return $this->apiCall->put(
-            $this->endpointPath($stopwordsName),
-            [
-              'stopwords' => $stopwordsData,
-              'locale' => $stopwordsLocale
-            ]
-        );
+        return $this->apiCall->put($this->endpointPath($stopwordSet['name']), $stopwordSet);
     }
 
     /**
