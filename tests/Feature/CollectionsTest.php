@@ -3,11 +3,13 @@
 namespace Feature;
 
 use Tests\TestCase;
+use Typesense\Collection;
 use Typesense\Exceptions\ObjectNotFound;
 
 class CollectionsTest extends TestCase
 {
     private $createCollectionRes = null;
+    private ?Collection $testCollection = null;
 
 
     protected function setUp(): void
@@ -15,7 +17,9 @@ class CollectionsTest extends TestCase
         parent::setUp();
 
         $schema = $this->getSchema('books');
+
         $this->createCollectionRes = $this->client()->collections->create($schema);
+        $this->testCollection = $this->client()->collections['books'];
     }
 
     public function testCanCreateACollection(): void
@@ -25,7 +29,7 @@ class CollectionsTest extends TestCase
 
     public function testCanRetrieveACollection(): void
     {
-        $response = $this->client()->collections['books']->retrieve();
+        $response = $this->testCollection->retrieve();
         $this->assertEquals('books', $response['name']);
     }
 
@@ -39,25 +43,32 @@ class CollectionsTest extends TestCase
                 ]
             ]
         ];
-        $response = $this->client()->collections['books']->update($update_schema);
+        $response = $this->testCollection->update($update_schema);
         $this->assertEquals('isbn', $response['fields'][0]['name']);
         $this->assertArrayHasKey('drop', $response['fields'][0]);
 
-        $response = $this->client()->collections['books']->retrieve();
+        $response = $this->testCollection->retrieve();
         $this->assertEquals(5, count($response['fields']));
     }
 
     public function testCanDeleteACollection(): void
     {
-        $this->client()->collections['books']->delete();
+        $this->testCollection->delete();
 
         $this->expectException(ObjectNotFound::class);
-        $this->client()->collections['books']->retrieve();
+        $this->testCollection->retrieve();
     }
 
     public function testCanRetrieveAllCollections(): void
     {
         $response = $this->client()->collections->retrieve();
         $this->assertCount(1, $response);
+    }
+
+    public function testCanCloneACollectionSchema(): void
+    {
+        $response = $this->client()->collections->create(['name' => 'books_v2'], ["src_name" => "books"]);
+        $this->assertEquals('books_v2', $response['name']);
+        $this->assertEquals($this->createCollectionRes['fields'], $response['fields']);
     }
 }

@@ -55,13 +55,14 @@ class Collections implements \ArrayAccess
 
     /**
      * @param array $schema
+     * @param array $options
      *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function create(array $schema): array
+    public function create(array $schema, array $options = []): array
     {
-        return $this->apiCall->post(static::RESOURCE_PATH, $schema);
+        return $this->apiCall->post(static::RESOURCE_PATH, $schema, true, $options);
     }
 
     /**
