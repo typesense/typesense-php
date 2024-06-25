@@ -7,7 +7,7 @@ use Typesense\Exceptions\ObjectNotFound;
 
 class AnalyticsRulesTest extends TestCase
 {
-    private $ruleName = 'product_queries_aggregation';
+    private $ruleName = 'test_rule';
     private $ruleConfiguration = [
         "type" => "popular_queries",
         "params" => [
@@ -27,6 +27,14 @@ class AnalyticsRulesTest extends TestCase
     {
         parent::setUp();
         $this->ruleUpsertResponse = $this->client()->analytics->rules()->upsert($this->ruleName, $this->ruleConfiguration);
+    }
+
+    protected function tearDown(): void
+    {
+        $rules =  $this->client()->analytics->rules()->retrieve();
+        foreach ($rules['rules'] as $rule) {
+            $this->client()->analytics->rules()->{$rule['name']}->delete();
+        }
     }
 
     public function testCanUpsertARule(): void
