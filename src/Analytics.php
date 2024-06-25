@@ -10,6 +10,8 @@ class Analytics
 
     private AnalyticsRules $rules;
 
+    private AnalyticsEvents $events;
+
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
@@ -21,5 +23,13 @@ class Analytics
             $this->rules = new AnalyticsRules($this->apiCall);
         }
         return $this->rules;
+    }
+
+    public function events()
+    {
+        if (!isset($this->events)) {
+            $this->events = new AnalyticsEvents($this->apiCall);
+        }
+        return $this->events;
     }
 }
