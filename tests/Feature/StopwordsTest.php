@@ -16,8 +16,9 @@ class StopwordsTest extends TestCase
 
         $this->stopwordsUpsertRes =  $this->client()->stopwords->put(
             [
-                "stopwords_name" => "stopword_set1",
-                "stopwords_data" => ["Germany"],
+                "name" => "stopword_set1",
+                "stopwords" => ["Germany"],
+                "locale" => "en"
             ]
         );
     }
@@ -34,6 +35,7 @@ class StopwordsTest extends TestCase
     {
         $this->assertEquals("stopword_set1", $this->stopwordsUpsertRes['id']);
         $this->assertEquals(["Germany"], $this->stopwordsUpsertRes['stopwords']);
+        $this->assertEquals('en', $this->stopwordsUpsertRes['locale']);
     }
 
     public function testCanRetrieveAStopword(): void
