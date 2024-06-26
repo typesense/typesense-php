@@ -14,6 +14,7 @@ use Typesense\Operations;
 use Typesense\MultiSearch;
 use Typesense\Presets;
 use Typesense\Analytics;
+use Typesense\Conversations;
 
 class ClientTest extends TestCase
 {
@@ -30,5 +31,6 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(MultiSearch::class,  $this->client()->multiSearch);
         $this->assertInstanceOf(Presets::class,  $this->client()->presets);
         $this->assertInstanceOf(Analytics::class,  $this->client()->analytics);
+        $this->assertInstanceOf(Conversations::class,  $this->client()->conversations);
     }
 }

@@ -4,14 +4,18 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Typesense\Client;
+use Mockery;
+use Typesense\ApiCall;
 
 abstract class TestCase extends BaseTestCase
 {
     private ?Client $typesenseClient = null;
+    private $mockApiCall;
 
     protected function setUp(): void
     {
         $this->setUpTypesenseClient();
+        $this->mockApiCall = Mockery::mock(ApiCall::class);
     }
 
     protected function tearDown(): void
@@ -22,6 +26,11 @@ abstract class TestCase extends BaseTestCase
     protected function client(): Client
     {
         return $this->typesenseClient;
+    }
+
+    protected function mockApiCall()
+    {
+        return $this->mockApiCall;
     }
 
     protected function getSchema(string $name): array
@@ -78,7 +87,7 @@ abstract class TestCase extends BaseTestCase
         $this->typesenseClient->collections[$schema]->documents->import($documents);
     }
 
-    private function tearDownTypesense(): void
+    protected function tearDownTypesense(): void
     {
         $collections = $this->typesenseClient->collections->retrieve();
         foreach ($collections as $collection) {

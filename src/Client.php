@@ -75,6 +75,11 @@ class Client
     public Analytics $analytics;
 
     /**
+     * @var Conversations
+     */
+    public Conversations $conversations;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -91,17 +96,18 @@ class Client
         $this->config  = new Configuration($config);
         $this->apiCall = new ApiCall($this->config);
 
-        $this->collections = new Collections($this->apiCall);
-        $this->stopwords   = new Stopwords($this->apiCall);
-        $this->aliases     = new Aliases($this->apiCall);
-        $this->keys        = new Keys($this->apiCall);
-        $this->debug       = new Debug($this->apiCall);
-        $this->metrics     = new Metrics($this->apiCall);
-        $this->health      = new Health($this->apiCall);
-        $this->operations  = new Operations($this->apiCall);
-        $this->multiSearch = new MultiSearch($this->apiCall);
-        $this->presets     = new Presets($this->apiCall);
-        $this->analytics   = new Analytics($this->apiCall);
+        $this->collections   = new Collections($this->apiCall);
+        $this->stopwords     = new Stopwords($this->apiCall);
+        $this->aliases       = new Aliases($this->apiCall);
+        $this->keys          = new Keys($this->apiCall);
+        $this->debug         = new Debug($this->apiCall);
+        $this->metrics       = new Metrics($this->apiCall);
+        $this->health        = new Health($this->apiCall);
+        $this->operations    = new Operations($this->apiCall);
+        $this->multiSearch   = new MultiSearch($this->apiCall);
+        $this->presets       = new Presets($this->apiCall);
+        $this->analytics     = new Analytics($this->apiCall);
+        $this->conversations = new Conversations($this->apiCall);
     }
 
     /**
@@ -190,5 +196,13 @@ class Client
     public function getAnalytics(): Analytics
     {
         return $this->analytics;
+    }
+
+    /**
+     * @return Conversations
+     */
+    public function getConversations(): Conversations
+    {
+        return $this->conversations;
     }
 }
