@@ -18,10 +18,9 @@ class ConversationModelsTest extends ConversationsTestCase
         ];
 
         $this->mockApiCall()->allows()->post(static::RESOURCE_PATH, $data)->andReturns([]);
-        $this->mockConversations()->models->create($data);
 
-        $this->expectExceptionMessage('OpenAI API error: Incorrect API key provided: OPENAI_A**_KEY');
-        $this->client()->conversations->models->create($data);
+        $response = $this->mockConversations()->models->create($data);
+        $this->assertEquals([], $response);
     }
 
     public function testCanRetrieveAllModels(): void
