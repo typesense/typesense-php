@@ -2,7 +2,7 @@
 
 namespace Typesense;
 
-class AnalyticsRules
+class AnalyticsRules implements \ArrayAccess
 {
     const RESOURCE_PATH = '/analytics/rules';
 
@@ -35,5 +35,41 @@ class AnalyticsRules
     private function endpoint_path($operation = null)
     {
         return self::RESOURCE_PATH . ($operation === null ? '' : "/$operation");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->analyticsRules[$offset]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset): AnalyticsRule
+    {
+        if (!isset($this->analyticsRules[$offset])) {
+            $this->analyticsRules[$offset] = new AnalyticsRule($offset, $this->apiCall);
+        }
+
+        return $this->analyticsRules[$offset];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value): void
+    {
+        $this->analyticsRules[$offset] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($offset): void
+    {
+        unset($this->analyticsRules[$offset]);
     }
 }
