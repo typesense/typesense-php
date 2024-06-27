@@ -6,13 +6,13 @@ use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
- * Class Document
+ * Class Presets
  *
  * @package \Typesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
-class Presets
+class Presets implements \ArrayAccess
 {
     /**
      * @var ApiCall
@@ -24,7 +24,12 @@ class Presets
     public const MULTI_SEARCH_PATH = '/multi_search';
 
     /**
-     * Document constructor.
+     * @var array
+     */
+    private array $presets = [];
+
+    /**
+     * Presets constructor.
      *
      * @param ApiCall $apiCall
      */
@@ -49,35 +54,22 @@ class Presets
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function get()
+    public function retrieve()
     {
         return $this->apiCall->get(static::PRESETS_PATH, []);
     }
 
     /**
+     * @param string $presetName
      * @param array $options
      *
      * @return array
      * @throws HttpClientException
      * @throws TypesenseClientError
      */
-    public function put(array $options = [])
+    public function upsert(string $presetName, array $presetsData)
     {
-        $presetName  = $options['preset_name'];
-        $presetsData = $options['preset_data'];
-
         return $this->apiCall->put($this->endpointPath($presetName), $presetsData);
-    }
-
-    /**
-     * @param $presetName
-     * @return array
-     * @throws HttpClientException
-     * @throws TypesenseClientError
-     */
-    public function delete($presetName)
-    {
-        return $this->apiCall->delete($this->endpointPath($presetName));
     }
 
     /**
@@ -103,5 +95,58 @@ class Presets
             '%s',
             static::MULTI_SEARCH_PATH
         );
+    }
+
+    /**
+     * @param $presetName
+     *
+     * @return mixed
+     */
+    public function __get($presetName)
+    {
+        if (isset($this->{$presetName})) {
+            return $this->{$presetName};
+        }
+        if (!isset($this->presets[$presetName])) {
+            $this->presets[$presetName] = new Preset($presetName, $this->apiCall);
+        }
+
+        return $this->presets[$presetName];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->presets[$offset]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset): Preset
+    {
+        if (!isset($this->presets[$offset])) {
+            $this->presets[$offset] = new Preset($offset, $this->apiCall);
+        }
+
+        return $this->presets[$offset];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value): void
+    {
+        $this->presets[$offset] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($offset): void
+    {
+        unset($this->presets[$offset]);
     }
 }
