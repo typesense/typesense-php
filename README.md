@@ -22,6 +22,7 @@ Here are some examples that walk you through how to use the client: [doc/example
 
 | Typesense Server | typesense-php |
 |------------------|---------------|
+| \>= v26.0        | \>= v4.9.0    |
 | \>= v0.23.0      | \>= v4.8.0    |
 | \>= v0.21.0      | \>= v4.7.0    |
 | \>= v0.20.0      | \>= v4.6.0    |
