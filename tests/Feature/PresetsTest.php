@@ -3,6 +3,7 @@
 namespace Feature;
 
 use Tests\TestCase;
+use Typesense\Exceptions\ObjectNotFound;
 
 class PresetsTest extends TestCase
 {
@@ -14,22 +15,19 @@ class PresetsTest extends TestCase
     {
         parent::setUp();
 
-        $returnData =  $this->client()->presets->put([
-            'preset_name' => $this->presetName,
-            'preset_data' =>  [
-                'value' => [
-                    'query_by' => "*",
-                ],
-            ]
+        $returnData =  $this->client()->presets->upsert($this->presetName, [
+            'value' => [
+                'query_by' => "*",
+            ],
         ]);
         $this->presetUpsertRes = $returnData;
     }
 
     protected function tearDown(): void
     {
-        $presets = $this->client()->presets->get();
+        $presets = $this->client()->presets->retrieve();
         foreach ($presets['presets'] as $preset) {
-            $this->client()->presets->delete($preset['name']);
+            $this->client()->presets[$preset['name']]->delete();
         }
     }
 
@@ -38,25 +36,24 @@ class PresetsTest extends TestCase
         $this->assertEquals($this->presetName, $this->presetUpsertRes['name']);
     }
 
-    //* Currently there isn't a method for retrieving a preset by name
-    // public function testCanRetrieveAPreset(): void
-    // {
-    //     $returnData =  $this->client()->presets->get($this->presetName);
-    //     $this->assertEquals($this->presetName, $returnData['name']);
-    // }
+    public function testCanRetrieveAPresetByName(): void
+    {
+        $returnData =  $this->client()->presets[$this->presetName]->retrieve();
+        $this->assertEquals($this->presetName, $returnData['name']);
+    }
 
     public function testCanDeleteAPreset(): void
     {
-        $returnData =  $this->client()->presets->delete($this->presetName);
+        $returnData =  $this->client()->presets[$this->presetName]->delete();
         $this->assertEquals($this->presetName, $returnData['name']);
 
-        $returnPresets =  $this->client()->presets->get();
-        $this->assertCount(0, $returnPresets['presets']);
+        $this->expectException(ObjectNotFound::class);
+        $this->client()->presets[$this->presetName]->retrieve();
     }
 
     public function testCanRetrieveAllPresets(): void
     {
-        $returnData =  $this->client()->presets->get();
+        $returnData =  $this->client()->presets->retrieve();
         $this->assertCount(1, $returnData['presets']);
     }
 }

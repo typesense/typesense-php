@@ -44,17 +44,17 @@ class AnalyticsRulesTest extends TestCase
 
     public function testCanRetrieveARule(): void
     {
-        $returnData = $this->client()->analytics->rules()->{$this->ruleName}->retrieve();
+        $returnData = $this->client()->analytics->rules()[$this->ruleName]->retrieve();
         $this->assertEquals($returnData['name'], $this->ruleName);
     }
 
     public function testCanDeleteARule(): void
     {
-        $returnData = $this->client()->analytics->rules()->{$this->ruleName}->delete();
+        $returnData = $this->client()->analytics->rules()[$this->ruleName]->delete();
         $this->assertEquals($returnData['name'], $this->ruleName);
 
         $this->expectException(ObjectNotFound::class);
-        $this->client()->analytics->rules()->{$this->ruleName}->retrieve();
+        $this->client()->analytics->rules()[$this->ruleName]->retrieve();
     }
 
     public function testCanRetrieveAllRules(): void
