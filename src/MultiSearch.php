@@ -30,7 +30,7 @@ class MultiSearch
     }
 
     /**
-     * @param string $searches
+     * @param array $searches
      * @param array $queryParameters
      *
      * @return array
