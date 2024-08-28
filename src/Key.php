@@ -41,7 +41,7 @@ class Key
      */
     private function endpointPath(): string
     {
-        return sprintf('%s/%s', Keys::RESOURCE_PATH, $this->keyId);
+        return sprintf('%s/%s', Keys::RESOURCE_PATH, encodeURIComponent($this->keyId));
     }
 
     /**

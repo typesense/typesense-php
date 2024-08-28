@@ -68,6 +68,6 @@ class ConversationModel
      */
     public function endPointPath(): string
     {
-        return sprintf('%s/%s', ConversationModels::RESOURCE_PATH, $this->id);
+        return sprintf('%s/%s', ConversationModels::RESOURCE_PATH, encodeURIComponent($this->id));
     }
 }

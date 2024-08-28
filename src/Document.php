@@ -51,9 +51,9 @@ class Document
         return sprintf(
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
-            $this->collectionName,
+            encodeURIComponent($this->collectionName),
             Documents::RESOURCE_PATH,
-            $this->documentId
+            encodeURIComponent($this->documentId)
         );
     }
 

@@ -51,9 +51,9 @@ class Override
         return sprintf(
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
-            $this->collectionName,
+            encodeURIComponent($this->collectionName),
             Overrides::RESOURCE_PATH,
-            $this->overrideId
+            encodeURIComponent($this->overrideId)
         );
     }
 

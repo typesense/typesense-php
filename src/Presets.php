@@ -89,7 +89,7 @@ class Presets
         return sprintf(
             '%s/%s',
             static::PRESETS_PATH,
-            $presetsName
+            encodeURIComponent($presetsName)
         );
     }
 

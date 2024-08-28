@@ -64,7 +64,7 @@ class Collection
      */
     public function endPointPath(): string
     {
-        return sprintf('%s/%s', Collections::RESOURCE_PATH, $this->name);
+        return sprintf('%s/%s', Collections::RESOURCE_PATH, encodeURIComponent($this->name));
     }
 
     /**

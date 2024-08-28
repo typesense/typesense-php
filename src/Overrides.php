@@ -53,9 +53,9 @@ class Overrides implements \ArrayAccess
         return sprintf(
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
-            $this->collectionName,
+            encodeURIComponent($this->collectionName),
             static::RESOURCE_PATH,
-            $overrideId
+            encodeURIComponent($overrideId)
         );
     }
 
