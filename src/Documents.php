@@ -53,7 +53,7 @@ class Documents implements \ArrayAccess
         return sprintf(
             '%s/%s/%s/%s',
             Collections::RESOURCE_PATH,
-            $this->collectionName,
+            encodeURIComponent($this->collectionName),
             static::RESOURCE_PATH,
             $action
         );
@@ -125,7 +125,7 @@ class Documents implements \ArrayAccess
     {
         $this->apiCall->getLogger()->warning(
             "createMany is deprecated and will be removed in a future version. " .
-            "Use import instead, which now takes both an array of documents or a JSONL string of documents"
+                "Use import instead, which now takes both an array of documents or a JSONL string of documents"
         );
         return $this->import($documents, $options);
     }

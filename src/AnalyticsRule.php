@@ -25,6 +25,6 @@ class AnalyticsRule
 
     private function endpointPath()
     {
-        return AnalyticsRules::RESOURCE_PATH . '/' . $this->ruleName;
+        return AnalyticsRules::RESOURCE_PATH . '/' . encodeURIComponent($this->ruleName);
     }
 }

@@ -36,6 +36,15 @@ class AliasesTest extends TestCase
         $this->assertEquals($this->sampleAliasResponse, $this->upsertResponse);
     }
 
+    public function testCanUpsertAnAliasUrlEncodedName(): void
+    {
+        $aliasedCollection = [
+            'collection_name' => 'companies_june11'
+        ];
+        $res = $this->client()->aliases->upsert("abc123?=+/~-_- &| test'", $aliasedCollection);
+        $this->assertEquals(["name"=>"abc123?=+/~-_- &| test'", ...$aliasedCollection], $res);
+    }
+
     public function testCanRetrieveAlias(): void
     {
         $response = $this->client()->aliases['companies']->retrieve();

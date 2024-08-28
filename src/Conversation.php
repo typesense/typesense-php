@@ -68,6 +68,6 @@ class Conversation
      */
     public function endPointPath(): string
     {
-        return sprintf('%s/%s', Conversations::RESOURCE_PATH, $this->id);
+        return sprintf('%s/%s', Conversations::RESOURCE_PATH, encodeURIComponent($this->id));
     }
 }

@@ -41,7 +41,7 @@ class Alias
      */
     public function endPointPath(): string
     {
-        return sprintf('%s/%s', Aliases::RESOURCE_PATH, $this->name);
+        return sprintf('%s/%s', Aliases::RESOURCE_PATH, encodeURIComponent($this->name));
     }
 
     /**

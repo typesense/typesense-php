@@ -34,6 +34,6 @@ class AnalyticsRules
 
     private function endpoint_path($operation = null)
     {
-        return self::RESOURCE_PATH . ($operation === null ? '' : "/$operation");
+        return self::RESOURCE_PATH . ($operation === null ? '' : "/" . encodeURIComponent($operation));
     }
 }

@@ -5,6 +5,7 @@ namespace Typesense;
 use Typesense\Exceptions\ConfigError;
 use Typesense\Lib\Configuration;
 
+include('utils/utils.php');
 /**
  * Class Client
  *

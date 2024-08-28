@@ -43,7 +43,7 @@ class Aliases implements \ArrayAccess
      */
     public function endPointPath(string $aliasName): string
     {
-        return sprintf('%s/%s', static::RESOURCE_PATH, $aliasName);
+        return sprintf('%s/%s', static::RESOURCE_PATH, encodeURIComponent($aliasName));
     }
 
     /**

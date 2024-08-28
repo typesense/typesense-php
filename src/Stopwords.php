@@ -88,7 +88,7 @@ class Stopwords
         return sprintf(
             '%s/%s',
             static::STOPWORDS_PATH,
-            $stopwordsName
+            encodeURIComponent($stopwordsName)
         );
     }
 }
