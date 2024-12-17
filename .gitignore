@@ -1,6 +1,7 @@
 .idea
 .tmp
 .phpunit.result.cache
+.env
 /composer.lock
 phpunit.xml
 vendor
