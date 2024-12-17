@@ -3,6 +3,7 @@
 namespace Typesense\Lib;
 
 use Http\Client\Common\HttpMethodsClient;
+use Http\Client\HttpClient;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Monolog\Handler\StreamHandler;
@@ -56,9 +57,9 @@ class Configuration
     private LoggerInterface $logger;
 
     /**
-     * @var null|ClientInterface
+     * @var HttpMethodsClient|ClientInterface|null
      */
-    private ?ClientInterface $client = null;
+    private $client = null;
 
     /**
      * @var int
@@ -103,8 +104,18 @@ class Configuration
         $this->logger   = new Logger('typesense');
         $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
 
-        if (true === \array_key_exists('client', $config) && $config['client'] instanceof ClientInterface) {
-            $this->client = $config['client'];
+        if (true === \array_key_exists('client', $config)) {
+            if ($config['client'] instanceof HttpMethodsClient) {
+                $this->client = $config['client'];
+            } elseif ($config['client'] instanceof HttpClient || $config['client'] instanceof ClientInterface) {
+                $this->client = new HttpMethodsClient(
+                    $config['client'],
+                    Psr17FactoryDiscovery::findRequestFactory(),
+                    Psr17FactoryDiscovery::findStreamFactory()
+                );
+            } else {
+                throw new ConfigError('Client must implement PSR-18 ClientInterface or Http\Client\HttpClient');
+            }
         }
     }
 
@@ -216,10 +227,14 @@ class Configuration
      */
     public function getClient(): ClientInterface
     {
-        return new HttpMethodsClient(
-            $this->client ?? Psr18ClientDiscovery::find(),
-            Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory(),
-        );
+        if ($this->client === null) {
+            $discoveredClient = Psr18ClientDiscovery::find();
+            $this->client = new HttpMethodsClient(
+                $discoveredClient,
+                Psr17FactoryDiscovery::findRequestFactory(),
+                Psr17FactoryDiscovery::findStreamFactory()
+            );
+        }
+        return $this->client;
     }
 }
