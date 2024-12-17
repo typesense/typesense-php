@@ -24,7 +24,7 @@ class Collections implements \ArrayAccess
     /**
      * @var array
      */
-    private array $collections = [];
+    private array $typesenseCollections = [];
 
     /**
      * Collections constructor.
@@ -46,11 +46,11 @@ class Collections implements \ArrayAccess
         if (isset($this->{$collectionName})) {
             return $this->{$collectionName};
         }
-        if (!isset($this->collections[$collectionName])) {
-            $this->collections[$collectionName] = new Collection($collectionName, $this->apiCall);
+        if (!isset($this->typesenseCollections[$collectionName])) {
+            $this->typesenseCollections[$collectionName] = new Collection($collectionName, $this->apiCall);
         }
 
-        return $this->collections[$collectionName];
+        return $this->typesenseCollections[$collectionName];
     }
 
     /**
@@ -79,7 +79,7 @@ class Collections implements \ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return isset($this->collections[$offset]);
+        return isset($this->typesenseCollections[$offset]);
     }
 
     /**
@@ -87,11 +87,11 @@ class Collections implements \ArrayAccess
      */
     public function offsetGet($offset): Collection
     {
-        if (!isset($this->collections[$offset])) {
-            $this->collections[$offset] = new Collection($offset, $this->apiCall);
+        if (!isset($this->typesenseCollections[$offset])) {
+            $this->typesenseCollections[$offset] = new Collection($offset, $this->apiCall);
         }
 
-        return $this->collections[$offset];
+        return $this->typesenseCollections[$offset];
     }
 
     /**
@@ -99,7 +99,7 @@ class Collections implements \ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->collections[$offset] = $value;
+        $this->typesenseCollections[$offset] = $value;
     }
 
     /**
@@ -107,6 +107,6 @@ class Collections implements \ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        unset($this->collections[$offset]);
+        unset($this->typesenseCollections[$offset]);
     }
 }
