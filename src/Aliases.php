@@ -24,7 +24,7 @@ class Aliases implements \ArrayAccess
     /**
      * @var array
      */
-    private array $aliases = [];
+    private array $typesenseAliases = [];
 
     /**
      * Aliases constructor.
@@ -78,11 +78,11 @@ class Aliases implements \ArrayAccess
             return $this->{$name};
         }
 
-        if (!isset($this->aliases[$name])) {
-            $this->aliases[$name] = new Alias($name, $this->apiCall);
+        if (!isset($this->typesenseAliases[$name])) {
+            $this->typesenseAliases[$name] = new Alias($name, $this->apiCall);
         }
 
-        return $this->aliases[$name];
+        return $this->typesenseAliases[$name];
     }
 
     /**
@@ -90,7 +90,7 @@ class Aliases implements \ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return isset($this->aliases[$offset]);
+        return isset($this->typesenseAliases[$offset]);
     }
 
     /**
@@ -98,11 +98,11 @@ class Aliases implements \ArrayAccess
      */
     public function offsetGet($offset): Alias
     {
-        if (!isset($this->aliases[$offset])) {
-            $this->aliases[$offset] = new Alias($offset, $this->apiCall);
+        if (!isset($this->typesenseAliases[$offset])) {
+            $this->typesenseAliases[$offset] = new Alias($offset, $this->apiCall);
         }
 
-        return $this->aliases[$offset];
+        return $this->typesenseAliases[$offset];
     }
 
     /**
@@ -110,7 +110,7 @@ class Aliases implements \ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->aliases[$offset] = $value;
+        $this->typesenseAliases[$offset] = $value;
     }
 
     /**
@@ -118,6 +118,6 @@ class Aliases implements \ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        unset($this->aliases[$offset]);
+        unset($this->typesenseAliases[$offset]);
     }
 }
