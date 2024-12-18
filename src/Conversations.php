@@ -14,7 +14,7 @@ class Conversations implements \ArrayAccess
     /**
      * @var ConversationModels
      */
-    public ConversationModels $models;
+    public ConversationModels $typesenseModels;
 
     /**
      * @var ApiCall
@@ -34,7 +34,7 @@ class Conversations implements \ArrayAccess
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
-        $this->models = new ConversationModels($this->apiCall);
+        $this->typesenseModels = new ConversationModels($this->apiCall);
     }
 
     /**
@@ -51,7 +51,7 @@ class Conversations implements \ArrayAccess
      */
     public function getModels(): ConversationModels
     {
-        return $this->models;
+        return $this->typesenseModels;
     }
 
     /**

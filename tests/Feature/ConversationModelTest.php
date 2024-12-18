@@ -13,7 +13,7 @@ class ConversationModelTest extends ConversationsTestCase
     {
         $this->mockApiCall()->allows()->get($this->endPointPath(), [])->andReturns([]);
 
-        $response = $this->mockConversations()->models[$this->id]->retrieve();
+        $response = $this->mockConversations()->typesenseModels[$this->id]->retrieve();
         $this->assertEquals([], $response);
     }
 
@@ -24,7 +24,7 @@ class ConversationModelTest extends ConversationsTestCase
         ];
         $this->mockApiCall()->allows()->put($this->endPointPath(), $data)->andReturns([]);
 
-        $response = $this->mockConversations()->models[$this->id]->update($data);
+        $response = $this->mockConversations()->typesenseModels[$this->id]->update($data);
         $this->assertEquals([], $response);
     }
 
@@ -32,7 +32,7 @@ class ConversationModelTest extends ConversationsTestCase
     {
         $this->mockApiCall()->allows()->delete($this->endPointPath())->andReturns([]);
 
-        $response = $this->mockConversations()->models[$this->id]->delete();
+        $response = $this->mockConversations()->typesenseModels[$this->id]->delete();
         $this->assertEquals([], $response);
     }
 
