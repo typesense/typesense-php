@@ -26,7 +26,7 @@ class Presets implements \ArrayAccess
     /**
      * @var array
      */
-    private array $presets = [];
+    private array $typesensePresets = [];
 
     /**
      * Presets constructor.
@@ -107,11 +107,11 @@ class Presets implements \ArrayAccess
         if (isset($this->{$presetName})) {
             return $this->{$presetName};
         }
-        if (!isset($this->presets[$presetName])) {
-            $this->presets[$presetName] = new Preset($presetName, $this->apiCall);
+        if (!isset($this->typesensePresets[$presetName])) {
+            $this->typesensePresets[$presetName] = new Preset($presetName, $this->apiCall);
         }
 
-        return $this->presets[$presetName];
+        return $this->typesensePresets[$presetName];
     }
 
     /**
@@ -119,7 +119,7 @@ class Presets implements \ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return isset($this->presets[$offset]);
+        return isset($this->typesensePresets[$offset]);
     }
 
     /**
@@ -127,11 +127,11 @@ class Presets implements \ArrayAccess
      */
     public function offsetGet($offset): Preset
     {
-        if (!isset($this->presets[$offset])) {
-            $this->presets[$offset] = new Preset($offset, $this->apiCall);
+        if (!isset($this->typesensePresets[$offset])) {
+            $this->typesensePresets[$offset] = new Preset($offset, $this->apiCall);
         }
 
-        return $this->presets[$offset];
+        return $this->typesensePresets[$offset];
     }
 
     /**
@@ -139,7 +139,7 @@ class Presets implements \ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->presets[$offset] = $value;
+        $this->typesensePresets[$offset] = $value;
     }
 
     /**
@@ -147,6 +147,6 @@ class Presets implements \ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        unset($this->presets[$offset]);
+        unset($this->typesensePresets[$offset]);
     }
 }
