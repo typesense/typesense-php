@@ -38,8 +38,13 @@ class HttpClientsTest extends TestCase
     public function testWorksWithPsr18Client(): void
     {
         $httpClient = new Psr18Client();
-        $config = array_merge($this->baseConfig, ['client' => $httpClient]);
+        $wrappedClient = new HttpMethodsClient(
+            $httpClient,
+            Psr17FactoryDiscovery::findRequestFactory(),
+            Psr17FactoryDiscovery::findStreamFactory()
+        );
 
+        $config = array_merge($this->baseConfig, ['client' => $wrappedClient]);
         $client = new Client($config);
         $response = $client->health->retrieve();
         $this->assertIsBool($response['ok']);
@@ -58,6 +63,14 @@ class HttpClientsTest extends TestCase
         $client = new Client($config);
         $response = $client->health->retrieve();
         $this->assertIsBool($response['ok']);
+    }
+
+    public function testWorksWithLegacyPsr18Client(): void
+    {
+        $httpClient = $this->createMock(\Psr\Http\Client\ClientInterface::class);
+        $config = array_merge($this->baseConfig, ['client' => $httpClient]);
+        $client = new Client($config);
+        $this->assertInstanceOf(Client::class, $client);
     }
 
     public function testRejectsInvalidClient(): void

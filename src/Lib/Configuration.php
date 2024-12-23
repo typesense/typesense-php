@@ -104,10 +104,10 @@ class Configuration
         $this->logger   = new Logger('typesense');
         $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
 
-        if (true === \array_key_exists('client', $config)) {
-            if ($config['client'] instanceof HttpMethodsClient) {
+        if (isset($config['client'])) {
+            if ($config['client'] instanceof HttpMethodsClient || $config['client'] instanceof ClientInterface) {
                 $this->client = $config['client'];
-            } elseif ($config['client'] instanceof HttpClient || $config['client'] instanceof ClientInterface) {
+            } elseif ($config['client'] instanceof HttpClient) {
                 $this->client = new HttpMethodsClient(
                     $config['client'],
                     Psr17FactoryDiscovery::findRequestFactory(),
