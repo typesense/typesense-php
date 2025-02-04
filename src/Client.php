@@ -76,6 +76,11 @@ class Client
     public Analytics $analytics;
 
     /**
+     * @var Stemming
+     */
+    public Stemming $stemming;
+
+    /**
      * @var Conversations
      */
     public Conversations $conversations;
@@ -108,6 +113,7 @@ class Client
         $this->multiSearch   = new MultiSearch($this->apiCall);
         $this->presets       = new Presets($this->apiCall);
         $this->analytics     = new Analytics($this->apiCall);
+        $this->stemming     = new Stemming($this->apiCall);
         $this->conversations = new Conversations($this->apiCall);
     }
 
@@ -197,6 +203,14 @@ class Client
     public function getAnalytics(): Analytics
     {
         return $this->analytics;
+    }
+
+    /**
+     * @return Stemming
+     */
+    public function getStemming(): Stemming
+    {
+        return $this->stemming;
     }
 
     /**
