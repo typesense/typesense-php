@@ -15,6 +15,16 @@ class StemmingDictionariesTest extends TestCase
 
     private $dictionaryUpsertResponse = null;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client()->stemming->dictionaries()->upsert(
+            $this->dictionaryId, 
+            $this->dictionary
+        );
+    }
+
     public function testCanUpsertADictionary(): void
     {
         $this->dictionaryUpsertResponse = $this->client()->stemming->dictionaries()->upsert($this->dictionaryId, $this->dictionary);
@@ -28,7 +38,7 @@ class StemmingDictionariesTest extends TestCase
     }
 
 
-    public function testCanRetrieveAllRules(): void
+    public function testCanRetrieveAllDicitionaries(): void
     {
         $returnData = $this->client()->stemming->dictionaries()->retrieve();
         $this->assertCount(1, $returnData['dictionaries']);

@@ -47,7 +47,13 @@ class StemmingDictionaries implements \ArrayAccess
 
     public function retrieve()
     {
-        return $this->apiCall->get(StemmingDictionaries::RESOURCE_PATH, []);
+        $response = $this->apiCall->get(StemmingDictionaries::RESOURCE_PATH, []);
+
+        // If response is null, return empty dictionaries structure
+        if ($response === null) {
+            return ['dictionaries' => []];
+        }
+        return $response;
     }
 
     private function endpoint_path($operation = null)
