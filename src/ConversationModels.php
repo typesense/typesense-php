@@ -22,7 +22,7 @@ class ConversationModels implements \ArrayAccess
     /**
      * @var array
      */
-    private array $models = [];
+    private array $typesenseModels = [];
 
     /**
      * ConversationModels constructor.
@@ -44,11 +44,11 @@ class ConversationModels implements \ArrayAccess
         if (isset($this->{$id})) {
             return $this->{$id};
         }
-        if (!isset($this->models[$id])) {
-            $this->models[$id] = new ConversationModel($id, $this->apiCall);
+        if (!isset($this->typesenseModels[$id])) {
+            $this->typesenseModels[$id] = new ConversationModel($id, $this->apiCall);
         }
 
-        return $this->models[$id];
+        return $this->typesenseModels[$id];
     }
 
     /**
@@ -76,7 +76,7 @@ class ConversationModels implements \ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return isset($this->models[$offset]);
+        return isset($this->typesenseModels[$offset]);
     }
 
     /**
@@ -84,11 +84,11 @@ class ConversationModels implements \ArrayAccess
      */
     public function offsetGet($offset): ConversationModel
     {
-        if (!isset($this->models[$offset])) {
-            $this->models[$offset] = new ConversationModel($offset, $this->apiCall);
+        if (!isset($this->typesenseModels[$offset])) {
+            $this->typesenseModels[$offset] = new ConversationModel($offset, $this->apiCall);
         }
 
-        return $this->models[$offset];
+        return $this->typesenseModels[$offset];
     }
 
     /**
@@ -96,7 +96,7 @@ class ConversationModels implements \ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->models[$offset] = $value;
+        $this->typesenseModels[$offset] = $value;
     }
 
     /**
@@ -104,6 +104,6 @@ class ConversationModels implements \ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        unset($this->models[$offset]);
+        unset($this->typesenseModels[$offset]);
     }
 }

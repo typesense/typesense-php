@@ -19,16 +19,16 @@ class ConversationModelsTest extends ConversationsTestCase
 
         $this->mockApiCall()->allows()->post(static::RESOURCE_PATH, $data)->andReturns([]);
 
-        $response = $this->mockConversations()->models->create($data);
+        $response = $this->mockConversations()->typesenseModels->create($data);
         $this->assertEquals([], $response);
     }
 
     public function testCanRetrieveAllModels(): void
     {
         $this->mockApiCall()->allows()->get(static::RESOURCE_PATH, [])->andReturns([]);
-        $this->mockConversations()->models->retrieve();
+        $this->mockConversations()->typesenseModels->retrieve();
 
-        $response = $this->client()->conversations->models->retrieve();
+        $response = $this->client()->conversations->typesenseModels->retrieve();
         $this->assertEquals([], $response);
     }
 }
