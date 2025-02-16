@@ -37,6 +37,6 @@ class ConversationTest extends ConversationsTestCase
 
     private function endPointPath(): string
     {
-        return sprintf('%s/%s', ConversationsTest::RESOURCE_PATH, $this->id);
+        return sprintf('%s/%s', "/conversations", $this->id);
     }
 }
