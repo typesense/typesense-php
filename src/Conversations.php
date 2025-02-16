@@ -38,15 +38,6 @@ class Conversations implements \ArrayAccess
     }
 
     /**
-     * @return array
-     * @throws TypesenseClientError|HttpClientException
-     */
-    public function retrieve(): array
-    {
-        return $this->apiCall->get(static::RESOURCE_PATH, []);
-    }
-
-    /**
      * @return Models
      */
     public function getModels(): ConversationModels
