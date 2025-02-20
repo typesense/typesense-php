@@ -79,11 +79,12 @@ class Document
     }
 
     /**
+     * @param array $options
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function delete(): array
+    public function delete(array $options = []): array
     {
-        return $this->apiCall->delete($this->endpointPath());
+        return $this->apiCall->delete($this->endpointPath(), true, $options);
     }
 }
