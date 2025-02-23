@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Typesense\Client;
 use Mockery;
 use Typesense\ApiCall;
-
 abstract class TestCase extends BaseTestCase
 {
     private ?Client $typesenseClient = null;
@@ -61,9 +60,14 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    private function setUpTypesenseClient(): void
+    /**
+     * @param \Http\Client\Common\HttpMethodsClient|\Psr\Http\Client\ClientInterface|null $client
+     */
+    protected function setUpTypesenseClient(mixed $client = null): void
     {
-        $this->typesenseClient = new Client([
+        $clientConfig = $client == null ? [] : ['client' => $client];
+
+        $this->typesenseClient = new Client($clientConfig + [
             'api_key' => $_ENV['TYPESENSE_API_KEY'],
             'nodes' => [
                 [
