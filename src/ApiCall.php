@@ -3,11 +3,13 @@
 namespace Typesense;
 
 use Exception;
+use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\Exception\HttpException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
+use Http\Discovery\Psr17FactoryDiscovery;
 use Typesense\Exceptions\HTTPStatus0Error;
 use Typesense\Exceptions\ObjectAlreadyExists;
 use Typesense\Exceptions\ObjectNotFound;
@@ -32,9 +34,9 @@ class ApiCall
     private const API_KEY_HEADER_NAME = 'X-TYPESENSE-API-KEY';
 
     /**
-     * @var ClientInterface
+     * @var ClientInterface | HttpMethodsClient
      */
-    private ClientInterface $client;
+    private $client;
 
     /**
      * @var Configuration
@@ -218,12 +220,35 @@ class ApiCall
                     $reqOp['query'] = http_build_query($options['query']);
                 }
 
-                $response = $this->client->send(
-                    \strtoupper($method),
-                    $url . '?' . ($reqOp['query'] ?? ''),
-                    $reqOp['headers'] ?? [],
-                    $reqOp['body'] ?? null
-                );
+                $response = null;
+
+                if ($this->client instanceof HttpMethodsClient) {
+                    $response = $this->client->send(
+                        \strtoupper($method),
+                        $url . '?' . ($reqOp['query'] ?? ''),
+                        $reqOp['headers'] ?? [],
+                        $reqOp['body'] ?? null
+                    );
+                } else {
+                    $requestFactory = Psr17FactoryDiscovery::findRequestFactory();
+                    $streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+
+                    $request = $requestFactory->createRequest(
+                        strtoupper($method),
+                        $url . '?' . ($reqOp['query'] ?? '')
+                    );
+
+                    foreach ($reqOp['headers'] ?? [] as $name => $value) {
+                        $request = $request->withHeader($name, $value);
+                    }
+
+                    if (isset($reqOp['body'])) {
+                        $body = $streamFactory->createStream($reqOp['body']);
+                        $request = $request->withBody($body);
+                    }
+
+                    $response = $this->client->sendRequest($request);
+                }
 
                 $statusCode = $response->getStatusCode();
                 if (0 < $statusCode && $statusCode < 500) {
