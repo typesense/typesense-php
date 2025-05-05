@@ -58,7 +58,7 @@ class Keys implements \ArrayAccess
         string $searchKey,
         array $parameters
     ): string {
-        $paramStr     = json_encode($parameters, JSON_THROW_ON_ERROR);
+        $paramStr     = json_encode((object)$parameters, JSON_THROW_ON_ERROR);
         $digest       = base64_encode(
             hash_hmac(
                 'sha256',

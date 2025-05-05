@@ -73,4 +73,13 @@ class KeysTest extends TestCase
         ]);
         $this->assertEquals($scopedSearchKey, $result);
     }
+
+    public function testGenerateScopedSearchKeyWithoutParams(): void
+    {
+        $searchKey = "RN23GFr1s6jQ9kgSNg2O7fYcAUXU7127";
+        $scopedSearchKey =
+            "R2pFZkxSemhGZmEvOXd2WWpYNWVSTzF2N2xRSk9jQmlpZ2NpdnloUTFGYz1STjIze30=";
+        $result = $this->client()->keys->generateScopedSearchKey($searchKey, []);
+        $this->assertEquals($scopedSearchKey, $result);
+    }
 }
