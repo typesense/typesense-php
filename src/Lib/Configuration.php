@@ -67,6 +67,11 @@ class Configuration
     private int $logLevel;
 
     /**
+     * @var bool
+     */
+    private bool $randomizeNodes;
+
+    /**
      * Configuration constructor.
      *
      * @param array $config
@@ -81,6 +86,11 @@ class Configuration
 
         foreach ($nodes as $node) {
             $this->nodes[] = new Node($node['host'], $node['port'], $node['path'] ?? '', $node['protocol']);
+        }
+
+        $this->randomizeNodes = $config['randomize_nodes'] ?? true;
+        if ($this->randomizeNodes) {
+            $this->shuffleNodes();
         }
 
         $nearestNode       = $config['nearest_node'] ?? null;
@@ -236,5 +246,19 @@ class Configuration
             );
         }
         return $this->client;
+    }
+
+    /**
+     * Shuffles the nodes array using Fisher-Yates algorithm
+     */
+    private function shuffleNodes(): void
+    {
+        $count = count($this->nodes);
+        for ($i = $count - 1; $i > 0; $i--) {
+            $j = random_int(0, $i);
+            $temp = $this->nodes[$i];
+            $this->nodes[$i] = $this->nodes[$j];
+            $this->nodes[$j] = $temp;
+        }
     }
 }
