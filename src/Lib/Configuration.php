@@ -90,7 +90,7 @@ class Configuration
 
         $this->randomizeNodes = $config['randomize_nodes'] ?? true;
         if ($this->randomizeNodes) {
-            $this->shuffleNodes();
+            shuffle($this->nodes);
         }
 
         $nearestNode       = $config['nearest_node'] ?? null;
@@ -246,19 +246,5 @@ class Configuration
             );
         }
         return $this->client;
-    }
-
-    /**
-     * Shuffles the nodes array using Fisher-Yates algorithm
-     */
-    private function shuffleNodes(): void
-    {
-        $count = count($this->nodes);
-        for ($i = $count - 1; $i > 0; $i--) {
-            $j = random_int(0, $i);
-            $temp = $this->nodes[$i];
-            $this->nodes[$i] = $this->nodes[$j];
-            $this->nodes[$j] = $temp;
-        }
     }
 }
