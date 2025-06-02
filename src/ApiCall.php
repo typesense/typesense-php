@@ -198,7 +198,7 @@ class ApiCall
         $lastException = null;
         while ($numRetries < $this->config->getNumRetries() + 1) {
             $numRetries++;
-            $node = $this->getNode();
+            $node = $this->getNode($numRetries);
 
             try {
                 $url   = $node->url() . $endPoint;
@@ -328,22 +328,43 @@ class ApiCall
      * Returns a healthy host from the pool in a round-robin fashion
      * Might return an unhealthy host periodically to check for recovery.
      *
+     * @param int $requestNumber
      * @return Node
      */
-    public function getNode(): Lib\Node
+    public function getNode(int $requestNumber = 0): Lib\Node
     {
+        $this->logger->debug("Request #{$requestNumber}: Getting next node");
+
         if ($this->nearestNode !== null) {
+            $this->logger->debug(
+                "Request #{$requestNumber}: Nodes Health: Nearest node is " . 
+                ($this->nearestNode->isHealthy() ? "Healthy" : "Unhealthy")
+            );
+
             if ($this->nearestNode->isHealthy() || $this->nodeDueForHealthCheck($this->nearestNode)) {
+                $this->logger->debug(
+                    "Request #{$requestNumber}: Using nearest node"
+                );
                 return $this->nearestNode;
             }
+            $this->logger->debug("Request #{$requestNumber}: Falling back to individual nodes");
         }
-        $i = 0;
-        while ($i < count($this->nodes)) {
-            $i++;
-            $node            = $this->nodes[$this->nodeIndex];
+
+        $candidateNode = $this->nodes[0];
+        for ($i = 0; $i <= count($this->nodes); $i++) {
             $this->nodeIndex = ($this->nodeIndex + 1) % count($this->nodes);
-            if ($node->isHealthy() || $this->nodeDueForHealthCheck($node)) {
-                return $node;
+            $candidateNode = $this->nodes[$this->nodeIndex];
+            
+            $this->logger->debug(
+                "Request #{$requestNumber}: Nodes Health: Node is " . 
+                ($candidateNode->isHealthy() ? "Healthy" : "Unhealthy")
+            );
+
+            if ($candidateNode->isHealthy() || $this->nodeDueForHealthCheck($candidateNode)) {
+                $this->logger->debug(
+                    "Request #{$requestNumber}: Updated current node"
+                );
+                return $candidateNode;
             }
         }
 
@@ -351,7 +372,10 @@ class ApiCall
          * None of the nodes are marked healthy, but some of them could have become healthy since last health check.
          * So we will just return the next node.
          */
-        return $this->nodes[$this->nodeIndex];
+        $this->logger->debug(
+            "Request #{$requestNumber}: No healthy nodes were found. Returning the next node"
+        );
+        return $candidateNode;
     }
 
     /**
