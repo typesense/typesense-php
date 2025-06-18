@@ -273,12 +273,12 @@ class ApiCall
                     continue;
                 }
                 $this->setNodeHealthCheck($node, false);
-                throw $this->getException($exception->getResponse()
+                $lastException = $this->getException($exception->getResponse()
                     ->getStatusCode())
                     ->setMessage($exception->getMessage());
             } catch (TypesenseClientError | HttpClientException $exception) {
                 $this->setNodeHealthCheck($node, false);
-                throw $exception;
+                $lastException = $exception;
             } catch (Exception $exception) {
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
