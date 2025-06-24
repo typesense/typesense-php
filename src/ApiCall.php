@@ -266,15 +266,20 @@ class ApiCall
                     ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
                     ->getContents();
             } catch (HttpException $exception) {
-                if (
-                    $exception->getResponse()
-                    ->getStatusCode() === 408
-                ) {
+                $statusCode = $exception->getResponse()->getStatusCode();
+                
+                if ($statusCode === 408) {
                     continue;
                 }
+                
+                if (400 <= $statusCode && $statusCode < 500) {
+                    $this->setNodeHealthCheck($node, false);
+                    throw $this->getException($statusCode)
+                        ->setMessage($exception->getMessage());
+                }
+                
                 $this->setNodeHealthCheck($node, false);
-                $lastException = $this->getException($exception->getResponse()
-                    ->getStatusCode())
+                $lastException = $this->getException($statusCode)
                     ->setMessage($exception->getMessage());
             } catch (TypesenseClientError | HttpClientException $exception) {
                 $this->setNodeHealthCheck($node, false);
