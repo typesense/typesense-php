@@ -86,6 +86,11 @@ class Client
     public Conversations $conversations;
 
     /**
+     * @var NLSearchModels
+     */
+    public NLSearchModels $nlSearchModels;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -115,6 +120,7 @@ class Client
         $this->analytics     = new Analytics($this->apiCall);
         $this->stemming     = new Stemming($this->apiCall);
         $this->conversations = new Conversations($this->apiCall);
+        $this->nlSearchModels = new NLSearchModels($this->apiCall);
     }
 
     /**
@@ -219,5 +225,13 @@ class Client
     public function getConversations(): Conversations
     {
         return $this->conversations;
+    }
+
+    /**
+     * @return NLSearchModels
+     */
+    public function getNLSearchModels(): NLSearchModels
+    {
+        return $this->nlSearchModels;
     }
 }
