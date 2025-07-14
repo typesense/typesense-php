@@ -89,6 +89,10 @@ abstract class TestCase extends BaseTestCase
 
     protected function tearDownTypesense(): void
     {
+        if ($this->typesenseClient === null) {
+            return;
+        }
+        
         $collections = $this->typesenseClient->collections->retrieve();
         foreach ($collections as $collection) {
             $this->typesenseClient->collections[$collection['name']]->delete();
