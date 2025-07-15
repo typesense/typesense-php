@@ -235,7 +235,7 @@ class Configuration
     /**
      * @return ClientInterface | HttpMethodsClient
      */
-    public function getClient(): ClientInterface | HttpMethodsClient
+    public function getClient()
     {
         if ($this->client === null) {
             $discoveredClient = Psr18ClientDiscovery::find();
