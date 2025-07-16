@@ -97,7 +97,7 @@ class ApiCallRetryTest extends TestCase
     public function testRetriesOnTypesenseClientError(): void
     {
         $callCount = 0;
-        $expectedCalls = 3;
+        $expectedCalls = 1;
         
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')
@@ -129,9 +129,11 @@ class ApiCallRetryTest extends TestCase
 
         $apiCall = new ApiCall($config);
         
-        $result = $apiCall->get('/test', []);
+        try {
+            $apiCall->get('/test', []);
+        } catch (ServerError $e) {
+        }
         
-        $this->assertEquals(['success' => true], $result);
         $this->assertEquals($expectedCalls, $callCount);
     }
 
@@ -405,5 +407,61 @@ class ApiCallRetryTest extends TestCase
         
         $this->assertEquals(['success' => true], $result);
         $this->assertEquals(2, $callCount);
+    }
+
+    public function testDoesNotSleepOnFinalRetryAttempt(): void
+    {
+        $callCount = 0;
+        $retryIntervalSeconds = 0.1; 
+        
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function() use (&$callCount) {
+                $callCount++;
+                
+                $response = $this->createMock(ResponseInterface::class);
+                $response->method('getStatusCode')->willReturn(500);
+                throw new HttpException('Server error', $this->createMock(RequestInterface::class), $response);
+            });
+
+        $config = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'num_retries' => 2, 
+            'retry_interval_seconds' => $retryIntervalSeconds,
+            'client' => $httpClient
+        ]);
+
+        $apiCall = new ApiCall($config);
+        
+        $startTime = microtime(true);
+        
+        try {
+            $apiCall->get('/test', []);
+        } catch (ServerError $e) {
+        }
+        
+        $endTime = microtime(true);
+        $actualDuration = $endTime - $startTime;
+        
+        //  2 sleep intervals (between 1st->2nd and 2nd->3rd attempts)
+        //  no sleep after the final (3rd) attempt
+        $expectedDuration = $retryIntervalSeconds * 2; 
+        
+        $tolerance = 0.05;
+        
+        $this->assertEquals(3, $callCount, 'Should make exactly 3 attempts');
+        $this->assertLessThan(
+            $expectedDuration + $tolerance, 
+            $actualDuration,
+            "Execution took too long ({$actualDuration}s), suggesting sleep was called on final attempt"
+        );
+        $this->assertGreaterThan(
+            $expectedDuration - $tolerance, 
+            $actualDuration,
+            "Execution was too fast ({$actualDuration}s), suggesting sleep intervals were skipped"
+        );
     }
 } 

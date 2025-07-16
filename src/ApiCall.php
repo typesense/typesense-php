@@ -268,27 +268,38 @@ class ApiCall
             } catch (HttpException $exception) {
                 $statusCode = $exception->getResponse()->getStatusCode();
                 
+                // Skip 408 timeouts and continue to next iteration
                 if ($statusCode === 408) {
                     continue;
                 }
                 
+                // For 4xx errors, don't retry - throw immediately
                 if (400 <= $statusCode && $statusCode < 500) {
                     $this->setNodeHealthCheck($node, false);
                     throw $this->getException($statusCode)
                         ->setMessage($exception->getMessage());
                 }
                 
+                // For 5xx errors, set exception and continue to retry logic
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $this->getException($statusCode)
                     ->setMessage($exception->getMessage());
-            } catch (TypesenseClientError | HttpClientException $exception) {
+            } catch (HttpClientException $exception) {
+                // For network errors, set exception and continue to retry logic
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
             } catch (Exception $exception) {
+                if ($exception instanceof TypesenseClientError) {
+                    throw $exception;
+                }
+                
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
-                sleep($this->config->getRetryIntervalSeconds());
             }
+            
+            if ($numRetries < $this->config->getNumRetries() + 1) {
+                usleep((int) ($this->config->getRetryIntervalSeconds() * 10**6));
+            } 
         }
 
         if ($lastException) {
