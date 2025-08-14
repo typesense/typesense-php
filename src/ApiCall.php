@@ -282,7 +282,9 @@ class ApiCall
             } catch (Exception $exception) {
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
-                sleep($this->config->getRetryIntervalSeconds());
+                if ($numRetries < $this->config->getNumRetries() + 1) {
+                    sleep($this->config->getRetryIntervalSeconds());
+                }
             }
         }
 
