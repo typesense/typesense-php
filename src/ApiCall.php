@@ -266,26 +266,40 @@ class ApiCall
                     ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
                     ->getContents();
             } catch (HttpException $exception) {
-                if (
-                    $exception->getResponse()
-                    ->getStatusCode() === 408
-                ) {
+                $statusCode = $exception->getResponse()->getStatusCode();
+                
+                // Skip 408 timeouts and continue to next iteration
+                if ($statusCode === 408) {
                     continue;
                 }
+                
+                // For 4xx errors, don't retry - throw immediately
+                if (400 <= $statusCode && $statusCode < 500) {
+                    $this->setNodeHealthCheck($node, false);
+                    throw $this->getException($statusCode)
+                        ->setMessage($exception->getMessage());
+                }
+                
+                // For 5xx errors, set exception and continue to retry logic
                 $this->setNodeHealthCheck($node, false);
-                throw $this->getException($exception->getResponse()
-                    ->getStatusCode())
+                $lastException = $this->getException($statusCode)
                     ->setMessage($exception->getMessage());
-            } catch (TypesenseClientError | HttpClientException $exception) {
-                $this->setNodeHealthCheck($node, false);
-                throw $exception;
-            } catch (Exception $exception) {
+            } catch (HttpClientException $exception) {
+                // For network errors, set exception and continue to retry logic
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
-                if ($numRetries < $this->config->getNumRetries() + 1) {
-                    sleep($this->config->getRetryIntervalSeconds());
+            } catch (Exception $exception) {
+                if ($exception instanceof TypesenseClientError) {
+                    throw $exception;
                 }
+                
+                $this->setNodeHealthCheck($node, false);
+                $lastException = $exception;
             }
+            
+            if ($numRetries < $this->config->getNumRetries() + 1) {
+                usleep((int) ($this->config->getRetryIntervalSeconds() * 10**6));
+            } 
         }
 
         if ($lastException) {
