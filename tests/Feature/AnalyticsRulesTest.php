@@ -4,6 +4,7 @@ namespace Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
+use Exception;
 
 class AnalyticsRulesTest extends TestCase
 {
@@ -26,14 +27,26 @@ class AnalyticsRulesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        if ($this->isV30OrAbove()) {
+            $this->markTestSkipped('Analytics is deprecated in Typesense v30+');
+        }
+
         $this->ruleUpsertResponse = $this->client()->analytics->rules()->upsert($this->ruleName, $this->ruleConfiguration);
     }
 
     protected function tearDown(): void
     {
-        $rules =  $this->client()->analytics->rules()->retrieve();
-        foreach ($rules['rules'] as $rule) {
-            $this->client()->analytics->rules()->{$rule['name']}->delete();
+        if (!$this->isV30OrAbove()) {
+            try {
+                $rules = $this->client()->analytics->rules()->retrieve();
+                if (is_array($rules) && isset($rules['rules'])) {
+                    foreach ($rules['rules'] as $rule) {
+                        $this->client()->analytics->rules()->{$rule['name']}->delete();
+                    }
+                }
+            } catch (Exception $e) {
+            }
         }
     }
 

@@ -91,6 +91,11 @@ class Client
     public NLSearchModels $nlSearchModels;
 
     /**
+     * @var SynonymSets
+     */
+    public SynonymSets $synonymSets;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -121,6 +126,7 @@ class Client
         $this->stemming     = new Stemming($this->apiCall);
         $this->conversations = new Conversations($this->apiCall);
         $this->nlSearchModels = new NLSearchModels($this->apiCall);
+        $this->synonymSets = new SynonymSets($this->apiCall);
     }
 
     /**
@@ -233,5 +239,13 @@ class Client
     public function getNLSearchModels(): NLSearchModels
     {
         return $this->nlSearchModels;
+    }
+
+    /**
+     * @return SynonymSets
+     */
+    public function getSynonymSets(): SynonymSets
+    {
+        return $this->synonymSets;
     }
 }
