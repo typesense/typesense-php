@@ -3,6 +3,7 @@
 namespace Feature;
 
 use Tests\TestCase;
+use Exception;
 
 class AnalyticsEventsTest extends TestCase
 {
@@ -11,6 +12,11 @@ class AnalyticsEventsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        
+        if ($this->isV30OrAbove()) {
+            $this->markTestSkipped('Analytics is deprecated in Typesense v30+');
+        }
+        
         $this->client()->collections->create([
             "name" => "products",
             "fields" => [
@@ -52,7 +58,13 @@ class AnalyticsEventsTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->client()->analytics->rules()->{'product_queries_aggregation'}->delete();
+        
+        if (!$this->isV30OrAbove()) {
+            try {
+                $this->client()->analytics->rules()->{'product_queries_aggregation'}->delete();
+            } catch (Exception $e) {
+            }
+        }
     }
 
     public function testCanCreateAnEvent(): void
