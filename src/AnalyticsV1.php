@@ -2,15 +2,15 @@
 
 namespace Typesense;
 
-class AnalyticsV2
+class AnalyticsV1
 {
     const RESOURCE_PATH = '/analytics';
 
     private ApiCall $apiCall;
 
-    private AnalyticsRulesV2 $rules;
+    private AnalyticsRulesV1 $rules;
 
-    private AnalyticsEventsV2 $events;
+    private AnalyticsEventsV1 $events;
 
     public function __construct(ApiCall $apiCall)
     {
@@ -20,7 +20,7 @@ class AnalyticsV2
     public function rules()
     {
         if (!isset($this->rules)) {
-            $this->rules = new AnalyticsRulesV2($this->apiCall);
+            $this->rules = new AnalyticsRulesV1($this->apiCall);
         }
         return $this->rules;
     }
@@ -28,8 +28,8 @@ class AnalyticsV2
     public function events()
     {
         if (!isset($this->events)) {
-            $this->events = new AnalyticsEventsV2($this->apiCall);
+            $this->events = new AnalyticsEventsV1($this->apiCall);
         }
         return $this->events;
     }
-} 
+}

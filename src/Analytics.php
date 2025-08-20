@@ -32,4 +32,4 @@ class Analytics
         }
         return $this->events;
     }
-}
+} 
