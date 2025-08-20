@@ -76,6 +76,11 @@ class Client
     public Analytics $analytics;
 
     /**
+     * @var AnalyticsV2
+     */
+    public AnalyticsV2 $analyticsV2;
+
+    /**
      * @var Stemming
      */
     public Stemming $stemming;
@@ -118,6 +123,7 @@ class Client
         $this->multiSearch   = new MultiSearch($this->apiCall);
         $this->presets       = new Presets($this->apiCall);
         $this->analytics     = new Analytics($this->apiCall);
+        $this->analyticsV2   = new AnalyticsV2($this->apiCall);
         $this->stemming     = new Stemming($this->apiCall);
         $this->conversations = new Conversations($this->apiCall);
         $this->nlSearchModels = new NLSearchModels($this->apiCall);
