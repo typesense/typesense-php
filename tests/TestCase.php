@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Typesense\Client;
 use Mockery;
 use Typesense\ApiCall;
+use Exception;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -96,6 +97,27 @@ abstract class TestCase extends BaseTestCase
         $collections = $this->typesenseClient->collections->retrieve();
         foreach ($collections as $collection) {
             $this->typesenseClient->collections[$collection['name']]->delete();
+        }
+    }
+
+    protected function isV30OrAbove(): bool
+    {
+        try {
+            $debug = $this->typesenseClient->debug->retrieve();
+            $version = $debug['version'];
+            
+            if ($version === 'nightly') {
+                return true;
+            }
+            
+            if (preg_match('/^v(\d+)/', $version, $matches)) {
+                $majorVersion = (int) $matches[1];
+                return $majorVersion >= 30;
+            }
+            
+            return false;
+        } catch (Exception $e) {
+            return false;
         }
     }
 }

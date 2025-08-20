@@ -4,6 +4,8 @@ namespace Typesense;
 
 /**
  * Class AnalyticsEvents
+ * 
+ * Implements the updated analytics events API for Typesense +
  *
  * @package \Typesense
  */
@@ -11,37 +13,33 @@ class AnalyticsEvents
 {
     const RESOURCE_PATH = '/analytics/events';
 
-    /**
-     * @var ApiCall
-     */
     private ApiCall $apiCall;
 
-    /**
-     * AnalyticsEvents constructor.
-     *
-     * @param ApiCall $apiCall
-     */
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
     }
 
     /**
-     * @param array $params
-     *
-     * @return array
+     * Create an analytics event
+     * 
+     * @param array $params Event parameters including name, event_type, and data
+     * @return array Response from the API
      * @throws TypesenseClientError|HttpClientException
      */
-    public function create($params)
+    public function create(array $params)
     {
-        return $this->apiCall->post($this->endpoint_path(), $params);
+        return $this->apiCall->post(self::RESOURCE_PATH, $params);
     }
 
     /**
-     * @return string
+     * Retrieve analytics events
+     * 
+     * @param array $params Query parameters
+     * @return array Response from the API
      */
-    private function endpoint_path($operation = null)
+    public function retrieve(array $params = [])
     {
-        return self::RESOURCE_PATH . ($operation === null ? '' : "/$operation");
+        return $this->apiCall->get(self::RESOURCE_PATH, $params);
     }
-}
+} 
