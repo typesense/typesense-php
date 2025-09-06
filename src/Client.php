@@ -18,7 +18,7 @@ class Client
     /**
      * @var Configuration
      */
-    private Configuration $config;
+    protected Configuration $config;
 
     /**
      * @var Collections
@@ -93,7 +93,7 @@ class Client
     /**
      * @var ApiCall
      */
-    private ApiCall $apiCall;
+    protected ApiCall $apiCall;
 
     /**
      * Client constructor.
