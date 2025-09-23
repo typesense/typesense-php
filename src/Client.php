@@ -96,6 +96,11 @@ class Client
     public SynonymSets $synonymSets;
 
     /**
+     * @var CurationSets
+     */
+    public CurationSets $curationSets;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
@@ -127,6 +132,7 @@ class Client
         $this->conversations = new Conversations($this->apiCall);
         $this->nlSearchModels = new NLSearchModels($this->apiCall);
         $this->synonymSets = new SynonymSets($this->apiCall);
+        $this->curationSets = new CurationSets($this->apiCall);
     }
 
     /**
@@ -247,5 +253,13 @@ class Client
     public function getSynonymSets(): SynonymSets
     {
         return $this->synonymSets;
+    }
+
+    /**
+     * @return CurationSets
+     */
+    public function getCurationSets(): CurationSets
+    {
+        return $this->curationSets;
     }
 }
