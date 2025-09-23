@@ -11,7 +11,7 @@ class SynonymSetsTest extends TestCase
     private $upsertResponse = null;
     private $synonymSets = null;
     private $synonymSetData = [
-        'synonyms' => [
+        'items' => [
             [
                 'id' => 'dummy',
                 'synonyms' => ['foo', 'bar', 'baz'],
@@ -35,7 +35,7 @@ class SynonymSetsTest extends TestCase
 
     public function testCanUpsertASynonymSet(): void
     {
-        $this->assertEquals($this->synonymSetData['synonyms'], $this->upsertResponse['synonyms']);
+        $this->assertEquals($this->synonymSetData['items'], $this->upsertResponse['items']);
     }
 
     public function testCanRetrieveAllSynonymSets(): void
@@ -47,7 +47,7 @@ class SynonymSetsTest extends TestCase
     public function testCanRetrieveASpecificSynonymSet(): void
     {
         $returnData = $this->synonymSets['test-synonym-set']->retrieve();
-        $this->assertEquals($this->synonymSetData['synonyms'], $returnData['synonyms']);
+        $this->assertEquals($this->synonymSetData['items'], $returnData['items']);
     }
 
     public function testCanDeleteASynonymSet(): void
