@@ -42,7 +42,9 @@ class CurationSetItemsTest extends TestCase
     protected function tearDown(): void
     {
         try {
-            $this->curationSets['test-curation-set-items']->delete();
+            if ($this->curationSets !== null) {
+                $this->curationSets['test-curation-set-items']->delete();
+            }
         } catch (Exception $e) {
             // Ignore cleanup errors
         }
