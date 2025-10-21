@@ -110,7 +110,7 @@ abstract class TestCase extends BaseTestCase
                 return true;
             }
             
-            if (preg_match('/^v(\d+)/', $version, $matches)) {
+            if (preg_match('/^v?(\d+)/', $version, $matches)) {
                 $majorVersion = (int) $matches[1];
                 return $majorVersion >= 30;
             }
