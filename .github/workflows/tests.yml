@@ -8,15 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     services:
       typesense:
-        image: typesense/typesense:28.0.rc36
+        image: typesense/typesense:30.0.alpha1
         ports:
-          - 8108:8108/tcp
+          - 8108:8108
         volumes:
-          - /tmp/typesense-server-data:/data
+          - /tmp/typesense-data:/data
+          - /tmp/typesense-analytics:/analytics
         env:
-          TYPESENSE_DATA_DIR: /data
           TYPESENSE_API_KEY: xyz
+          TYPESENSE_DATA_DIR: /data
           TYPESENSE_ENABLE_CORS: true
+          TYPESENSE_ANALYTICS_DIR: /analytics
+          TYPESENSE_ENABLE_SEARCH_ANALYTICS: true
+        options: --analytics-minute-rate-limit=50
+
     steps:
       - uses: actions/checkout@v4
       - name: Setup PHP 8.3
