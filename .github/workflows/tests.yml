@@ -20,7 +20,7 @@ jobs:
           TYPESENSE_ENABLE_CORS: true
           TYPESENSE_ANALYTICS_DIR: /analytics
           TYPESENSE_ENABLE_SEARCH_ANALYTICS: true
-        options: --analytics-minute-rate-limit=50
+          ANALYTICS_MINUTE_RATE_LIMIT: 500
 
     steps:
       - uses: actions/checkout@v4
