@@ -5,7 +5,7 @@ namespace Typesense;
 /**
  * Class AnalyticsEvents
  * 
- * Implements the updated analytics events API for Typesense +
+ * Implements the updated analytics events API for Typesense v30.0+
  *
  * @package \Typesense
  */
@@ -13,8 +13,16 @@ class AnalyticsEvents
 {
     const RESOURCE_PATH = '/analytics/events';
 
+    /**
+     * @var ApiCall
+     */
     private ApiCall $apiCall;
 
+    /**
+     * AnalyticsEvents constructor.
+     *
+     * @param ApiCall $apiCall
+     */
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
