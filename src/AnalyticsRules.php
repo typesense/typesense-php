@@ -8,6 +8,11 @@ class AnalyticsRules implements \ArrayAccess
 
     private ApiCall $apiCall;
 
+    /**
+     * @var array
+     */
+    private array $analyticsRules = [];
+
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
@@ -42,7 +47,14 @@ class AnalyticsRules implements \ArrayAccess
      */
     public function __get($ruleName)
     {
-        return new AnalyticsRule($ruleName, $this->apiCall);
+        if (isset($this->{$ruleName})) {
+            return $this->{$ruleName};
+        }
+        if (!isset($this->analyticsRules[$ruleName])) {
+            $this->analyticsRules[$ruleName] = new AnalyticsRule($ruleName, $this->apiCall);
+        }
+
+        return $this->analyticsRules[$ruleName];
     }
 
     /**
@@ -50,21 +62,34 @@ class AnalyticsRules implements \ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return true; // Rules can be accessed by name
+        return isset($this->analyticsRules[$offset]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function offsetGet($offset): AnalyticsRule
     {
-        return new AnalyticsRule($offset, $this->apiCall);
+        if (!isset($this->analyticsRules[$offset])) {
+            $this->analyticsRules[$offset] = new AnalyticsRule($offset, $this->apiCall);
+        }
+
+        return $this->analyticsRules[$offset];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function offsetSet($offset, $value): void
     {
-        // Not implemented for read-only access
+        $this->analyticsRules[$offset] = $value;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function offsetUnset($offset): void
     {
-        // Not implemented for read-only access
+        unset($this->analyticsRules[$offset]);
     }
 } 
