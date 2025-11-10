@@ -71,6 +71,11 @@ class Client
     public Presets $presets;
 
     /**
+     * @var AnalyticsV1
+     */
+    public AnalyticsV1 $analyticsV1;
+
+    /**
      * @var Analytics
      */
     public Analytics $analytics;
@@ -89,6 +94,16 @@ class Client
      * @var NLSearchModels
      */
     public NLSearchModels $nlSearchModels;
+
+    /**
+     * @var SynonymSets
+     */
+    public SynonymSets $synonymSets;
+
+    /**
+     * @var CurationSets
+     */
+    public CurationSets $curationSets;
 
     /**
      * @var ApiCall
@@ -118,9 +133,12 @@ class Client
         $this->multiSearch   = new MultiSearch($this->apiCall);
         $this->presets       = new Presets($this->apiCall);
         $this->analytics     = new Analytics($this->apiCall);
+        $this->analyticsV1   = new AnalyticsV1($this->apiCall);
         $this->stemming     = new Stemming($this->apiCall);
         $this->conversations = new Conversations($this->apiCall);
         $this->nlSearchModels = new NLSearchModels($this->apiCall);
+        $this->synonymSets = new SynonymSets($this->apiCall);
+        $this->curationSets = new CurationSets($this->apiCall);
     }
 
     /**
@@ -233,5 +251,21 @@ class Client
     public function getNLSearchModels(): NLSearchModels
     {
         return $this->nlSearchModels;
+    }
+
+    /**
+     * @return SynonymSets
+     */
+    public function getSynonymSets(): SynonymSets
+    {
+        return $this->synonymSets;
+    }
+
+    /**
+     * @return CurationSets
+     */
+    public function getCurationSets(): CurationSets
+    {
+        return $this->curationSets;
     }
 }

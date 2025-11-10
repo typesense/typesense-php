@@ -6,23 +6,28 @@ jobs:
   test:
     name: Run tests with PHP v8.3
     runs-on: ubuntu-latest
-    services:
-      typesense:
-        image: typesense/typesense:28.0.rc36
-        ports:
-          - 8108:8108/tcp
-        volumes:
-          - /tmp/typesense-server-data:/data
-        env:
-          TYPESENSE_DATA_DIR: /data
-          TYPESENSE_API_KEY: xyz
-          TYPESENSE_ENABLE_CORS: true
     steps:
+      - name: Start Typesense
+        run: |
+          docker run -d \
+          -p 8108:8108 \
+          --name typesense \
+          -v /tmp/typesense-data:/data \
+          -v /tmp/typesense-analytics-data:/analytics-data \
+          typesense/typesense:30.0.alpha1 \
+          --api-key=xyz \
+          --data-dir=/data \
+          --enable-search-analytics=true \
+          --analytics-dir=/analytics-data \
+          --analytics-flush-interval=60 \
+          --analytics-minute-rate-limit=50 \
+          --enable-cors
+
       - uses: actions/checkout@v4
       - name: Setup PHP 8.3
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: "8.3"
           coverage: xdebug
       - uses: php-actions/composer@v6
       - name: Run tests

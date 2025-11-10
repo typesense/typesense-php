@@ -7,38 +7,58 @@ class AnalyticsRules implements \ArrayAccess
     const RESOURCE_PATH = '/analytics/rules';
 
     private ApiCall $apiCall;
-    private $analyticsRules = [];
+
+    /**
+     * @var array
+     */
+    private array $analyticsRules = [];
 
     public function __construct(ApiCall $apiCall)
     {
         $this->apiCall = $apiCall;
     }
 
-    public function __get($ruleName)
+    /**
+     * Create multiple analytics rules
+     * 
+     * @param array $rules Array of rule objects
+     * @return array Response from the API
+     */
+    public function create(array $rules)
     {
-        if (!isset($this->analyticsRules[$ruleName])) {
-            $this->analyticsRules[$ruleName] = new AnalyticsRule($ruleName, $this->apiCall);
-        }
-        return $this->analyticsRules[$ruleName];
-    }
-
-    public function upsert($ruleName, $params)
-    {
-        return $this->apiCall->put($this->endpoint_path($ruleName), $params);
-    }
-
-    public function retrieve()
-    {
-        return $this->apiCall->get($this->endpoint_path(), []);
-    }
-
-    private function endpoint_path($operation = null)
-    {
-        return self::RESOURCE_PATH . ($operation === null ? '' : "/" . encodeURIComponent($operation));
+        return $this->apiCall->post(self::RESOURCE_PATH, $rules);
     }
 
     /**
-     * @inheritDoc
+     * Retrieve all analytics rules
+     * 
+     * @return array Response from the API
+     */
+    public function retrieve()
+    {
+        return $this->apiCall->get(self::RESOURCE_PATH, []);
+    }
+
+    /**
+     * Get a specific rule by name
+     * 
+     * @param string $ruleName
+     * @return AnalyticsRule
+     */
+    public function __get($ruleName)
+    {
+        if (isset($this->{$ruleName})) {
+            return $this->{$ruleName};
+        }
+        if (!isset($this->analyticsRules[$ruleName])) {
+            $this->analyticsRules[$ruleName] = new AnalyticsRule($ruleName, $this->apiCall);
+        }
+
+        return $this->analyticsRules[$ruleName];
+    }
+
+    /**
+     * ArrayAccess implementation for backwards compatibility
      */
     public function offsetExists($offset): bool
     {
@@ -72,4 +92,4 @@ class AnalyticsRules implements \ArrayAccess
     {
         unset($this->analyticsRules[$offset]);
     }
-}
+} 
