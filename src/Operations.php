@@ -52,6 +52,6 @@ class Operations
      */
     public function getSchemaChangeStatus(): array
     {
-        return $this->apiCall->get(sprintf('%s/%s', static::RESOURCE_PATH, 'schema_changes')
+        return $this->apiCall->get(sprintf('%s/%s', static::RESOURCE_PATH, 'schema_changes'), []);
     }
 }
