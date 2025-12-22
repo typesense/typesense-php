@@ -6,10 +6,11 @@ use Exception;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\Exception\HttpException;
+use Http\Discovery\Psr17FactoryDiscovery;
+use JsonException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
-use Http\Discovery\Psr17FactoryDiscovery;
 use Typesense\Exceptions\HTTPStatus0Error;
 use Typesense\Exceptions\ObjectAlreadyExists;
 use Typesense\Exceptions\ObjectNotFound;
@@ -255,16 +256,21 @@ class ApiCall
                     $this->setNodeHealthCheck($node, true);
                 }
 
+                $responseContents = $response->getBody()
+                    ->getContents();
+
                 if (!(200 <= $statusCode && $statusCode < 300)) {
-                    $errorMessage = json_decode($response->getBody()
-                        ->getContents(), true, 512, JSON_THROW_ON_ERROR)['message'] ?? 'API error.';
+                    try {
+                        $responseContents = json_decode($responseContents, true, 512, JSON_THROW_ON_ERROR);
+                        $errorMessage = $responseContents['message'] ?? 'API error.';
+                    } catch (JsonException $exception) {
+                        $errorMessage = $responseContents ?? 'API error.';
+                    }
                     throw $this->getException($statusCode)
                         ->setMessage($errorMessage);
                 }
 
-                return $asJson ? json_decode($response->getBody()
-                    ->getContents(), true, 512, JSON_THROW_ON_ERROR) : $response->getBody()
-                    ->getContents();
+                return $asJson ? json_decode($responseContents, true, 512, JSON_THROW_ON_ERROR) : $responseContents;
             } catch (HttpException $exception) {
                 $statusCode = $exception->getResponse()->getStatusCode();
                 
