@@ -110,9 +110,14 @@ class Configuration
         $this->numRetries           = (float)($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
 
-        $this->logLevel = $config['log_level'] ?? Logger::WARNING;
-        $this->logger   = new Logger('typesense');
-        $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
+        // Allow custom logger injection
+        if (isset($config['logger']) && $config['logger'] instanceof LoggerInterface) {
+            $this->logger = $config['logger'];
+        } else {
+            $this->logLevel = $config['log_level'] ?? Logger::WARNING;
+            $this->logger   = new Logger('typesense');
+            $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
+        }
 
         if (isset($config['client'])) {
             if ($config['client'] instanceof HttpMethodsClient || $config['client'] instanceof ClientInterface) {
