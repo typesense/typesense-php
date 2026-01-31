@@ -111,7 +111,15 @@ class Configuration
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
 
         // Allow custom logger injection
-        if (isset($config['logger']) && $config['logger'] instanceof LoggerInterface) {
+        if (isset($config['logger'])) {
+            if (!$config['logger'] instanceof LoggerInterface) {
+                throw new \InvalidArgumentException('Logger must implement Psr\Log\LoggerInterface');
+            }
+
+            if (isset($config['log_level'])) {
+                throw new \InvalidArgumentException('Setting log_level is not allowed when a custom logger is provided.');
+            }
+
             $this->logger = $config['logger'];
         } else {
             $this->logLevel = $config['log_level'] ?? Logger::WARNING;

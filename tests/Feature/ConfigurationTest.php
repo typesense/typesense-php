@@ -5,7 +5,6 @@ namespace Feature;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Typesense\Exceptions\ConfigError;
 use Typesense\Lib\Configuration;
 
@@ -33,7 +32,6 @@ class ConfigurationTest extends TestCase
 
         $logger = $config->getLogger();
 
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
         $this->assertInstanceOf(Logger::class, $logger);
     }
 
@@ -53,7 +51,6 @@ class ConfigurationTest extends TestCase
         $logger = $config->getLogger();
 
         // Assert that the logger is the same instance we passed
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
         $this->assertSame($customLogger, $logger);
         $this->assertEquals('custom-test-logger', $logger->getName());
     }
@@ -68,66 +65,36 @@ class ConfigurationTest extends TestCase
         $config = new Configuration($configWithLogLevel);
 
         $logger = $config->getLogger();
-
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
         $this->assertInstanceOf(Logger::class, $logger);
     }
 
-    public function testConfigurationWithCustomLoggerOverridesLogLevel(): void
+    public function testConfigurationWithCustomLoggerThrowsExceptionWhenLogLevelIsAlsoProvided(): void
     {
-        // Create a custom logger
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Setting log_level is not allowed when a custom logger is provided.');
+
         $customLogger = new Logger('custom-logger-with-level');
         $customLogger->pushHandler(new StreamHandler('php://stdout', Logger::ERROR));
 
-        // Add both custom logger and log level to config (logger should win)
         $configWithBoth = array_merge($this->baseConfig, [
             'logger' => $customLogger,
-            'log_level' => Logger::DEBUG, // This should be ignored
+            'log_level' => Logger::DEBUG,
         ]);
 
-        $config = new Configuration($configWithBoth);
-
-        $logger = $config->getLogger();
-
-        // Assert that the custom logger is used, not a new one with log_level
-        $this->assertSame($customLogger, $logger);
-        $this->assertEquals('custom-logger-with-level', $logger->getName());
+        new Configuration($configWithBoth);
     }
 
-    public function testConfigurationWithMockLogger(): void
+    public function testConfigurationWithInvalidLoggerThrowsException(): void
     {
-        // Create a mock logger for testing
-        $mockLogger = $this->createMock(LoggerInterface::class);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Logger must implement Psr\Log\LoggerInterface');
 
-        // Add mock logger to config
-        $configWithMockLogger = array_merge($this->baseConfig, [
-            'logger' => $mockLogger,
-        ]);
-
-        $config = new Configuration($configWithMockLogger);
-
-        $logger = $config->getLogger();
-
-        // Assert that the logger is the same instance we passed
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
-        $this->assertSame($mockLogger, $logger);
-    }
-
-    public function testConfigurationWithInvalidLoggerIgnored(): void
-    {
-        // Try to pass a non-logger object (should fall back to default)
+        // Try to pass a non-logger object (should throw exception)
         $configWithInvalidLogger = array_merge($this->baseConfig, [
             'logger' => 'not-a-logger-instance',
         ]);
 
-        $config = new Configuration($configWithInvalidLogger);
-
-        $logger = $config->getLogger();
-
-        // Should fall back to default logger
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
-        $this->assertInstanceOf(Logger::class, $logger);
-        $this->assertEquals('typesense', $logger->getName());
+        new Configuration($configWithInvalidLogger);
     }
 
     public function testConfigurationThrowsErrorWhenNodesAreMissing(): void
