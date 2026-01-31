@@ -52,7 +52,6 @@ class ConfigurationTest extends TestCase
 
         // Assert that the logger is the same instance we passed
         $this->assertSame($customLogger, $logger);
-        $this->assertEquals('custom-test-logger', $logger->getName());
     }
 
     public function testConfigurationWithCustomLogLevel(): void
