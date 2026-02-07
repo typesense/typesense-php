@@ -113,7 +113,7 @@ class Configuration
         // Allow custom logger injection
         if (isset($config['logger'])) {
             if (!$config['logger'] instanceof LoggerInterface) {
-                throw new \InvalidArgumentException('Logger must implement Psr\Log\LoggerInterface');
+                throw new ConfigError('Logger must implement Psr\Log\LoggerInterface');
             }
 
             if (isset($config['log_level'])) {
