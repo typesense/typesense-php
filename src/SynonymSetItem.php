@@ -6,11 +6,11 @@ use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
- * Class SynonymSet
+ * Class SynonymSetItem
  *
  * @package \Typesense
  */
-class SynonymSet
+class SynonymSetItem
 {
     /**
      * @var string
@@ -18,26 +18,27 @@ class SynonymSet
     private string $synonymSetName;
 
     /**
+     * @var string
+     */
+    private string $itemId;
+
+    /**
      * @var ApiCall
      */
     private ApiCall $apiCall;
-    
-    /**
-     * @var SynonymSetItems
-     */
-    private SynonymSetItems $items;
 
     /**
-     * SynonymSet constructor.
+     * SynonymSetItem constructor.
      *
      * @param string $synonymSetName
+     * @param string $itemId
      * @param ApiCall $apiCall
      */
-    public function __construct(string $synonymSetName, ApiCall $apiCall)
+    public function __construct(string $synonymSetName, string $itemId, ApiCall $apiCall)
     {
         $this->synonymSetName = $synonymSetName;
+        $this->itemId         = $itemId;
         $this->apiCall        = $apiCall;
-        $this->items          = new SynonymSetItems($synonymSetName, $apiCall);
     }
 
     /**
@@ -46,10 +47,20 @@ class SynonymSet
     private function endPointPath(): string
     {
         return sprintf(
-            '%s/%s',
+            '%s/%s/items/%s',
             SynonymSets::RESOURCE_PATH,
-            encodeURIComponent($this->synonymSetName)
+            encodeURIComponent($this->synonymSetName),
+            encodeURIComponent($this->itemId)
         );
+    }
+
+    /**
+     * @return array
+     * @throws TypesenseClientError|HttpClientException
+     */
+    public function retrieve(): array
+    {
+        return $this->apiCall->get($this->endPointPath(), []);
     }
 
     /**
@@ -67,25 +78,8 @@ class SynonymSet
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
-    public function retrieve(): array
-    {
-        return $this->apiCall->get($this->endPointPath(), []);
-    }
-
-    /**
-     * @return array
-     * @throws TypesenseClientError|HttpClientException
-     */
     public function delete(): array
     {
         return $this->apiCall->delete($this->endPointPath());
-    }
-
-    /**
-     * @return SynonymSetItems
-     */
-    public function getItems(): SynonymSetItems
-    {
-        return $this->items;
     }
 }

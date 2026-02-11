@@ -6,11 +6,11 @@ use Http\Client\Exception as HttpClientException;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
- * Class SynonymSet
+ * Class SynonymSetItems
  *
  * @package \Typesense
  */
-class SynonymSet
+class SynonymSetItems implements \ArrayAccess
 {
     /**
      * @var string
@@ -21,14 +21,14 @@ class SynonymSet
      * @var ApiCall
      */
     private ApiCall $apiCall;
-    
-    /**
-     * @var SynonymSetItems
-     */
-    private SynonymSetItems $items;
 
     /**
-     * SynonymSet constructor.
+     * @var array
+     */
+    private array $items = [];
+
+    /**
+     * SynonymSetItems constructor.
      *
      * @param string $synonymSetName
      * @param ApiCall $apiCall
@@ -37,7 +37,6 @@ class SynonymSet
     {
         $this->synonymSetName = $synonymSetName;
         $this->apiCall        = $apiCall;
-        $this->items          = new SynonymSetItems($synonymSetName, $apiCall);
     }
 
     /**
@@ -46,21 +45,10 @@ class SynonymSet
     private function endPointPath(): string
     {
         return sprintf(
-            '%s/%s',
+            '%s/%s/items',
             SynonymSets::RESOURCE_PATH,
             encodeURIComponent($this->synonymSetName)
         );
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return array
-     * @throws TypesenseClientError|HttpClientException
-     */
-    public function upsert(array $params): array
-    {
-        return $this->apiCall->put($this->endPointPath(), $params);
     }
 
     /**
@@ -73,19 +61,38 @@ class SynonymSet
     }
 
     /**
-     * @return array
-     * @throws TypesenseClientError|HttpClientException
+     * @inheritDoc
      */
-    public function delete(): array
+    public function offsetExists($itemId): bool
     {
-        return $this->apiCall->delete($this->endPointPath());
+        return isset($this->items[$itemId]);
     }
 
     /**
-     * @return SynonymSetItems
+     * @inheritDoc
      */
-    public function getItems(): SynonymSetItems
+    public function offsetGet($itemId): SynonymSetItem
     {
-        return $this->items;
+        if (!isset($this->items[$itemId])) {
+            $this->items[$itemId] = new SynonymSetItem($this->synonymSetName, $itemId, $this->apiCall);
+        }
+
+        return $this->items[$itemId];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($itemId, $value): void
+    {
+        $this->items[$itemId] = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($itemId): void
+    {
+        unset($this->items[$itemId]);
     }
 }
