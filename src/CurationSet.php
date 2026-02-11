@@ -22,10 +22,7 @@ class CurationSet
      */
     private ApiCall $apiCall;
 
-    /**
-     * @var CurationSetItems
-     */
-    private CurationSetItems $items;
+    private array $typesenseCurationSetItems = [];
 
     /**
      * CurationSet constructor.
@@ -37,7 +34,24 @@ class CurationSet
     {
         $this->curationSetName = $curationSetName;
         $this->apiCall         = $apiCall;
-        $this->items           = new CurationSetItems($curationSetName, $apiCall);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function __get($id)
+    {
+        if (isset($this->{$id})) {
+            return $this->{$id};
+        }
+
+        if (!isset($this->typesenseCurationSetItems[$id])) {
+            $this->typesenseCurationSetItems[$id] = new CurationSetItems($this->curationSetName, $this->apiCall);
+        }
+
+        return $this->typesenseCurationSetItems[$id];
     }
 
     /**
@@ -86,6 +100,6 @@ class CurationSet
      */
     public function getItems(): CurationSetItems
     {
-        return $this->items;
+        return $this->__get('items');
     }
 }

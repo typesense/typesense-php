@@ -22,10 +22,7 @@ class SynonymSet
      */
     private ApiCall $apiCall;
     
-    /**
-     * @var SynonymSetItems
-     */
-    private SynonymSetItems $items;
+    private array $typesenseSynonymSetItems = [];
 
     /**
      * SynonymSet constructor.
@@ -37,7 +34,24 @@ class SynonymSet
     {
         $this->synonymSetName = $synonymSetName;
         $this->apiCall        = $apiCall;
-        $this->items          = new SynonymSetItems($synonymSetName, $apiCall);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function __get($id)
+    {
+        if (isset($this->{$id})) {
+            return $this->{$id};
+        }
+
+        if (!isset($this->typesenseSynonymSetItems[$id])) {
+            $this->typesenseSynonymSetItems[$id] = new SynonymSetItems($this->synonymSetName, $this->apiCall);
+        }
+
+        return $this->typesenseSynonymSetItems[$id];
     }
 
     /**
@@ -86,6 +100,6 @@ class SynonymSet
      */
     public function getItems(): SynonymSetItems
     {
-        return $this->items;
+        return $this->__get('items');
     }
 }
