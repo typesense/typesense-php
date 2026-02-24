@@ -18,6 +18,17 @@ Read the documentation here: [https://typesense.org/api/](https://typesense.org/
 
 Here are some examples that walk you through how to use the client: [doc/examples](examples)
 
+### Escaping filter values
+
+Use `Typesense\FilterBy::escapeString()` to safely use string values in `filter_by`:
+
+```php
+use Typesense\FilterBy;
+
+$filterValue = "The 17\" O'Conner && O`Series \n OR a || 1%2 book? (draft), [alpha]";
+$filterBy = 'tags:=' . FilterBy::escapeString($filterValue);
+```
+
 ## Compatibility
 
 | Typesense Server | typesense-php |
