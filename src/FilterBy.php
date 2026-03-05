@@ -4,7 +4,7 @@ namespace Typesense;
 
 class FilterBy
 {
-    private function escape(string|int|float|bool $value): string
+    public static function escape(string|int|float|bool $value): string
     {
         return match (true) {
             is_string($value) => '`' . str_replace('`', '\\`', $value) . '`',
