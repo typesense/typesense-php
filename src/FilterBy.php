@@ -4,8 +4,12 @@ namespace Typesense;
 
 class FilterBy
 {
-    public static function escapeString(string $value): string
+    private function escape(string|int|float|bool $value): string
     {
-        return '`' . str_replace('`', '\\`', $value) . '`';
+        return match (true) {
+            is_string($value) => '`' . str_replace('`', '\\`', $value) . '`',
+            is_bool($value) => $value ? 'true' : 'false',
+            default => (string) $value,
+        };
     }
 }
