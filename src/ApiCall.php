@@ -270,7 +270,20 @@ class ApiCall
                         ->setMessage($errorMessage);
                 }
 
-                return $asJson ? json_decode($responseContents, true, 512, JSON_THROW_ON_ERROR) : $responseContents;
+                if (!$asJson) {
+                    return $responseContents;
+                }
+
+                try {
+                    return json_decode($responseContents, true, 512, JSON_THROW_ON_ERROR);
+                } catch (JsonException $exception) {
+                    throw new TypesenseClientError(
+                        'HTTP ' . $response->getStatusCode() . ' response is not valid JSON: '
+                        . substr($responseContents, 0, 200),
+                        0,
+                        $exception
+                    );
+                }
             } catch (HttpException $exception) {
                 $statusCode = $exception->getResponse()->getStatusCode();
                 
