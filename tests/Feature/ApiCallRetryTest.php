@@ -9,10 +9,12 @@ use Typesense\Exceptions\ServerError;
 use Typesense\Exceptions\RequestMalformed;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\TransferException;
+use JsonException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\RequestInterface;
+use Typesense\Exceptions\TypesenseClientError;
 
 class ApiCallRetryTest extends TestCase
 {
@@ -464,4 +466,38 @@ class ApiCallRetryTest extends TestCase
             "Execution was too fast ({$actualDuration}s), suggesting sleep intervals were skipped"
         );
     }
-} 
+
+    public function testThrowsTypesenseClientErrorWhenSuccessResponseContainsInvalidJson(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function () {
+                $response = $this->createMock(ResponseInterface::class);
+                $response->method('getStatusCode')->willReturn(200);
+                $stream = $this->createMock(StreamInterface::class);
+                $stream->method('getContents')->willReturn('{invalid json');
+                $response->method('getBody')->willReturn($stream);
+                return $response;
+            });
+
+        $config = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'num_retries' => 0,
+            'client' => $httpClient
+        ]);
+
+        $apiCall = new ApiCall($config);
+
+        try {
+            $apiCall->get('/test', []);
+            $this->fail('Expected TypesenseClientError to be thrown');
+        } catch (TypesenseClientError $exception) {
+            $this->assertStringContainsString('HTTP 200 response is not valid JSON:', $exception->getMessage());
+            $this->assertStringContainsString('{invalid json', $exception->getMessage());
+            $this->assertInstanceOf(JsonException::class, $exception->getPrevious());
+        }
+    }
+}
