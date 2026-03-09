@@ -45,4 +45,13 @@ class Operations
             $queryParameters
         );
     }
+
+    /**
+     * @return array
+     * @throws TypesenseClientError|HttpClientException
+     */
+    public function getSchemaChangeStatus(): array
+    {
+        return $this->apiCall->get(sprintf('%s/%s', static::RESOURCE_PATH, 'schema_changes'), []);
+    }
 }
