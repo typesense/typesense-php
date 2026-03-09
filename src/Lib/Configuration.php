@@ -110,9 +110,22 @@ class Configuration
         $this->numRetries           = (float)($config['num_retries'] ?? 3);
         $this->retryIntervalSeconds = (float)($config['retry_interval_seconds'] ?? 1.0);
 
-        $this->logLevel = $config['log_level'] ?? Logger::WARNING;
-        $this->logger   = new Logger('typesense');
-        $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
+        // Allow custom logger injection
+        if (isset($config['logger'])) {
+            if (!$config['logger'] instanceof LoggerInterface) {
+                throw new ConfigError('Logger must implement Psr\Log\LoggerInterface');
+            }
+
+            if (isset($config['log_level'])) {
+                throw new \InvalidArgumentException('Setting log_level is not allowed when a custom logger is provided.');
+            }
+
+            $this->logger = $config['logger'];
+        } else {
+            $this->logLevel = $config['log_level'] ?? Logger::WARNING;
+            $this->logger   = new Logger('typesense');
+            $this->logger->pushHandler(new StreamHandler('php://stdout', $this->logLevel));
+        }
 
         if (isset($config['client'])) {
             if ($config['client'] instanceof HttpMethodsClient || $config['client'] instanceof ClientInterface) {
