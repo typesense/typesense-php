@@ -85,7 +85,7 @@ class ConfigurationTest extends TestCase
 
     public function testConfigurationWithInvalidLoggerThrowsException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ConfigError::class);
         $this->expectExceptionMessage('Logger must implement Psr\Log\LoggerInterface');
 
         // Try to pass a non-logger object (should throw exception)
@@ -158,4 +158,3 @@ class ConfigurationTest extends TestCase
         $this->assertNotNull($config->getNearestNode());
     }
 }
-
