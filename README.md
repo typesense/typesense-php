@@ -5,7 +5,7 @@ Official PHP client for the Typesense API: https://github.com/typesense/typesens
 ## Installation
 
 ```
-$ composer require php-http/curl-client typesense/typesense-php
+composer require php-http/curl-client typesense/typesense-php
 ```
 
 You can also add `typesense/typesense-php` to your project's `composer.json`.
