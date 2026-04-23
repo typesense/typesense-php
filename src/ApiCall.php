@@ -256,8 +256,7 @@ class ApiCall
                     $this->setNodeHealthCheck($node, true);
                 }
 
-                $responseContents = $response->getBody()
-                    ->getContents();
+                $responseContents = (string) $response->getBody();
 
                 if (!(200 <= $statusCode && $statusCode < 300)) {
                     try {
