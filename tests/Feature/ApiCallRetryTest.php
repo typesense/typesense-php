@@ -500,4 +500,40 @@ class ApiCallRetryTest extends TestCase
             $this->assertInstanceOf(JsonException::class, $exception->getPrevious());
         }
     }
+
+    public function testDrainedResponseBodyStillDecodesWithoutRetrying(): void
+    {
+        $callCount = 0;
+
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->method('__toString')->willReturn('{"ok": true}');
+        $stream->method('getContents')->willReturn('');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(200);
+        $response->method('getBody')->willReturn($stream);
+
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function() use (&$callCount, $response) {
+                $callCount++;
+
+                return $response;
+            });
+
+        $config = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'client' => $httpClient
+        ]);
+
+        $apiCall = new ApiCall($config);
+
+        $result = $apiCall->get('/health', []);
+
+        $this->assertSame(['ok' => true], $result);
+        $this->assertSame(1, $callCount);
+    }
 }
