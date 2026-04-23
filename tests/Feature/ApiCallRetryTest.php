@@ -18,6 +18,19 @@ use Typesense\Exceptions\TypesenseClientError;
 
 class ApiCallRetryTest extends TestCase
 {
+    private function createJsonResponseMock(string $json, int $statusCode = 200): ResponseInterface
+    {
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->method('__toString')->willReturn($json);
+        $stream->method('getContents')->willReturn($json);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn($statusCode);
+        $response->method('getBody')->willReturn($stream);
+
+        return $response;
+    }
+
     public function testRetriesOnHttpExceptionWithNon408Status(): void
     {
         $callCount = 0;
@@ -33,12 +46,7 @@ class ApiCallRetryTest extends TestCase
                     $response->method('getStatusCode')->willReturn(500);
                     throw new HttpException('Server error', $this->createMock(RequestInterface::class), $response);
                 } else {
-                    $response = $this->createMock(ResponseInterface::class);
-                    $response->method('getStatusCode')->willReturn(200);
-                    $stream = $this->createMock(StreamInterface::class);
-                    $stream->method('getContents')->willReturn('{"success": true}');
-                    $response->method('getBody')->willReturn($stream);
-                    return $response;
+                    return $this->createJsonResponseMock('{"success": true}');
                 }
             });
 
@@ -109,12 +117,7 @@ class ApiCallRetryTest extends TestCase
                 if ($callCount < $expectedCalls) {
                     throw new RequestMalformed('Bad request');
                 } else {
-                    $response = $this->createMock(ResponseInterface::class);
-                    $response->method('getStatusCode')->willReturn(200);
-                    $stream = $this->createMock(StreamInterface::class);
-                    $stream->method('getContents')->willReturn('{"success": true}');
-                    $response->method('getBody')->willReturn($stream);
-                    return $response;
+                    return $this->createJsonResponseMock('{"success": true}');
                 }
             });
 
@@ -152,12 +155,7 @@ class ApiCallRetryTest extends TestCase
                 if ($callCount < $expectedCalls) {
                     throw new TransferException('Connection error');
                 } else {
-                    $response = $this->createMock(ResponseInterface::class);
-                    $response->method('getStatusCode')->willReturn(200);
-                    $stream = $this->createMock(StreamInterface::class);
-                    $stream->method('getContents')->willReturn('{"success": true}');
-                    $response->method('getBody')->willReturn($stream);
-                    return $response;
+                    return $this->createJsonResponseMock('{"success": true}');
                 }
             });
 
@@ -198,12 +196,7 @@ class ApiCallRetryTest extends TestCase
                     $response->method('getStatusCode')->willReturn(500);
                     throw new HttpException('Server error', $this->createMock(RequestInterface::class), $response);
                 } else {
-                    $response = $this->createMock(ResponseInterface::class);
-                    $response->method('getStatusCode')->willReturn(200);
-                    $stream = $this->createMock(StreamInterface::class);
-                    $stream->method('getContents')->willReturn('{"success": true}');
-                    $response->method('getBody')->willReturn($stream);
-                    return $response;
+                    return $this->createJsonResponseMock('{"success": true}');
                 }
             });
 
@@ -384,12 +377,7 @@ class ApiCallRetryTest extends TestCase
                     $response->method('getStatusCode')->willReturn(408);
                     throw new HttpException('Request timeout', $this->createMock(RequestInterface::class), $response);
                 } else {
-                    $response = $this->createMock(ResponseInterface::class);
-                    $response->method('getStatusCode')->willReturn(200);
-                    $stream = $this->createMock(StreamInterface::class);
-                    $stream->method('getContents')->willReturn('{"success": true}');
-                    $response->method('getBody')->willReturn($stream);
-                    return $response;
+                    return $this->createJsonResponseMock('{"success": true}');
                 }
             });
 
@@ -475,6 +463,7 @@ class ApiCallRetryTest extends TestCase
                 $response = $this->createMock(ResponseInterface::class);
                 $response->method('getStatusCode')->willReturn(200);
                 $stream = $this->createMock(StreamInterface::class);
+                $stream->method('__toString')->willReturn('{invalid json');
                 $stream->method('getContents')->willReturn('{invalid json');
                 $response->method('getBody')->willReturn($stream);
                 return $response;
