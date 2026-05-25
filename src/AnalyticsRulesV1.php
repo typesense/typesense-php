@@ -22,11 +22,27 @@ class AnalyticsRulesV1 implements \ArrayAccess
         return $this->analyticsRules[$ruleName];
     }
 
+    /**
+     * Upsert a legacy v1 analytics rule by name.
+     *
+     * @example
+     * $client->analyticsV1->rules()->upsert('products_query_hits', ['type' => 'popular_queries', 'params' => []])
+     *
+     * @see https://typesense.org/docs/29.0/api/analytics-query-suggestions.html
+     */
     public function upsert($ruleName, $params)
     {
         return $this->apiCall->put($this->endpoint_path($ruleName), $params);
     }
 
+    /**
+     * Retrieve all legacy v1 analytics rules.
+     *
+     * @example
+     * $client->analyticsV1->rules()->retrieve()
+     *
+     * @see https://typesense.org/docs/29.0/api/analytics-query-suggestions.html
+     */
     public function retrieve()
     {
         return $this->apiCall->get($this->endpoint_path(), []);
