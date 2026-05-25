@@ -45,6 +45,13 @@ class Key
     }
 
     /**
+     * Retrieve (metadata about) a key. Only the key prefix is returned when you retrieve a key. Due to security reasons, only the create endpoint returns the full API key.
+     *
+     * @example
+     * $client->keys[1]->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/api-keys.html#retrieve-an-api-key
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -54,6 +61,13 @@ class Key
     }
 
     /**
+     * Delete an API key given its ID.
+     *
+     * @example
+     * $client->keys[1]->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/api-keys.html#delete-api-key
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
