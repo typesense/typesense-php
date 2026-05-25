@@ -22,6 +22,14 @@ class StemmingDictionaries implements \ArrayAccess
         return $this->typesenseDictionaries[$id];
     }
 
+    /**
+     * Upload a JSONL file containing word mappings to create or update a stemming dictionary.
+     *
+     * @example
+     * $client->stemming->dictionaries()->upsert('irregular-plurals', [['word' => 'people', 'root' => 'person']])
+     *
+     * @see https://typesense.org/docs/latest/api/stemming.html
+     */
     public function upsert($id, $wordRootCombinations)
     {
         $dictionaryInJSONLFormat = is_array($wordRootCombinations) ? implode(
@@ -45,6 +53,14 @@ class StemmingDictionaries implements \ArrayAccess
         ) : $resultsInJSONLFormat;
     }
 
+    /**
+     * Retrieve a list of all available stemming dictionaries.
+     *
+     * @example
+     * $client->stemming->dictionaries()->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/stemming.html
+     */
     public function retrieve()
     {
         $response = $this->apiCall->get(StemmingDictionaries::RESOURCE_PATH, []);

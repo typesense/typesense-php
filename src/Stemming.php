@@ -16,6 +16,17 @@ class Stemming
         $this->apiCall = $apiCall;
     }
 
+    /**
+     * Access the stemming dictionaries resource. Use as a method-style endpoint to list or import
+     * dictionaries, or chain `[$id]` on the returned object to access a single dictionary.
+     *
+     * @example
+     * $client->stemming->dictionaries()->retrieve()
+     * @example
+     * $client->stemming->dictionaries()['en']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/stemming.html
+     */
     public function dictionaries()
     {
         if (!isset($this->typesenseDictionaries)) {
