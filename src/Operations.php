@@ -30,6 +30,13 @@ class Operations
     }
 
     /**
+     * Perform a cluster operation: snapshot, vote, cache/clear, db/compact, or a custom path.
+     *
+     * @example
+     * $client->operations->perform('snapshot', ['snapshot_path' => '/tmp/snap'])
+     *
+     * @see https://typesense.org/docs/latest/api/cluster-operations.html
+     *
      * @param string $operationName
      * @param array $queryParameters
      *
@@ -47,6 +54,13 @@ class Operations
     }
 
     /**
+     * Get the status of in-progress schema change operations.
+     *
+     * @example
+     * $client->operations->getSchemaChangeStatus()
+     *
+     * @see https://typesense.org/docs/latest/api/cluster-operations.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
