@@ -14,8 +14,13 @@ class AnalyticsRule
     }
 
     /**
-     * Retrieve a specific analytics rule
-     * 
+     * Retrieve the details of an analytics rule, given its name.
+     *
+     * @example
+     * $client->analytics->rules()['rule-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     *
      * @return array Response from the API
      */
     public function retrieve()
@@ -24,8 +29,13 @@ class AnalyticsRule
     }
 
     /**
-     * Delete a specific analytics rule
-     * 
+     * Permanently deletes an analytics rule, given its name.
+     *
+     * @example
+     * $client->analytics->rules()['rule-1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     *
      * @return array Response from the API
      */
     public function delete()
@@ -34,8 +44,13 @@ class AnalyticsRule
     }
 
     /**
-     * Update a specific analytics rule
-     * 
+     * Upserts an analytics rule with the given name.
+     *
+     * @example
+     * $client->analytics->rules()['rule-1']->update(['type' => 'popular_queries', 'params' => []])
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     *
      * @param array $params Rule parameters
      * @return array Response from the API
      */
