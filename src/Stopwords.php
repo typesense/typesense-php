@@ -32,6 +32,13 @@ class Stopwords
     }
 
     /**
+     * Retrieve the details of a stopwords set, given its name.
+     *
+     * @example
+     * $client->stopwords->get('en')
+     *
+     * @see https://typesense.org/docs/latest/api/stopwords.html
+     *
      * @return array|string
      * @throws HttpClientException
      * @throws TypesenseClientError
@@ -45,6 +52,13 @@ class Stopwords
     }
 
     /**
+     * Retrieve the details of all stopwords sets.
+     *
+     * @example
+     * $client->stopwords->getAll()
+     *
+     * @see https://typesense.org/docs/latest/api/stopwords.html
+     *
      * @return array|string
      * @throws HttpClientException
      * @throws TypesenseClientError
@@ -55,6 +69,13 @@ class Stopwords
     }
 
     /**
+     * Upsert a stopwords set. The set's name must be provided as the `name` key on the array.
+     *
+     * @example
+     * $client->stopwords->put(['name' => 'en', 'stopwords' => ['a', 'the']])
+     *
+     * @see https://typesense.org/docs/latest/api/stopwords.html
+     *
      * @param array $stopwordSet
      *
      * @return array
@@ -67,6 +88,13 @@ class Stopwords
     }
 
     /**
+     * Permanently deletes a stopwords set, given its name.
+     *
+     * @example
+     * $client->stopwords->delete('en')
+     *
+     * @see https://typesense.org/docs/latest/api/stopwords.html
+     *
      * @param $stopwordsName
      * @return array
      * @throws HttpClientException
