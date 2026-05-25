@@ -45,6 +45,13 @@ class Alias
     }
 
     /**
+     * Find out which collection an alias points to by fetching it.
+     *
+     * @example
+     * $client->aliases['my-alias']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/collection-alias.html#retrieve-an-alias
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -54,6 +61,13 @@ class Alias
     }
 
     /**
+     * Delete an alias.
+     *
+     * @example
+     * $client->aliases['my-alias']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/collection-alias.html#delete-an-alias
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

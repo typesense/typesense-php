@@ -47,6 +47,13 @@ class Aliases implements \ArrayAccess
     }
 
     /**
+     * Create or update an alias mapping for a collection.
+     *
+     * @example
+     * $client->aliases->upsert('my-alias', ['collection_name' => 'products'])
+     *
+     * @see https://typesense.org/docs/latest/api/collection-alias.html#upsert-an-alias
+     *
      * @param string $name
      * @param array $mapping
      *
@@ -59,6 +66,13 @@ class Aliases implements \ArrayAccess
     }
 
     /**
+     * List all aliases and the collections they map to.
+     *
+     * @example
+     * $client->aliases->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/collection-alias.html#list-all-aliases
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
