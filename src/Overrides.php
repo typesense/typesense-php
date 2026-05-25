@@ -60,6 +60,13 @@ class Overrides implements \ArrayAccess
     }
 
     /**
+     * Create or update an override (curation rule) on this collection.
+     *
+     * @example
+     * $client->collections['products']->overrides->upsert('promote-hat', ['rule' => ['query' => 'hat', 'match' => 'exact'], 'includes' => []])
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @param string $overrideId
      * @param array $config
      *
@@ -72,6 +79,13 @@ class Overrides implements \ArrayAccess
     }
 
     /**
+     * Retrieve all overrides (curation rules) on this collection.
+     *
+     * @example
+     * $client->collections['products']->overrides->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
