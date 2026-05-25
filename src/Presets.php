@@ -39,6 +39,13 @@ class Presets implements \ArrayAccess
     }
 
     /**
+     * Run a multi-search request using a previously saved preset.
+     *
+     * @example
+     * $client->presets->searchWithPreset('listing_view')
+     *
+     * @see https://typesense.org/docs/latest/api/search.html#presets
+     *
      * @param $presetName
      * @return array|string
      * @throws HttpClientException
@@ -50,6 +57,13 @@ class Presets implements \ArrayAccess
     }
 
     /**
+     * Retrieve the details of all presets.
+     *
+     * @example
+     * $client->presets->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/search.html#presets
+     *
      * @return array|string
      * @throws HttpClientException
      * @throws TypesenseClientError
@@ -60,8 +74,15 @@ class Presets implements \ArrayAccess
     }
 
     /**
+     * Create or update an existing preset.
+     *
+     * @example
+     * $client->presets->upsert('listing_view', ['value' => ['q' => '*']])
+     *
+     * @see https://typesense.org/docs/latest/api/search.html#presets
+     *
      * @param string $presetName
-     * @param array $options
+     * @param array $presetsData
      *
      * @return array
      * @throws HttpClientException

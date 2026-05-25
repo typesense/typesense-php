@@ -35,6 +35,13 @@ class Preset
     }
 
     /**
+     * Retrieve the details of a preset, given its name.
+     *
+     * @example
+     * $client->presets['listing_view']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/search.html#presets
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -44,6 +51,13 @@ class Preset
     }
 
     /**
+     * Permanently deletes a preset, given its name.
+     *
+     * @example
+     * $client->presets['listing_view']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/search.html#presets
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
