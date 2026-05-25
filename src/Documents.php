@@ -60,6 +60,13 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Index a single document. The document must conform to the schema of the collection.
+     *
+     * @example
+     * $client->collections['products']->documents->create(['id' => '1', 'title' => 'Hat'])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#index-a-single-document
+     *
      * @param array $document
      * @param array $options
      *
@@ -72,6 +79,13 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Upsert a single document. Creates the document if it does not exist, otherwise updates it.
+     *
+     * @example
+     * $client->collections['products']->documents->upsert(['id' => '1', 'title' => 'Hat'])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#upsert
+     *
      * @param array $document
      * @param array $options
      *
@@ -89,6 +103,16 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Update documents matching a `filter_by` condition, or update a single document with
+     * `action: "update"` semantics.
+     *
+     * @example
+     * $client->collections['products']->documents->update(['in_stock' => true], ['filter_by' => 'category:=hats'])
+     * @example
+     * $client->collections['products']->documents->update(['id' => '1', 'title' => 'Hat'])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#update-documents-with-conditional-query
+     *
      * @param array $document
      * @param array $options
      *
@@ -131,6 +155,15 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Import documents into a collection. Accepts a JSONL string or an array of document objects.
+     *
+     * @example
+     * $client->collections['products']->documents->import([['id' => '1', 'title' => 'Hat'], ['id' => '2', 'title' => 'Shirt']])
+     * @example
+     * $client->collections['products']->documents->import($jsonlString)
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#index-multiple-documents
+     *
      * @param string|array $documents
      * @param array $options
      *
@@ -168,6 +201,13 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Export all documents in a collection as a JSONL string.
+     *
+     * @example
+     * $client->collections['products']->documents->export()
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#export-documents
+     *
      * @param array $queryParams
      *
      * @return string
@@ -179,6 +219,16 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Delete a bunch of documents that match a specific filter condition,
+     * or truncate the collection.
+     *
+     * @example
+     * $client->collections['products']->documents->delete(['filter_by' => 'in_stock:=false'])
+     * @example
+     * $client->collections['products']->documents->delete(['truncate' => true])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#delete-by-query
+     *
      * @param array $queryParams
      *
      * @return array
@@ -190,6 +240,13 @@ class Documents implements \ArrayAccess
     }
 
     /**
+     * Search for documents in this collection.
+     *
+     * @example
+     * $client->collections['products']->documents->search(['q' => '*'])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#search
+     *
      * @param array $searchParams
      *
      * @return array
