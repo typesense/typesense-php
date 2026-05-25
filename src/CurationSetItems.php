@@ -52,6 +52,13 @@ class CurationSetItems implements \ArrayAccess
     }
 
     /**
+     * Retrieve all curation items in a set.
+     *
+     * @example
+     * $client->curationSets['my-set']->getItems()->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
