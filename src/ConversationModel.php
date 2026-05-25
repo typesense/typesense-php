@@ -35,6 +35,13 @@ class ConversationModel
     }
 
     /**
+     * Update a conversation model.
+     *
+     * @example
+     * $client->conversations->typesenseModels['model-1']->update(['model_name' => 'openai/gpt-4', 'max_bytes' => 16384])
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @param array $params
      *
      * @return array
@@ -46,6 +53,13 @@ class ConversationModel
     }
 
     /**
+     * Retrieve a conversation model.
+     *
+     * @example
+     * $client->conversations->typesenseModels['model-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -55,6 +69,13 @@ class ConversationModel
     }
 
     /**
+     * Delete a conversation model.
+     *
+     * @example
+     * $client->conversations->typesenseModels['model-1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

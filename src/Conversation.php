@@ -35,6 +35,13 @@ class Conversation
     }
 
     /**
+     * Update a conversation's TTL.
+     *
+     * @example
+     * $client->conversations['conv-1']->update(['ttl' => 3600])
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @param array $params
      *
      * @return array
@@ -46,6 +53,13 @@ class Conversation
     }
 
     /**
+     * Retrieve a conversation by ID.
+     *
+     * @example
+     * $client->conversations['conv-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -55,6 +69,13 @@ class Conversation
     }
 
     /**
+     * Delete a conversation by ID.
+     *
+     * @example
+     * $client->conversations['conv-1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
