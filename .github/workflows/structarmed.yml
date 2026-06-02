@@ -13,5 +13,7 @@ jobs:
         with:
           php-version: "8.4"
       - uses: php-actions/composer@v6
+      - name: Include StructArmed
+        run: composer require --dev boundwize/structarmed:^0.10
       - name: Run StructArmed
         run: vendor/bin/structarmed analyze
