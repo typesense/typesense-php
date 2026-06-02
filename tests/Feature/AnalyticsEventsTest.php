@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Exception;
@@ -127,7 +127,7 @@ class AnalyticsEventsTest extends TestCase
                 "user_id" => "test_user"
             ]
         ];
-        
+
         $this->client()->analytics->events()->create($event);
 
         $response = $this->client()->analytics->events()->retrieve([
@@ -165,4 +165,4 @@ class AnalyticsEventsTest extends TestCase
         $conversionResponse = $this->client()->analytics->events()->create($conversionEvent);
         $this->assertIsArray($conversionResponse);
     }
-} 
+}

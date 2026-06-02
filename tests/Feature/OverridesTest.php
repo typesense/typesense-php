@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
@@ -15,11 +15,11 @@ class OverridesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         if ($this->isV30OrAbove()) {
             $this->markTestSkipped('Overrides are deprecated in Typesense v30+, use CurationSets instead');
         }
-        
+
         $this->setUpCollection('books');
 
         $override = [

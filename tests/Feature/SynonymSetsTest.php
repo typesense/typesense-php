@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
@@ -23,11 +23,11 @@ class SynonymSetsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         if (!$this->isV30OrAbove()) {
             $this->markTestSkipped('SynonymSets is only supported in Typesense v30+');
         }
-        
+
         $this->synonymSets = $this->client()->synonymSets;
         $this->upsertResponse = $this->synonymSets->upsert('test-synonym-set', $this->synonymSetData);
     }
@@ -58,4 +58,4 @@ class SynonymSetsTest extends TestCase
         $this->expectException(ObjectNotFound::class);
         $this->synonymSets['test-synonym-set']->retrieve();
     }
-} 
+}

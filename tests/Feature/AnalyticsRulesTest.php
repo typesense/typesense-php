@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\RequestMalformed;
@@ -105,10 +105,10 @@ class AnalyticsRulesTest extends TestCase
 
         $response = $this->client()->analytics->rules()->create($rules);
         $this->assertIsArray($response);
-        
+
         $allRules = $this->client()->analytics->rules()->retrieve();
         $this->assertIsArray($allRules);
-        
+
         $ruleNames = array_column($allRules, 'name');
         $this->assertContains('test_rule_1', $ruleNames);
         $this->assertContains('test_rule_2', $ruleNames);
@@ -161,10 +161,10 @@ class AnalyticsRulesTest extends TestCase
     {
         $rule = $this->client()->analytics->rules()[$this->ruleName];
         $this->assertInstanceOf('Typesense\AnalyticsRule', $rule);
-        
+
         $this->assertTrue(isset($this->client()->analytics->rules()[$this->ruleName]));
-        
+
         $rule = $this->client()->analytics->rules()[$this->ruleName];
         $this->assertInstanceOf('Typesense\AnalyticsRule', $rule);
     }
-} 
+}

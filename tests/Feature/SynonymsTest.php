@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
@@ -17,11 +17,11 @@ class SynonymsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         if ($this->isV30OrAbove()) {
             $this->markTestSkipped('Synonyms is deprecated in Typesense v30+, use SynonymSets instead');
         }
-        
+
         $this->setUpCollection('books');
 
         $this->synonyms = $this->client()->collections['books']->synonyms;
