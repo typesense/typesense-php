@@ -1,0 +1,17 @@
+name: StructArmed
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Run StructArmed static analysis with PHP v8.4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+      - uses: php-actions/composer@v6
+      - name: Run StructArmed
+        run: vendor/bin/structarmed analyze

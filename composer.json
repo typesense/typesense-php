@@ -50,7 +50,8 @@
     "phpunit/phpunit": "^11.2",
     "squizlabs/php_codesniffer": "3.*",
     "symfony/http-client": "^5.2",
-    "mockery/mockery": "^1.6"
+    "mockery/mockery": "^1.6",
+    "boundwize/structarmed": "^0.10.1"
   },
   "config": {
     "optimize-autoloader": true,
