@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
@@ -31,11 +31,11 @@ class CurationSetsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         if (!$this->isV30OrAbove()) {
             $this->markTestSkipped('CurationSets is only supported in Typesense v30+');
         }
-        
+
         $this->curationSets = $this->client()->curationSets;
         $this->upsertResponse = $this->curationSets->upsert('test-curation-set', $this->curationSetData);
     }
@@ -64,7 +64,7 @@ class CurationSetsTest extends TestCase
         $returnData = $this->curationSets->retrieve();
         $this->assertIsArray($returnData);
         $this->assertGreaterThan(0, count($returnData));
-        
+
         $created = null;
         foreach ($returnData as $curationSet) {
             if ($curationSet['name'] === 'test-curation-set') {

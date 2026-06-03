@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 
@@ -20,7 +20,7 @@ class StemmingDictionariesTest extends TestCase
         parent::setUp();
 
         $this->client()->stemming->dictionaries()->upsert(
-            $this->dictionaryId, 
+            $this->dictionaryId,
             $this->dictionary
         );
     }

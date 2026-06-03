@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

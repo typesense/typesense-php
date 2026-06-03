@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use Tests\NLSearchModelsTestCase;
 
@@ -23,7 +23,7 @@ class NLSearchModelsTest extends NLSearchModelsTestCase
         $this->assertArrayHasKey('id', $response);
         $this->assertEquals('test-collection-model', $response['id']);
         $this->assertEquals('openai/gpt-3.5-turbo', $response['model_name']);
-        
+
         $this->client()->nlSearchModels['test-collection-model']->delete();
     }
 
@@ -36,12 +36,12 @@ class NLSearchModelsTest extends NLSearchModelsTestCase
             "system_prompt" => "Test model for retrieval.",
             "max_bytes" => 8192
         ];
-        
+
         $this->client()->nlSearchModels->create($testData);
-        
+
         $response = $this->client()->nlSearchModels->retrieve();
         $this->assertIsArray($response);
-        
+
         $foundModel = false;
         foreach ($response as $model) {
             if ($model['id'] === 'retrieve-test-model') {
@@ -126,4 +126,4 @@ class NLSearchModelsTest extends NLSearchModelsTestCase
         $this->assertEquals('test-collection-model', $response['id']);
 
     }
-} 
+}
