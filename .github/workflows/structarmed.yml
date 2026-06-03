@@ -6,14 +6,21 @@ jobs:
   test:
     name: Run StructArmed static analysis with PHP v8.4
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
-      - uses: php-actions/composer@v6
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
       - name: Include StructArmed
-        run: composer require --dev boundwize/structarmed:^0.10
+        run: composer require --dev boundwize/structarmed:^0.10 --no-interaction
+
       - name: Run StructArmed
         run: vendor/bin/structarmed analyze
