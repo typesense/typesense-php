@@ -35,6 +35,13 @@ class CurationSets implements \ArrayAccess
     }
 
     /**
+     * Create or update a curation set with the given name.
+     *
+     * @example
+     * $client->curationSets->upsert('my-set', ['items' => [['id' => 'promote-hat', 'rule' => ['query' => 'hat', 'match' => 'exact']]]])
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @param string $curationSetName
      * @param array $config
      *
@@ -47,6 +54,13 @@ class CurationSets implements \ArrayAccess
     }
 
     /**
+     * Retrieve all curation sets.
+     *
+     * @example
+     * $client->curationSets->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

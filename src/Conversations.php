@@ -12,6 +12,16 @@ class Conversations implements \ArrayAccess
     public const RESOURCE_PATH = '/conversations';
 
     /**
+     * Access the conversation models resource. Use it to create or list models, or as an array
+     * to access a single model by ID.
+     *
+     * @example
+     * $client->conversations->typesenseModels->create(['model_name' => 'openai/gpt-4', 'api_key' => '...'])
+     * @example
+     * $client->conversations->typesenseModels['model-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @var ConversationModels
      */
     public ConversationModels $typesenseModels;

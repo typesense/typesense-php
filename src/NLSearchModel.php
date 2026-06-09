@@ -35,6 +35,13 @@ class NLSearchModel
     }
 
     /**
+     * Update an existing NL search model.
+     *
+     * @example
+     * $client->nlSearchModels['model-1']->update(['model_name' => 'openai/gpt-4'])
+     *
+     * @see https://typesense.org/docs/latest/api/natural-language-search.html
+     *
      * @param array $params
      *
      * @return array
@@ -46,6 +53,13 @@ class NLSearchModel
     }
 
     /**
+     * Retrieve a specific NL search model by its ID.
+     *
+     * @example
+     * $client->nlSearchModels['model-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/natural-language-search.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -55,6 +69,13 @@ class NLSearchModel
     }
 
     /**
+     * Delete a specific NL search model by its ID.
+     *
+     * @example
+     * $client->nlSearchModels['model-1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/natural-language-search.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

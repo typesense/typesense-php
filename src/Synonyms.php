@@ -9,6 +9,8 @@ use Typesense\Exceptions\TypesenseClientError;
  * Class Synonyms
  *
  * @package \Typesense
+ *
+ * @deprecated Deprecated starting with Typesense Server v30. Please migrate to `$client->synonymSets` (new Synonym Sets APIs).
  */
 class Synonyms implements \ArrayAccess
 {
@@ -58,6 +60,15 @@ class Synonyms implements \ArrayAccess
     }
 
     /**
+     * Create or update a synonym (legacy v1) on this collection.
+     *
+     * @example
+     * $client->collections['products']->synonyms->upsert('syn-1', ['synonyms' => ['nyc', 'new york']])
+     *
+     * @see https://typesense.org/docs/29.0/api/synonyms.html
+     *
+     * @deprecated Deprecated starting with Typesense Server v30. Please migrate to `$client->synonymSets` (new Synonym Sets APIs).
+     *
      * @param string $synonymId
      * @param array $config
      *
@@ -70,6 +81,15 @@ class Synonyms implements \ArrayAccess
     }
 
     /**
+     * Retrieve all synonyms (legacy v1) on this collection.
+     *
+     * @example
+     * $client->collections['products']->synonyms->retrieve()
+     *
+     * @see https://typesense.org/docs/29.0/api/synonyms.html
+     *
+     * @deprecated Deprecated starting with Typesense Server v30. Please migrate to `$client->synonymSets` (new Synonym Sets APIs).
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

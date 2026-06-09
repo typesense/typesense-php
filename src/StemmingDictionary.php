@@ -13,6 +13,14 @@ class StemmingDictionary
         $this->apiCall  = $apiCall;
     }
 
+    /**
+     * Fetch details of a specific stemming dictionary.
+     *
+     * @example
+     * $client->stemming->dictionaries()['en']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/stemming.html
+     */
     public function retrieve()
     {
         return $this->apiCall->get($this->endpointPath(), []);

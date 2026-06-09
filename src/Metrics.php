@@ -31,6 +31,13 @@ class Metrics
     }
 
     /**
+     * Get current RAM, CPU, Disk & Network usage metrics.
+     *
+     * @example
+     * $client->metrics->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/cluster-operations.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

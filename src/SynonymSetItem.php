@@ -55,6 +55,13 @@ class SynonymSetItem
     }
 
     /**
+     * Retrieve a specific synonym item by its id.
+     *
+     * @example
+     * $client->synonymSets['my-set']->getItems()['syn-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -64,6 +71,13 @@ class SynonymSetItem
     }
 
     /**
+     * Create or update a synonym set item with the given id.
+     *
+     * @example
+     * $client->synonymSets['my-set']->getItems()['syn-1']->upsert(['synonyms' => ['nyc', 'new york']])
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @param array $params
      *
      * @return array
@@ -75,6 +89,13 @@ class SynonymSetItem
     }
 
     /**
+     * Delete a specific synonym item by its id.
+     *
+     * @example
+     * $client->synonymSets['my-set']->getItems()['syn-1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

@@ -54,6 +54,13 @@ class Collections implements \ArrayAccess
     }
 
     /**
+     * When a collection is created, we give it a name and describe the fields that will be indexed from the documents added to the collection.
+     *
+     * @example
+     * $client->collections->create(['name' => 'products', 'fields' => [['name' => 'title', 'type' => 'string']]])
+     *
+     * @see https://typesense.org/docs/latest/api/collections.html#create-a-collection
+     *
      * @param array $schema
      * @param array $options
      *
@@ -66,6 +73,13 @@ class Collections implements \ArrayAccess
     }
 
     /**
+     * Returns a summary of all your collections. The collections are returned sorted by creation date, with the most recent collections appearing first.
+     *
+     * @example
+     * $client->collections->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/collections.html#list-all-collections
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

@@ -67,6 +67,13 @@ class SynonymSet
     }
 
     /**
+     * Create or update a synonym set with the given name.
+     *
+     * @example
+     * $client->synonymSets['my-set']->upsert(['items' => [['id' => 'syn-1', 'synonyms' => ['nyc', 'new york']]]])
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @param array $params
      *
      * @return array
@@ -78,6 +85,13 @@ class SynonymSet
     }
 
     /**
+     * Retrieve a specific synonym set by its name.
+     *
+     * @example
+     * $client->synonymSets['my-set']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -87,6 +101,13 @@ class SynonymSet
     }
 
     /**
+     * Delete a specific synonym set by its name.
+     *
+     * @example
+     * $client->synonymSets['my-set']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -96,6 +117,16 @@ class SynonymSet
     }
 
     /**
+     * Access the items in this synonym set. Use the returned object as an array to access
+     * a single item by ID, or call `retrieve()` to list all items.
+     *
+     * @example
+     * $client->synonymSets['my-set']->getItems()->retrieve()
+     * @example
+     * $client->synonymSets['my-set']->getItems()['syn-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return SynonymSetItems
      */
     public function getItems(): SynonymSetItems

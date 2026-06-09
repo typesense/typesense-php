@@ -52,6 +52,13 @@ class NLSearchModels implements \ArrayAccess
     }
 
     /**
+     * Create a new NL search model.
+     *
+     * @example
+     * $client->nlSearchModels->create(['model_name' => 'openai/gpt-4', 'api_key' => '...'])
+     *
+     * @see https://typesense.org/docs/latest/api/natural-language-search.html
+     *
      * @param array $params
      *
      * @return array
@@ -63,6 +70,13 @@ class NLSearchModels implements \ArrayAccess
     }
 
     /**
+     * Retrieve all NL search models.
+     *
+     * @example
+     * $client->nlSearchModels->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/natural-language-search.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

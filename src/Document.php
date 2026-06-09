@@ -58,6 +58,13 @@ class Document
     }
 
     /**
+     * Fetch an individual document from a collection by using its ID.
+     *
+     * @example
+     * $client->collections['products']->documents['1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#retrieve-a-document
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -67,6 +74,13 @@ class Document
     }
 
     /**
+     * Update an individual document by ID by merging the provided fields.
+     *
+     * @example
+     * $client->collections['products']->documents['1']->update(['in_stock' => true])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#update-a-document
+     *
      * @param array $partialDocument
      * @param array $options
      *
@@ -79,6 +93,13 @@ class Document
     }
 
     /**
+     * Delete an individual document from a collection by using its ID.
+     *
+     * @example
+     * $client->collections['products']->documents['1']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#delete-a-document
+     *
      * @param array $options
      * @return array
      * @throws TypesenseClientError|HttpClientException

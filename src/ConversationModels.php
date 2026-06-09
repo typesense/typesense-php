@@ -52,6 +52,13 @@ class ConversationModels implements \ArrayAccess
     }
 
     /**
+     * Create a Conversation Model.
+     *
+     * @example
+     * $client->conversations->typesenseModels->create(['model_name' => 'openai/gpt-4', 'api_key' => '...'])
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @param array $params
      *
      * @return array
@@ -63,6 +70,13 @@ class ConversationModels implements \ArrayAccess
     }
 
     /**
+     * Retrieve all conversation models.
+     *
+     * @example
+     * $client->conversations->typesenseModels->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/conversational-search-rag.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

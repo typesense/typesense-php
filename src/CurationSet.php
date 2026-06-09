@@ -67,6 +67,13 @@ class CurationSet
     }
 
     /**
+     * Create or update a curation set with the given name.
+     *
+     * @example
+     * $client->curationSets['my-set']->upsert(['items' => [['id' => 'promote-hat', 'rule' => ['query' => 'hat', 'match' => 'exact']]]])
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @param array $params
      *
      * @return array
@@ -78,6 +85,13 @@ class CurationSet
     }
 
     /**
+     * Retrieve a specific curation set by its name.
+     *
+     * @example
+     * $client->curationSets['my-set']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -87,6 +101,13 @@ class CurationSet
     }
 
     /**
+     * Delete a specific curation set by its name.
+     *
+     * @example
+     * $client->curationSets['my-set']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -96,6 +117,16 @@ class CurationSet
     }
 
     /**
+     * Access the items in this curation set. Use the returned object as an array to access
+     * a single item by ID, or call `retrieve()` to list all items.
+     *
+     * @example
+     * $client->curationSets['my-set']->getItems()->retrieve()
+     * @example
+     * $client->curationSets['my-set']->getItems()['promote-hat']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return CurationSetItems
      */
     public function getItems(): CurationSetItems

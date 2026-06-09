@@ -35,6 +35,13 @@ class SynonymSets implements \ArrayAccess
     }
 
     /**
+     * Create or update a synonym set with the given name.
+     *
+     * @example
+     * $client->synonymSets->upsert('my-set', ['items' => [['id' => 'syn-1', 'synonyms' => ['nyc', 'new york']]]])
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @param string $synonymSetName
      * @param array $config
      *
@@ -47,6 +54,13 @@ class SynonymSets implements \ArrayAccess
     }
 
     /**
+     * Retrieve all synonym sets.
+     *
+     * @example
+     * $client->synonymSets->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/synonyms.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

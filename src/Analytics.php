@@ -17,6 +17,17 @@ class Analytics
         $this->apiCall = $apiCall;
     }
 
+    /**
+     * Access the analytics rules resource. Use as a method-style endpoint to list or create rules,
+     * or chain `[$id]` on the returned object to access a single rule.
+     *
+     * @example
+     * $client->analytics->rules()->retrieve()
+     * @example
+     * $client->analytics->rules()['rule-1']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     */
     public function rules()
     {
         if (!isset($this->rules)) {
@@ -25,6 +36,14 @@ class Analytics
         return $this->rules;
     }
 
+    /**
+     * Access the analytics events resource to send analytics events.
+     *
+     * @example
+     * $client->analytics->events()->create(['type' => 'click', 'name' => 'products_click', 'data' => []])
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     */
     public function events()
     {
         if (!isset($this->events)) {

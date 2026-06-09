@@ -31,6 +31,13 @@ class Debug
     }
 
     /**
+     * Retrieve server version and state information.
+     *
+     * @example
+     * $client->debug->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/cluster-operations.html#debug
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

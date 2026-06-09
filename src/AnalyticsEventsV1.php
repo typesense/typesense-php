@@ -27,6 +27,13 @@ class AnalyticsEventsV1
     }
 
     /**
+     * Submit a legacy v1 analytics event.
+     *
+     * @example
+     * $client->analyticsV1->events()->create(['type' => 'click', 'name' => 'products_click', 'data' => []])
+     *
+     * @see https://typesense.org/docs/29.0/api/analytics-query-suggestions.html
+     *
      * @param array $params
      *
      * @return array

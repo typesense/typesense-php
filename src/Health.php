@@ -31,6 +31,13 @@ class Health
     }
 
     /**
+     * Checks if Typesense server is ready to accept requests.
+     *
+     * @example
+     * $client->health->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/cluster-operations.html#health
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */

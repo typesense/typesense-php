@@ -29,8 +29,13 @@ class AnalyticsEvents
     }
 
     /**
-     * Create an analytics event
-     * 
+     * Submit a single analytics event. The event must correspond to an existing analytics rule by name.
+     *
+     * @example
+     * $client->analytics->events()->create(['type' => 'click', 'name' => 'products_click', 'data' => []])
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     *
      * @param array $params Event parameters including name, event_type, and data
      * @return array Response from the API
      * @throws TypesenseClientError|HttpClientException
@@ -41,8 +46,13 @@ class AnalyticsEvents
     }
 
     /**
-     * Retrieve analytics events
-     * 
+     * Retrieve the most recent events for a user and rule.
+     *
+     * @example
+     * $client->analytics->events()->retrieve(['user_id' => 'u1', 'name' => 'products_click', 'n' => 10])
+     *
+     * @see https://typesense.org/docs/latest/api/analytics-query-suggestions.html
+     *
      * @param array $params Query parameters
      * @return array Response from the API
      */

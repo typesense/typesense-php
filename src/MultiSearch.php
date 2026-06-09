@@ -30,6 +30,15 @@ class MultiSearch
     }
 
     /**
+     * Send multiple search requests in a single HTTP request. Pass `union: true` to merge results, or omit it to receive a `results` array.
+     *
+     * @example
+     * $client->multiSearch->perform(['searches' => [['collection' => 'products', 'q' => '*']]])
+     * @example
+     * $client->multiSearch->perform(['union' => true, 'searches' => [['collection' => 'products', 'q' => '*']]])
+     *
+     * @see https://typesense.org/docs/latest/api/documents.html#federated-multi-search
+     *
      * @param array $searches
      * @param array $queryParameters
      *

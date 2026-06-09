@@ -58,6 +58,13 @@ class Override
     }
 
     /**
+     * Retrieve an override (curation rule) by ID on this collection.
+     *
+     * @example
+     * $client->collections['products']->overrides['promote-hat']->retrieve()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
@@ -67,6 +74,13 @@ class Override
     }
 
     /**
+     * Delete an override (curation rule) by ID on this collection.
+     *
+     * @example
+     * $client->collections['products']->overrides['promote-hat']->delete()
+     *
+     * @see https://typesense.org/docs/latest/api/curation.html
+     *
      * @return array
      * @throws TypesenseClientError|HttpClientException
      */
