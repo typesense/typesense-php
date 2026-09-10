@@ -421,23 +421,23 @@ class ApiCall
     {
         switch ($httpCode) {
             case 0:
-                return new HTTPStatus0Error();
+                return new HTTPStatus0Error('', $httpCode);
             case 400:
-                return new RequestMalformed();
+                return new RequestMalformed('', $httpCode);
             case 401:
-                return new RequestUnauthorized();
+                return new RequestUnauthorized('', $httpCode);
             case 404:
-                return new ObjectNotFound();
+                return new ObjectNotFound('', $httpCode);
             case 409:
-                return new ObjectAlreadyExists();
+                return new ObjectAlreadyExists('', $httpCode);
             case 422:
-                return new ObjectUnprocessable();
+                return new ObjectUnprocessable('', $httpCode);
             case 500:
-                return new ServerError();
+                return new ServerError('', $httpCode);
             case 503:
-                return new ServiceUnavailable();
+                return new ServiceUnavailable('', $httpCode);
             default:
-                return new TypesenseClientError();
+                return new TypesenseClientError('', $httpCode);
         }
     }
 

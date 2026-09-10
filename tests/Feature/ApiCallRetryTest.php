@@ -7,6 +7,7 @@ use Typesense\ApiCall;
 use Typesense\Lib\Configuration;
 use Typesense\Exceptions\ServerError;
 use Typesense\Exceptions\RequestMalformed;
+use Typesense\Exceptions\ObjectNotFound;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\TransferException;
 use JsonException;
@@ -29,6 +30,49 @@ class ApiCallRetryTest extends TestCase
         $response->method('getBody')->willReturn($stream);
 
         return $response;
+    }
+
+    public function testExceptionsCarryTheHttpStatusCode(): void
+    {
+        $config  = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http'],
+            ],
+            'client' => $this->createMock(ClientInterface::class),
+        ]);
+        $apiCall = new ApiCall($config);
+
+        foreach ([0, 400, 401, 403, 404, 408, 409, 422, 429, 500, 502, 503, 504] as $statusCode) {
+            $exception = $apiCall->getException($statusCode);
+
+            $this->assertSame($statusCode, $exception->getCode());
+            $this->assertSame('', $exception->getMessage());
+        }
+    }
+
+    public function testThrownExceptionsCarryTheStatusCodeAndTheServerMessage(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturn($this->createJsonResponseMock('{"message": "Not found."}', 404));
+
+        $config  = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http'],
+            ],
+            'client' => $httpClient,
+        ]);
+        $apiCall = new ApiCall($config);
+
+        try {
+            $apiCall->get('/collections/missing', []);
+            $this->fail('Expected an ObjectNotFound exception.');
+        } catch (ObjectNotFound $exception) {
+            $this->assertSame(404, $exception->getCode());
+            $this->assertSame('Not found.', $exception->getMessage());
+        }
     }
 
     public function testRetriesOnHttpExceptionWithNon408Status(): void
