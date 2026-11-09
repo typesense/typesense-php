@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Typesense\Exceptions\ObjectNotFound;
 use Exception;
 
 class SynonymSetItemsTest extends TestCase
@@ -44,7 +45,7 @@ class SynonymSetItemsTest extends TestCase
 
     public function testCanListItemsInASynonymSet(): void
     {
-        $items = $this->synonymSets['test-synonym-set-items']->getItems()->retrieve();
+        $items = $this->synonymSets['test-synonym-set-items']->items->retrieve();
 
         $this->assertIsArray($items);
         $this->assertGreaterThan(0, count($items));
@@ -53,18 +54,27 @@ class SynonymSetItemsTest extends TestCase
 
     public function testCanUpsertRetrieveAndDeleteAnItem(): void
     {
-        $upserted = $this->synonymSets['test-synonym-set-items']->getItems()['synonym-rule-1']->upsert([
-            'id' => 'synonym-rule-1',
+        $upserted = $this->synonymSets['test-synonym-set-items']->items['synonym-rule-1']->upsert([
             'synonyms' => ['red', 'crimson'],
             'root' => '',
         ]);
 
         $this->assertEquals('synonym-rule-1', $upserted['id']);
 
-        $fetched = $this->synonymSets['test-synonym-set-items']->getItems()['synonym-rule-1']->retrieve();
+        $fetched = $this->synonymSets['test-synonym-set-items']->items['synonym-rule-1']->retrieve();
         $this->assertEquals('red', $fetched['synonyms'][0]);
 
-        $deletion = $this->synonymSets['test-synonym-set-items']->getItems()['synonym-rule-1']->delete();
+        $deletion = $this->synonymSets['test-synonym-set-items']->items['synonym-rule-1']->delete();
         $this->assertEquals('synonym-rule-1', $deletion['id']);
+
+        $this->expectException(ObjectNotFound::class);
+        $this->synonymSets['test-synonym-set-items']->items['synonym-rule-1']->retrieve();
+    }
+
+    public function testGetItemsReturnsTheItemsProperty(): void
+    {
+        $synonymSet = $this->synonymSets['test-synonym-set-items'];
+
+        $this->assertSame($synonymSet->items, $synonymSet->getItems());
     }
 }
