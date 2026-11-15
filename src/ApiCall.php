@@ -286,8 +286,11 @@ class ApiCall
             } catch (HttpException $exception) {
                 $statusCode = $exception->getResponse()->getStatusCode();
                 
-                // Skip 408 timeouts and continue to next iteration
+                // Skip 408 timeouts and continue to next iteration, but keep the
+                // exception so that exhausting the retries still reports the timeout
                 if ($statusCode === 408) {
+                    $lastException = $this->getException($statusCode)
+                        ->setMessage($exception->getMessage());
                     continue;
                 }
                 
