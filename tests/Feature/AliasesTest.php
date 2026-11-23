@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Typesense\Alias;
 use Typesense\Exceptions\ObjectNotFound;
 
 class AliasesTest extends TestCase
@@ -65,5 +66,14 @@ class AliasesTest extends TestCase
         $response = $this->client()->aliases->retrieve();
 
         $this->assertEquals(['aliases' => [0 => $this->sampleAliasResponse]], $response);
+    }
+
+    public function testPrivateFieldNamesResolveToAliases(): void
+    {
+        $aliases = $this->client()->aliases;
+
+        $this->assertInstanceOf(Alias::class, $aliases->apiCall);
+        $this->assertSame($aliases['apiCall'], $aliases->apiCall);
+        $this->assertSame($aliases['typesenseAliases'], $aliases->typesenseAliases);
     }
 }

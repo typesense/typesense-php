@@ -71,4 +71,13 @@ class CollectionsTest extends TestCase
         $this->assertEquals('books_v2', $response['name']);
         $this->assertEquals($this->createCollectionRes['fields'], $response['fields']);
     }
+
+    public function testPrivateFieldNamesResolveToCollections(): void
+    {
+        $collections = $this->client()->collections;
+
+        $this->assertInstanceOf(Collection::class, $collections->apiCall);
+        $this->assertSame($collections['apiCall'], $collections->apiCall);
+        $this->assertSame($collections['typesenseCollections'], $collections->typesenseCollections);
+    }
 }

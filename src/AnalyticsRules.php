@@ -57,9 +57,6 @@ class AnalyticsRules implements \ArrayAccess
      */
     public function __get($ruleName)
     {
-        if (isset($this->{$ruleName})) {
-            return $this->{$ruleName};
-        }
         if (!isset($this->analyticsRules[$ruleName])) {
             $this->analyticsRules[$ruleName] = new AnalyticsRule($ruleName, $this->apiCall);
         }

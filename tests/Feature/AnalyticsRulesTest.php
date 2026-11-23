@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Typesense\AnalyticsRule;
 use Typesense\Exceptions\RequestMalformed;
 use Exception;
 
@@ -166,5 +167,14 @@ class AnalyticsRulesTest extends TestCase
 
         $rule = $this->client()->analytics->rules()[$this->ruleName];
         $this->assertInstanceOf('Typesense\AnalyticsRule', $rule);
+    }
+
+    public function testPrivateFieldNamesResolveToRules(): void
+    {
+        $rules = $this->client()->analytics->rules();
+
+        $this->assertInstanceOf(AnalyticsRule::class, $rules->apiCall);
+        $this->assertSame($rules['apiCall'], $rules->apiCall);
+        $this->assertSame($rules['analyticsRules'], $rules->analyticsRules);
     }
 }

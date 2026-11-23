@@ -125,9 +125,6 @@ class Presets implements \ArrayAccess
      */
     public function __get($presetName)
     {
-        if (isset($this->{$presetName})) {
-            return $this->{$presetName};
-        }
         if (!isset($this->typesensePresets[$presetName])) {
             $this->typesensePresets[$presetName] = new Preset($presetName, $this->apiCall);
         }

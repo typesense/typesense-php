@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\ConversationsTestCase;
+use Typesense\ConversationModel;
 
 class ConversationModelsTest extends ConversationsTestCase
 {
@@ -30,5 +31,14 @@ class ConversationModelsTest extends ConversationsTestCase
 
         $response = $this->client()->conversations->typesenseModels->retrieve();
         $this->assertEquals([], $response);
+    }
+
+    public function testPrivateFieldNamesResolveToModels(): void
+    {
+        $models = $this->mockConversations()->typesenseModels;
+
+        $this->assertInstanceOf(ConversationModel::class, $models->apiCall);
+        $this->assertSame($models['apiCall'], $models->apiCall);
+        $this->assertSame($models['typesenseModels'], $models->typesenseModels);
     }
 }
