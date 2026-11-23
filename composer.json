@@ -64,7 +64,7 @@
   "scripts": {
     "typesenseServer": [
       "Composer\\Config::disableProcessTimeout",
-      "docker-compose up"
+      "docker compose up"
     ],
     "test": "vendor/bin/phpunit --testdox",
     "lint": "phpcs -v",
