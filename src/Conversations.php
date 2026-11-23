@@ -62,10 +62,6 @@ class Conversations implements \ArrayAccess
      */
     public function __get($id)
     {
-        if (isset($this->{$id})) {
-            return $this->{$id};
-        }
-
         if (!isset($this->individualConversations[$id])) {
             $this->individualConversations[$id] = new Conversation($id, $this->apiCall);
         }

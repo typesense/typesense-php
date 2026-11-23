@@ -88,10 +88,6 @@ class Aliases implements \ArrayAccess
      */
     public function __get($name)
     {
-        if (isset($this->{$name})) {
-            return $this->{$name};
-        }
-
         if (!isset($this->typesenseAliases[$name])) {
             $this->typesenseAliases[$name] = new Alias($name, $this->apiCall);
         }

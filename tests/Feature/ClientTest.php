@@ -15,6 +15,7 @@ use Typesense\MultiSearch;
 use Typesense\Presets;
 use Typesense\Analytics;
 use Typesense\Conversations;
+use Typesense\NLSearchModel;
 
 class ClientTest extends TestCase
 {
@@ -32,5 +33,14 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Presets::class,  $this->client()->presets);
         $this->assertInstanceOf(Analytics::class,  $this->client()->analytics);
         $this->assertInstanceOf(Conversations::class,  $this->client()->conversations);
+    }
+
+    public function testPrivateFieldNamesResolveToNLSearchModels(): void
+    {
+        $models = $this->client()->nlSearchModels;
+
+        $this->assertInstanceOf(NLSearchModel::class, $models->apiCall);
+        $this->assertSame($models['apiCall'], $models->apiCall);
+        $this->assertSame($models['nlSearchModels'], $models->nlSearchModels);
     }
 }

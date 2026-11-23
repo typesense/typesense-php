@@ -41,9 +41,6 @@ class ConversationModels implements \ArrayAccess
      */
     public function __get($id)
     {
-        if (isset($this->{$id})) {
-            return $this->{$id};
-        }
         if (!isset($this->typesenseModels[$id])) {
             $this->typesenseModels[$id] = new ConversationModel($id, $this->apiCall);
         }

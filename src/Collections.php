@@ -43,9 +43,6 @@ class Collections implements \ArrayAccess
      */
     public function __get($collectionName)
     {
-        if (isset($this->{$collectionName})) {
-            return $this->{$collectionName};
-        }
         if (!isset($this->typesenseCollections[$collectionName])) {
             $this->typesenseCollections[$collectionName] = new Collection($collectionName, $this->apiCall);
         }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Typesense\Exceptions\ObjectNotFound;
+use Typesense\Preset;
 
 class PresetsTest extends TestCase
 {
@@ -55,5 +56,14 @@ class PresetsTest extends TestCase
     {
         $returnData =  $this->client()->presets->retrieve();
         $this->assertCount(1, $returnData['presets']);
+    }
+
+    public function testPrivateFieldNamesResolveToPresets(): void
+    {
+        $presets = $this->client()->presets;
+
+        $this->assertInstanceOf(Preset::class, $presets->apiCall);
+        $this->assertSame($presets['apiCall'], $presets->apiCall);
+        $this->assertSame($presets['typesensePresets'], $presets->typesensePresets);
     }
 }

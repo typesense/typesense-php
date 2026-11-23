@@ -41,9 +41,6 @@ class NLSearchModels implements \ArrayAccess
      */
     public function __get($id)
     {
-        if (isset($this->{$id})) {
-            return $this->{$id};
-        }
         if (!isset($this->nlSearchModels[$id])) {
             $this->nlSearchModels[$id] = new NLSearchModel($id, $this->apiCall);
         }
