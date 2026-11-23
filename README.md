@@ -45,6 +45,8 @@ $filterBy = 'tags:=' . FilterBy::escapeString($filterValue);
 | \>= v0.16.0      | \>= v4.1.0    |
 | \>= v0.15.0      | \>= v4.0.0    |
 
+`->items` on synonym sets and curation sets requires typesense-php >= v6.1.0.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/typesense/typesense-php].
