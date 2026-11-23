@@ -8,6 +8,7 @@ use Typesense\Lib\Configuration;
 use Typesense\Exceptions\ServerError;
 use Typesense\Exceptions\RequestMalformed;
 use Typesense\Exceptions\ObjectNotFound;
+use Typesense\Exceptions\ServiceUnavailable;
 use Http\Client\Exception\HttpException;
 use Http\Client\Exception\TransferException;
 use JsonException;
@@ -54,7 +55,8 @@ class ApiCallRetryTest extends TestCase
     public function testThrownExceptionsCarryTheStatusCodeAndTheServerMessage(): void
     {
         $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')
+        $httpClient->expects($this->once())
+            ->method('sendRequest')
             ->willReturn($this->createJsonResponseMock('{"message": "Not found."}', 404));
 
         $config  = new Configuration([
@@ -631,5 +633,94 @@ class ApiCallRetryTest extends TestCase
         $this->expectException(TypesenseClientError::class);
 
         $client->collections['books']->documents->search(['q' => '*', 'query_by' => 'title']);
+    }
+
+    public function testThrowsTheLastErrorWhenEveryAttemptReturns5xx(): void
+    {
+        $expectedExceptions = [
+            500 => ServerError::class,
+            502 => TypesenseClientError::class,
+            503 => ServiceUnavailable::class,
+        ];
+
+        foreach ($expectedExceptions as $statusCode => $expectedException) {
+            $callCount = 0;
+
+            $httpClient = $this->createMock(ClientInterface::class);
+            $httpClient->method('sendRequest')
+                ->willReturnCallback(function () use (&$callCount, $statusCode) {
+                    $callCount++;
+
+                    return $this->createJsonResponseMock(
+                        '{"message": "Attempt ' . $callCount . ' failed."}',
+                        $statusCode
+                    );
+                });
+
+            $config = new Configuration([
+                'api_key' => 'test-key',
+                'nodes' => [
+                    ['host' => 'node1', 'port' => 8108, 'protocol' => 'http'],
+                    ['host' => 'node2', 'port' => 8108, 'protocol' => 'http']
+                ],
+                'num_retries' => 2,
+                'retry_interval_seconds' => 0.001,
+                'client' => $httpClient
+            ]);
+
+            $apiCall = new ApiCall($config);
+
+            try {
+                $apiCall->get('/test', []);
+                $this->fail("Expected a {$expectedException} for HTTP {$statusCode}.");
+            } catch (TypesenseClientError $exception) {
+                $this->assertSame($expectedException, get_class($exception));
+                $this->assertSame($statusCode, $exception->getCode());
+                $this->assertSame('Attempt 3 failed.', $exception->getMessage());
+            }
+
+            $this->assertSame(3, $callCount);
+        }
+    }
+
+    public function test5xxResponseMarksTheNodeUnhealthy(): void
+    {
+        $requestedHosts = [];
+
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function (RequestInterface $request) use (&$requestedHosts) {
+                $requestedHosts[] = $request->getUri()->getHost();
+
+                if ($request->getUri()->getHost() === 'node2') {
+                    return $this->createJsonResponseMock('{"message": "Not Ready or Lagging"}', 503);
+                }
+
+                return $this->createJsonResponseMock('{"success": true}');
+            });
+
+        $config = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http'],
+                ['host' => 'node2', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'num_retries' => 2,
+            'retry_interval_seconds' => 0.001,
+            'randomize_nodes' => false,
+            'client' => $httpClient
+        ]);
+
+        $apiCall = new ApiCall($config);
+
+        // Nodes are picked round-robin, so the first request starts on node2
+        $this->assertEquals(['success' => true], $apiCall->get('/test', []));
+        $this->assertTrue($config->getNodes()[0]->isHealthy());
+        $this->assertFalse($config->getNodes()[1]->isHealthy());
+
+        // node2 is next in line, but is skipped until its health check is due
+        $this->assertEquals(['success' => true], $apiCall->get('/test', []));
+
+        $this->assertSame(['node2', 'node1', 'node1'], $requestedHosts);
     }
 }

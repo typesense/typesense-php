@@ -309,11 +309,16 @@ class ApiCall
                 // For network errors, set exception and continue to retry logic
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
-            } catch (Exception $exception) {
-                if ($exception instanceof TypesenseClientError) {
+            } catch (TypesenseClientError $exception) {
+                // For 4xx errors, and errors without an HTTP status, don't retry - throw immediately
+                if ($exception->getCode() < 500) {
                     throw $exception;
                 }
-                
+
+                // For 5xx errors, set exception and continue to retry logic
+                $this->setNodeHealthCheck($node, false);
+                $lastException = $exception;
+            } catch (Exception $exception) {
                 $this->setNodeHealthCheck($node, false);
                 $lastException = $exception;
             }
