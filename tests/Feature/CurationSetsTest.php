@@ -55,7 +55,9 @@ class CurationSetsTest extends TestCase
     public function testCanUpsertACurationSet(): void
     {
         $this->assertEquals($this->curationSetData['items'][0]['id'], $this->upsertResponse['items'][0]['id']);
-        $this->assertEquals($this->curationSetData['items'][0]['rule'], $this->upsertResponse['items'][0]['rule']);
+        // Typesense v30.2+ adds defaults such as stem and synonyms to the rule; compare only the keys we sent.
+        $rule = $this->curationSetData['items'][0]['rule'];
+        $this->assertEquals($rule, array_intersect_key($this->upsertResponse['items'][0]['rule'], $rule));
         $this->assertEquals($this->curationSetData['items'][0]['includes'], $this->upsertResponse['items'][0]['includes']);
     }
 
@@ -79,7 +81,9 @@ class CurationSetsTest extends TestCase
     {
         $returnData = $this->curationSets['test-curation-set']->retrieve();
         $this->assertEquals($this->curationSetData['items'][0]['id'], $returnData['items'][0]['id']);
-        $this->assertEquals($this->curationSetData['items'][0]['rule'], $returnData['items'][0]['rule']);
+        // Typesense v30.2+ adds defaults such as stem and synonyms to the rule; compare only the keys we sent.
+        $rule = $this->curationSetData['items'][0]['rule'];
+        $this->assertEquals($rule, array_intersect_key($returnData['items'][0]['rule'], $rule));
         $this->assertEquals($this->curationSetData['items'][0]['includes'], $returnData['items'][0]['includes']);
     }
 
