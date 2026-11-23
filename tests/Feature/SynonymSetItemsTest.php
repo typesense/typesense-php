@@ -71,7 +71,7 @@ class SynonymSetItemsTest extends TestCase
         $this->synonymSets['test-synonym-set-items']->items['synonym-rule-1']->retrieve();
     }
 
-    public function testGetItemsReturnsTheItemsProperty(): void
+    public function testGetItemsMatchesItemsAccessor(): void
     {
         $synonymSet = $this->synonymSets['test-synonym-set-items'];
 
