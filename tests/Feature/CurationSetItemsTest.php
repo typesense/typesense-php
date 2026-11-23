@@ -53,7 +53,7 @@ class CurationSetItemsTest extends TestCase
 
     public function testCanListItemsInACurationSet(): void
     {
-        $items = $this->curationSets['test-curation-set-items']->getItems()->retrieve();
+        $items = $this->curationSets['test-curation-set-items']->items->retrieve();
 
         $this->assertIsArray($items);
         $this->assertGreaterThan(0, count($items));
@@ -62,8 +62,7 @@ class CurationSetItemsTest extends TestCase
 
     public function testCanUpsertRetrieveAndDeleteAnItem(): void
     {
-        $upserted = $this->curationSets['test-curation-set-items']->getItems()['rule-1']->upsert([
-            'id' => 'rule-1',
+        $upserted = $this->curationSets['test-curation-set-items']->items['rule-1']->upsert([
             'rule' => [
                 'query' => 'test',
                 'match' => 'exact',
@@ -78,14 +77,17 @@ class CurationSetItemsTest extends TestCase
 
         $this->assertEquals('rule-1', $upserted['id']);
 
-        $fetched = $this->curationSets['test-curation-set-items']->getItems()['rule-1']->retrieve();
+        $fetched = $this->curationSets['test-curation-set-items']->items['rule-1']->retrieve();
         $this->assertEquals('999', $fetched['includes'][0]['id']);
 
-        $deletion = $this->curationSets['test-curation-set-items']->getItems()['rule-1']->delete();
+        $deletion = $this->curationSets['test-curation-set-items']->items['rule-1']->delete();
         $this->assertEquals('rule-1', $deletion['id']);
+
+        $this->expectException(ObjectNotFound::class);
+        $this->curationSets['test-curation-set-items']->items['rule-1']->retrieve();
     }
 
-    public function testGetItemsReturnsTheItemsProperty(): void
+    public function testGetItemsMatchesItemsAccessor(): void
     {
         $curationSet = $this->curationSets['test-curation-set-items'];
 

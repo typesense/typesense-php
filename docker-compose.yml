@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
   typesense:
     image: typesense/typesense:30.2

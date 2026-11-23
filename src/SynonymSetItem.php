@@ -58,7 +58,7 @@ class SynonymSetItem
      * Retrieve a specific synonym item by its id.
      *
      * @example
-     * $client->synonymSets['my-set']->getItems()['syn-1']->retrieve()
+     * $client->synonymSets['my-set']->items['syn-1']->retrieve()
      *
      * @see https://typesense.org/docs/latest/api/synonyms.html
      *
@@ -74,7 +74,7 @@ class SynonymSetItem
      * Create or update a synonym set item with the given id.
      *
      * @example
-     * $client->synonymSets['my-set']->getItems()['syn-1']->upsert(['synonyms' => ['nyc', 'new york']])
+     * $client->synonymSets['my-set']->items['syn-1']->upsert(['synonyms' => ['nyc', 'new york']])
      *
      * @see https://typesense.org/docs/latest/api/synonyms.html
      *
@@ -92,7 +92,7 @@ class SynonymSetItem
      * Delete a specific synonym item by its id.
      *
      * @example
-     * $client->synonymSets['my-set']->getItems()['syn-1']->delete()
+     * $client->synonymSets['my-set']->items['syn-1']->delete()
      *
      * @see https://typesense.org/docs/latest/api/synonyms.html
      *
