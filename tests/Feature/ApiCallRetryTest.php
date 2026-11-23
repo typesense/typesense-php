@@ -569,4 +569,67 @@ class ApiCallRetryTest extends TestCase
         $this->assertSame(['ok' => true], $result);
         $this->assertSame(1, $callCount);
     }
+
+    public function testEvery408AttemptStillThrowsInsteadOfReturningNothing(): void
+    {
+        $callCount = 0;
+
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function() use (&$callCount) {
+                $callCount++;
+
+                $response = $this->createMock(ResponseInterface::class);
+                $response->method('getStatusCode')->willReturn(408);
+                throw new HttpException('Request timeout', $this->createMock(RequestInterface::class), $response);
+            });
+
+        $config = new Configuration([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http'],
+                ['host' => 'node2', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'num_retries' => 2,
+            'retry_interval_seconds' => 0,
+            'client' => $httpClient
+        ]);
+
+        $apiCall = new ApiCall($config);
+
+        try {
+            $result = $apiCall->get('/test', []);
+            $this->fail('Expected a TypesenseClientError, got ' . var_export($result, true));
+        } catch (TypesenseClientError $exception) {
+            $this->assertSame(408, $exception->getCode());
+            $this->assertSame('Request timeout', $exception->getMessage());
+        }
+
+        $this->assertSame(3, $callCount);
+    }
+
+    public function testSearchSurfacesATimeoutWhenEveryAttemptReturns408(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->method('sendRequest')
+            ->willReturnCallback(function() {
+                $response = $this->createMock(ResponseInterface::class);
+                $response->method('getStatusCode')->willReturn(408);
+                throw new HttpException('Request timeout', $this->createMock(RequestInterface::class), $response);
+            });
+
+        $client = new \Typesense\Client([
+            'api_key' => 'test-key',
+            'nodes' => [
+                ['host' => 'node1', 'port' => 8108, 'protocol' => 'http']
+            ],
+            'num_retries' => 1,
+            'retry_interval_seconds' => 0,
+            'client' => $httpClient
+        ]);
+
+        $this->expectException(TypesenseClientError::class);
+
+        $client->collections['books']->documents->search(['q' => '*', 'query_by' => 'title']);
+    }
 }
