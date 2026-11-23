@@ -77,4 +77,27 @@ class SynonymSetItemsTest extends TestCase
 
         $this->assertSame($synonymSet->items, $synonymSet->getItems());
     }
+
+    public function testPropertiesOtherThanItemsAreUndefined(): void
+    {
+        $synonymSet = $this->synonymSets['test-synonym-set-items'];
+        $warnings   = [];
+        set_error_handler(function (int $level, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
+            return true;
+        }, E_USER_WARNING);
+
+        try {
+            $values = [$synonymSet->itmes, $synonymSet->synonymSetName, $synonymSet->apiCall];
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame([null, null, null], $values);
+        $this->assertSame([
+            'Undefined property: Typesense\SynonymSet::$itmes',
+            'Undefined property: Typesense\SynonymSet::$synonymSetName',
+            'Undefined property: Typesense\SynonymSet::$apiCall',
+        ], $warnings);
+    }
 }
