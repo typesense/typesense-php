@@ -55,7 +55,7 @@ class SynonymSetItems implements \ArrayAccess
      * Retrieve all synonym items in a set.
      *
      * @example
-     * $client->synonymSets['my-set']->getItems()->retrieve()
+     * $client->synonymSets['my-set']->items->retrieve()
      *
      * @see https://typesense.org/docs/latest/api/synonyms.html
      *

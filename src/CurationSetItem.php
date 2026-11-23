@@ -58,7 +58,7 @@ class CurationSetItem
      * Retrieve a specific curation item by its id.
      *
      * @example
-     * $client->curationSets['my-set']->getItems()['promote-hat']->retrieve()
+     * $client->curationSets['my-set']->items['promote-hat']->retrieve()
      *
      * @see https://typesense.org/docs/latest/api/curation.html
      *
@@ -74,7 +74,7 @@ class CurationSetItem
      * Create or update a curation set item with the given id.
      *
      * @example
-     * $client->curationSets['my-set']->getItems()['promote-hat']->upsert(['rule' => ['query' => 'hat', 'match' => 'exact'], 'includes' => []])
+     * $client->curationSets['my-set']->items['promote-hat']->upsert(['rule' => ['query' => 'hat', 'match' => 'exact'], 'includes' => []])
      *
      * @see https://typesense.org/docs/latest/api/curation.html
      *
@@ -92,7 +92,7 @@ class CurationSetItem
      * Delete a specific curation item by its id.
      *
      * @example
-     * $client->curationSets['my-set']->getItems()['promote-hat']->delete()
+     * $client->curationSets['my-set']->items['promote-hat']->delete()
      *
      * @see https://typesense.org/docs/latest/api/curation.html
      *
