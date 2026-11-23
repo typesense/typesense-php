@@ -9,6 +9,7 @@ use Typesense\Exceptions\TypesenseClientError;
  * Class SynonymSet
  *
  * @package \Typesense
+ * @property-read SynonymSetItems $items
  */
 class SynonymSet
 {
@@ -37,14 +38,15 @@ class SynonymSet
     }
 
     /**
-     * @param $id
+     * @param string $id
      *
      * @return mixed
      */
     public function __get($id)
     {
-        if (isset($this->{$id})) {
-            return $this->{$id};
+        if ($id !== 'items') {
+            trigger_error(sprintf('Undefined property: %s::$%s', static::class, $id), E_USER_WARNING);
+            return null;
         }
 
         if (!isset($this->typesenseSynonymSetItems[$id])) {
