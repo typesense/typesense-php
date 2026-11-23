@@ -29,6 +29,7 @@ jobs:
         with:
           php-version: "8.4"
           coverage: xdebug
-      - uses: php-actions/composer@v6
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
       - name: Run tests
         run: vendor/bin/phpunit --coverage-text --testdox
