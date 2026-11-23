@@ -2,10 +2,11 @@ version: '3.5'
 
 services:
   typesense:
-    image: typesense/typesense:27.0.rc21
+    image: typesense/typesense:30.2
     environment:
       TYPESENSE_DATA_DIR: /data
       TYPESENSE_API_KEY: xyz
+      TYPESENSE_ANALYTICS_MINUTE_RATE_LIMIT: 50
     volumes:
       - /tmp/typesense-server-data:/data
     ports:
