@@ -9,6 +9,7 @@ use Typesense\Exceptions\TypesenseClientError;
  * Class CurationSet
  *
  * @package \Typesense
+ * @property-read CurationSetItems $items
  */
 class CurationSet
 {
@@ -37,14 +38,15 @@ class CurationSet
     }
 
     /**
-     * @param $id
+     * @param string $id
      *
      * @return mixed
      */
     public function __get($id)
     {
-        if (isset($this->{$id})) {
-            return $this->{$id};
+        if ($id !== 'items') {
+            trigger_error(sprintf('Undefined property: %s::$%s', static::class, $id), E_USER_WARNING);
+            return null;
         }
 
         if (!isset($this->typesenseCurationSetItems[$id])) {

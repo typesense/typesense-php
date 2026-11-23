@@ -84,4 +84,34 @@ class CurationSetItemsTest extends TestCase
         $deletion = $this->curationSets['test-curation-set-items']->getItems()['rule-1']->delete();
         $this->assertEquals('rule-1', $deletion['id']);
     }
+
+    public function testGetItemsReturnsTheItemsProperty(): void
+    {
+        $curationSet = $this->curationSets['test-curation-set-items'];
+
+        $this->assertSame($curationSet->items, $curationSet->getItems());
+    }
+
+    public function testPropertiesOtherThanItemsAreUndefined(): void
+    {
+        $curationSet = $this->curationSets['test-curation-set-items'];
+        $warnings    = [];
+        set_error_handler(function (int $level, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
+            return true;
+        }, E_USER_WARNING);
+
+        try {
+            $values = [$curationSet->itmes, $curationSet->curationSetName, $curationSet->apiCall];
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame([null, null, null], $values);
+        $this->assertSame([
+            'Undefined property: Typesense\CurationSet::$itmes',
+            'Undefined property: Typesense\CurationSet::$curationSetName',
+            'Undefined property: Typesense\CurationSet::$apiCall',
+        ], $warnings);
+    }
 }
